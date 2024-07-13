@@ -1,0 +1,41 @@
+name: core
+
+on: ["push","pull_request"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            bundle: nsis
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            bundle: dmg
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            bundle: dmg
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            bundle: AppImage
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Nightly Rust Toolchain
+        run: rustup update nightly
+      - name: Install Rust Target
+        run: rustup target add --toolchain nightly ${{matrix.target}}
+      - name: Install Rust Toolchain Component
+        run: rustup component add --toolchain nightly rustfmt clippy
+      - name: Format check
+        run: cargo +nightly fmt -p jinhsi-core
+      - name: Build
+        run: cargo +nightly build -p jinhsi-core --verbose --target ${{matrix.target}}
+      - name: Clippy
+        run: cargo +nightly clippy -p jinhsi-core --verbose --target ${{matrix.target}}
+      - name: Run tests
+        run: cargo +nightly test -p jinhsi-core  --verbose --target ${{matrix.target}}
