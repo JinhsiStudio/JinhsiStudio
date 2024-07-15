@@ -1,7 +1,7 @@
 pub mod url;
 
-use core::error::Error;
 use serde::{Deserialize, Serialize};
+use std::error::Error;
 use std::{fmt::Display, path::PathBuf};
 
 #[derive(Debug, Serialize, Deserialize)]
