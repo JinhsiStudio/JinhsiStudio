@@ -1,3 +1,5 @@
-export default function GachaPage(){
-    
+import { Button } from "antd";
+
+export default function GachaPage() {
+    return <Button>Gacha</Button>
 }
