@@ -1,17 +1,20 @@
 pub mod local;
 pub mod url;
 
+use ::url::Url;
 use local::LocalGachaSource;
 use serde::{Deserialize, Serialize};
 use snafu::Snafu;
 use url::UrlGachaSource;
 
-#[derive(Debug, Snafu, Serialize, Deserialize)]
+#[derive(Debug, Snafu)]
 pub enum GachaError {
-    #[snafu(display("Unable to write result to {}: ", url))]
+    #[snafu(display("Invalid Url: {} ", url))]
     InvalidUrl { url: String },
     #[snafu(display("Unable to probe gacha url, input it manually"))]
     ProbeFailed,
+    #[snafu(display("Unable to fetch gacha from url {}", url))]
+    RequestFailed { url: Url },
 }
 
 pub enum GachaLogSource {
@@ -21,8 +24,13 @@ pub enum GachaLogSource {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GachaLogItem {
-    date: chrono::NaiveDate,
+    #[serde(alias = "resourceId")]
+    id: usize,
+    #[serde(alias = "qualityLevel")]
+    rarity: usize,
     name: String,
+    #[serde(alias = "time")]
+    date: chrono::NaiveDate,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -43,14 +51,14 @@ pub struct GachaLog {
 }
 
 pub trait GachaService {
-    fn get_gacha_data(&self) -> Result<Vec<GachaLog>, GachaError>;
+    async fn get_gacha_data(&self) -> Result<Vec<GachaLog>, GachaError>;
 }
 
 impl GachaService for GachaLogSource {
-    fn get_gacha_data(&self) -> Result<Vec<GachaLog>, GachaError> {
+    async fn get_gacha_data(&self) -> Result<Vec<GachaLog>, GachaError> {
         match self {
-            GachaLogSource::Url(source) => source.get_gacha_data(),
-            GachaLogSource::Local(source) => source.get_gacha_data(),
+            GachaLogSource::Url(source) => source.get_gacha_data().await,
+            GachaLogSource::Local(source) => source.get_gacha_data().await,
         }
     }
 }

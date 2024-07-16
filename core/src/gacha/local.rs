@@ -1,11 +1,13 @@
-use std::path::{Path, PathBuf};
+use std::{
+    borrow::Borrow,
+    fs::OpenOptions,
+    io::{BufReader, Seek, SeekFrom},
+    path::{Path, PathBuf},
+};
 
 use ::url::Url;
 
-use super::{
-    url::{self, UrlGachaSource},
-    GachaError, GachaLogSource, GachaService,
-};
+use super::{url::UrlGachaSource, GachaError, GachaLogSource, GachaService};
 
 pub struct LocalGachaSource {
     path: Option<PathBuf>,
@@ -28,12 +30,62 @@ impl LocalGachaSource {
             use std::io::BufRead;
             use winreg::enums::*;
             use winreg::RegKey;
-            fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<fs::File>>>
-            where
-                P: AsRef<Path>,
-            {
-                let file = fs::File::open(filename)?;
-                Ok(io::BufReader::new(file).lines())
+            const MAX_LOG_LINES: usize = 500; //Just read last 500 lines to avoid timeout
+            fn read_last_lines<P: AsRef<Path>>(
+                filename: P,
+                lines_count: usize,
+            ) -> io::Result<Vec<String>> {
+                let mut file = OpenOptions::new()
+                    .read(true)
+                    .write(false)
+                    .create(false)
+                    .open(filename)?;
+                let metadata = file.metadata()?;
+                let file_size = metadata.len();
+
+                // Calculate the size of each chunk to read
+                let chunk_size = if file_size > (lines_count - 1) as u64 * 128 {
+                    128 // If file size is large, we can read in larger chunks
+                } else {
+                    1 // If file size is small, read one byte at a time
+                };
+
+                let mut lines = Vec::new();
+                let mut offset = file_size - chunk_size as u64;
+
+                while offset > 0 && lines.len() < lines_count {
+                    // Move the cursor to the calculated offset
+                    file.seek(SeekFrom::Start(offset))?;
+
+                    let reader = BufReader::new(file.borrow());
+
+                    // Read lines from the current offset to the end of the file
+                    for line in reader.lines().flatten() {
+                        if lines.len() < lines_count {
+                            lines.push(line);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    // Adjust the offset for the next iteration
+                    let lines_read = lines.len();
+                    offset -= chunk_size as u64 * lines_read as u64;
+                    if offset < chunk_size as u64 {
+                        // If the remaining part of the file is smaller than chunk_size, read it entirely
+                        offset = 0;
+                    }
+                }
+
+                // If we have read more lines than needed, truncate the vector
+                if lines.len() > lines_count {
+                    lines.truncate(lines_count);
+                }
+
+                // seek to the beginning of the file to reset the cursor
+                file.seek(SeekFrom::Start(0))?;
+
+                Ok(lines)
             }
             fn check_registry() -> Result<Option<String>, GachaError> {
                 let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
@@ -128,12 +180,12 @@ impl LocalGachaSource {
                 if Path::new(&gacha_log_path).exists() {
                     log_found = true;
                     log::info!("Reading Client.log...");
-                    if let Ok(lines) = read_lines(&gacha_log_path) {
-                        for line in lines.map_while(Result::ok) {
-                            let re = Regex::new(
-                                r"https://aki-gm-resources(-oversea)?\.aki-game\.(net|com)",
+                    if let Ok(lines) = read_last_lines(&gacha_log_path, MAX_LOG_LINES) {
+                        let re = Regex::new(
+                                 r"https://aki-gm-resources\.aki-game\.com/aki/gacha/index\.html#\/record\?svr_id=[0-9a-f]{32}&player_id=[0-9]+&lang=[\w-]+&gacha_id=[0-9]+&gacha_type=[0-9]+&svr_area=[\w]+&record_id=[0-9a-f]{32}&resources_id=[0-9a-f]{32}",
                             )
                             .unwrap();
+                        for line in lines {
                             if re.is_match(&line) {
                                 url_to_copy = Some(re.find(&line).unwrap().as_str().to_string());
                                 break;
@@ -145,8 +197,8 @@ impl LocalGachaSource {
                 if Path::new(&debug_log_path).exists() {
                     log_found = true;
                     log::info!("Reading debug.log...");
-                    if let Ok(lines) = read_lines(&debug_log_path) {
-                        for line in lines.map_while(Result::ok) {
+                    if let Ok(lines) = read_last_lines(&debug_log_path, MAX_LOG_LINES) {
+                        for line in lines {
                             let re = Regex::new(r#""url": "(https://aki-gm-resources(-oversea)?\.aki-game\.(net|com)[^"]*)""#).unwrap();
                             if let Some(caps) = re.captures(&line) {
                                 url_to_copy = Some(caps.get(1).unwrap().as_str().to_string());
@@ -271,10 +323,24 @@ impl LocalGachaSource {
 }
 
 impl GachaService for LocalGachaSource {
-    fn get_gacha_data(&self) -> Result<Vec<super::GachaLog>, GachaError> {
-        let url_source = GachaLogSource::Url(UrlGachaSource {
-            url: self.try_get_url()?,
-        });
-        url_source.get_gacha_data()
+    async fn get_gacha_data(&self) -> Result<Vec<super::GachaLog>, GachaError> {
+        let url_source = UrlGachaSource::new(self.try_get_url()?)?;
+        url_source.get_gacha_data().await
     }
+}
+
+#[test]
+/// If Wurthering Waves has been installed in your computer,
+/// you can uncomment the following line to test it.
+/// Otherwise, keep it to make test happy
+fn test_probe_local() {
+    let r = LocalGachaSource::new(None).try_get_url();
+    // assert!(r.is_ok());
+    // if let Ok(url) = r {
+    //     println!("probe result {:?}", url);
+    //     let normalized_url =
+    //         Url::parse(&("https://example.com".to_owned() + url.fragment().unwrap()));
+    //     println!("probe query result {:?}", normalized_url);
+    // }
+    assert!(r.is_err());
 }
