@@ -1,5 +1,7 @@
 use std::path::{Path, PathBuf};
 
+use ::url::Url;
+
 use super::{
     url::{self, UrlGachaSource},
     GachaError, GachaLogSource, GachaService,
@@ -15,7 +17,7 @@ impl LocalGachaSource {
     }
 
     /// Get Url Locally, inspired by [this](https://gist.githubusercontent.com/Luzefiru/19c0759bea1b9e7ef480bb39303b3f6c/raw/529a4a53a265e0ee15f48e086654d66529cdb157/get-url.ps1)
-    fn try_get_url(&self) -> Result<String, GachaError> {
+    fn try_get_url(&self) -> Result<Url, GachaError> {
         #[cfg(not(target_os = "windows"))]
         return Err(GachaError::ProbeFailed);
         #[cfg(target_os = "windows")]
@@ -180,7 +182,9 @@ impl LocalGachaSource {
                 url_found = url.is_some();
                 log_found = log_res;
                 if url_found {
-                    return Ok(url.unwrap());
+                    if let Ok(url) = Url::parse(&url.unwrap()) {
+                        return Ok(url);
+                    }
                 }
             } else {
                 log::info!("Game path not found in registry.");
@@ -195,7 +199,9 @@ impl LocalGachaSource {
                     url_found = url.is_some();
                     log_found = log_res;
                     if url_found {
-                        return Ok(url.unwrap());
+                        if let Ok(url) = Url::parse(&url.unwrap()) {
+                            return Ok(url);
+                        }
                     }
                 } else {
                     log::info!("No entries found in MUI Cache.");
@@ -211,7 +217,9 @@ impl LocalGachaSource {
                     url_found = url.is_some();
                     log_found = log_res;
                     if url_found {
-                        return Ok(url.unwrap());
+                        if let Ok(url) = Url::parse(&url.unwrap()) {
+                            return Ok(url);
+                        }
                     }
                 } else {
                     log::info!("No entries found in firewall.");
@@ -228,7 +236,9 @@ impl LocalGachaSource {
                     url_found = url.is_some();
                     log_found = log_res;
                     if url_found {
-                        return Ok(url.unwrap());
+                        if let Ok(url) = Url::parse(&url.unwrap()) {
+                            return Ok(url);
+                        }
                     }
                 } else {
                     log::info!("Log files not found in common paths.");
@@ -246,7 +256,9 @@ impl LocalGachaSource {
                         url_found = url.is_some();
                         log_found = log_res;
                         if url_found {
-                            return Ok(url.unwrap());
+                            if let Ok(url) = Url::parse(&url.unwrap()) {
+                                return Ok(url);
+                            }
                         }
                     }
                 } else {

@@ -9,6 +9,10 @@ serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4.38", features = ["serde"] }
 snafu = "0.8.4"
 log = "0.4.22"
+headless_chrome = "1.0.10"
+url = "2.5.2"
+lazy_static = "1.5.0"
+reqwest = "0.12.5"
 
 
 [target.'cfg(target_os = "windows")'.dependencies]
