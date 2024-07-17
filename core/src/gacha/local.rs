@@ -7,7 +7,7 @@ use std::{
 
 use ::url::Url;
 
-use super::{url::UrlGachaSource, GachaError, GachaLogSource, GachaService};
+use super::{url::UrlGachaSource, GachaError, GachaService};
 
 pub struct LocalGachaSource {
     path: Option<PathBuf>,
@@ -25,7 +25,6 @@ impl LocalGachaSource {
         #[cfg(target_os = "windows")]
         {
             use regex::Regex;
-            use std::fs;
             use std::io;
             use std::io::BufRead;
             use winreg::enums::*;
@@ -96,7 +95,7 @@ impl LocalGachaSource {
 
                 for path in paths {
                     if let Ok(subkey) = hklm.open_subkey(path) {
-                        for (name, value) in subkey.enum_values().filter_map(Result::ok) {
+                        for (name, _value) in subkey.enum_values().filter_map(Result::ok) {
                             if name.contains("wuthering") {
                                 if let Ok(install_path) = subkey.get_value::<String, _>(&name) {
                                     return Ok(Some(install_path));
@@ -152,6 +151,7 @@ impl LocalGachaSource {
 
             fn check_common_paths() -> Option<String> {
                 let disk_letters = vec!["C", "D", "E", "F", "G"];
+                //TODO Wegame path
                 let common_paths = vec![
                     "\\Wuthering Waves Game",
                     "\\Wuthering Waves\\Wuthering Waves Game",
@@ -170,14 +170,14 @@ impl LocalGachaSource {
                 None
             }
 
-            fn log_check(game_path: &str) -> Result<(Option<String>, bool), GachaError> {
-                let gacha_log_path = format!("{}\\Client\\Saved\\Logs\\Client.log", game_path);
-                let debug_log_path = format!("{}\\Client\\Binaries\\Win64\\ThirdParty\\KrPcSdk_Global\\KRSDKRes\\KRSDKWebView\\debug.log", game_path);
+            fn log_check<P: AsRef<Path>>(game_path: P) -> Option<String> {
+                let gacha_log_path = game_path.as_ref().join("\\Client\\Saved\\Logs\\Client.log");
+                let debug_log_path = game_path.as_ref().join("\\Client\\Binaries\\Win64\\ThirdParty\\KrPcSdk_Global\\KRSDKRes\\KRSDKWebView\\debug.log");
 
                 let mut url_to_copy = None;
                 let mut log_found = false;
 
-                if Path::new(&gacha_log_path).exists() {
+                if gacha_log_path.as_path().exists() {
                     log_found = true;
                     log::info!("Reading Client.log...");
                     if let Ok(lines) = read_last_lines(&gacha_log_path, MAX_LOG_LINES) {
@@ -194,7 +194,7 @@ impl LocalGachaSource {
                     }
                 }
 
-                if Path::new(&debug_log_path).exists() {
+                if debug_log_path.as_path().exists() && url_to_copy.is_none() {
                     log_found = true;
                     log::info!("Reading debug.log...");
                     if let Ok(lines) = read_last_lines(&debug_log_path, MAX_LOG_LINES) {
@@ -210,31 +210,23 @@ impl LocalGachaSource {
 
                 if let Some(url) = url_to_copy {
                     log::info!("\nConvene Record URL: {}", url);
-                    Ok((Some(url), log_found))
+                    Some(url)
                 } else if log_found {
-                    log::info!("Cannot find the convene history URL in both Client.log and debug.log! Please open your Convene History first!");
-                    Ok((None, log_found))
+                    log::warn!("Cannot find the convene history URL in both Client.log and debug.log! Please open your Convene History first!");
+                    None
                 } else {
                     log::info!("Cannot find logs from provided path.");
-                    Ok((None, log_found))
+                    None
                 }
-            };
-
-            let mut game_path: Option<&str> = None;
-            let mut url_found = false;
-            let mut log_found = false;
+            }
 
             log::info!("Attempting to find URL automatically...");
 
             // Check registry for game path
             if let Some(path) = check_registry()? {
-                game_path = Some(&path);
-                log::info!("Game path from registry: {:?}", game_path);
-                let (url, log_res) = log_check(game_path.as_ref().unwrap())?;
-                url_found = url.is_some();
-                log_found = log_res;
-                if url_found {
-                    if let Ok(url) = Url::parse(&url.unwrap()) {
+                log::info!("Game path from registry: {:?}", path);
+                if let Some(raw_url) = log_check(&path) {
+                    if let Ok(url) = Url::parse(&raw_url) {
                         return Ok(url);
                     }
                 }
@@ -243,80 +235,57 @@ impl LocalGachaSource {
             }
 
             // Check MUI Cache
-            if !url_found {
-                log::info!("Checking MUI Cache...");
-                if let Some(path) = check_mui_cache()? {
-                    game_path = Some(&path);
-                    let (url, log_res) = log_check(game_path.as_ref().unwrap())?;
-                    url_found = url.is_some();
-                    log_found = log_res;
-                    if url_found {
-                        if let Ok(url) = Url::parse(&url.unwrap()) {
-                            return Ok(url);
-                        }
+            log::info!("Checking MUI Cache...");
+            if let Some(path) = check_mui_cache()? {
+                log::info!("Game path from MUI Cache: {:?}", path);
+                if let Some(raw_url) = log_check(&path) {
+                    if let Ok(url) = Url::parse(&raw_url) {
+                        return Ok(url);
                     }
-                } else {
-                    log::info!("No entries found in MUI Cache.");
                 }
+            } else {
+                log::info!("Game path not found in registry.");
             }
 
             // Check Firewall rules
-            if !url_found {
-                log::info!("Checking Firewall rules...");
-                if let Some(path) = check_firewall()? {
-                    game_path = Some(&path);
-                    let (url, log_res) = log_check(game_path.as_ref().unwrap())?;
-                    url_found = url.is_some();
-                    log_found = log_res;
-                    if url_found {
-                        if let Ok(url) = Url::parse(&url.unwrap()) {
-                            return Ok(url);
-                        }
+            log::info!("Checking Firewall rules...");
+            if let Some(path) = check_firewall()? {
+                log::info!("Game path from Firewall rules: {:?}", path);
+                if let Some(raw_url) = log_check(&path) {
+                    if let Ok(url) = Url::parse(&raw_url) {
+                        return Ok(url);
                     }
-                } else {
-                    log::info!("No entries found in firewall.");
                 }
+            } else {
+                log::info!("Game path not found in registry.");
             }
 
             // Check common installation paths
-            if !url_found {
-                log::info!("Checking common installation paths...");
-                if let Some(path) = check_common_paths() {
-                    game_path = Some(&path);
-                    let (url, log_res) = log_check(game_path.as_ref().unwrap())
-                        .map_err(|e| GachaError::ProbeFailed)?;
-                    url_found = url.is_some();
-                    log_found = log_res;
-                    if url_found {
-                        if let Ok(url) = Url::parse(&url.unwrap()) {
-                            return Ok(url);
-                        }
+            log::info!("Checking common installation paths...");
+            if let Some(path) = check_common_paths() {
+                log::info!("Game path from common installation paths: {:?}", path);
+                if let Some(raw_url) = log_check(&path) {
+                    if let Ok(url) = Url::parse(&raw_url) {
+                        return Ok(url);
                     }
-                } else {
-                    log::info!("Log files not found in common paths.");
                 }
+            } else {
+                log::info!("Game path not found in registry.");
             }
 
             // Manual input
-            if !url_found {
-                log::info!("Game install location not found or log files missing. Please enter the game install location path:");
-                if let Some(path) = &self.path {
-                    if path.exists() {
-                        game_path = path.to_str();
-                        let (url, log_res) = log_check(game_path.as_ref().unwrap())
-                            .map_err(|_| GachaError::ProbeFailed)?;
-                        url_found = url.is_some();
-                        log_found = log_res;
-                        if url_found {
-                            if let Ok(url) = Url::parse(&url.unwrap()) {
-                                return Ok(url);
-                            }
-                        }
+            log::info!("Game install location not found or log files missing. Please enter the game install location path:");
+            if let Some(path) = &self.path {
+                log::info!("Game path from common installation paths: {:?}", path);
+                if let Some(raw_url) = log_check(path) {
+                    if let Ok(url) = Url::parse(&raw_url) {
+                        return Ok(url);
                     }
-                } else {
-                    log::error!("Invalid game location.");
                 }
+            } else {
+                log::info!("Game path not found in registry.");
             }
+
             Err(GachaError::ProbeFailed)
         }
     }
