@@ -2,8 +2,10 @@ use std::collections::HashMap;
 
 use crate::gacha::GachaError;
 use lazy_static::lazy_static;
+use num_traits::FromPrimitive;
 use reqwest::Client;
-use tokio::test;
+use serde::{Deserialize, Serialize};
+use serde_json::json;
 use url::Url;
 
 use super::{Convene, GachaLog, GachaLogItem, GachaService};
@@ -11,6 +13,12 @@ use super::{Convene, GachaLog, GachaLogItem, GachaService};
 lazy_static! {
     static ref GACHA_RECORD_BASE_URL: Url =
         Url::parse("https://gmserver-api.aki-game2.com/gacha/record/query").unwrap();
+}
+#[derive(Debug, Serialize, Deserialize)]
+struct GachaResponse<T: Serialize> {
+    code: i32,
+    data: T,
+    message: String,
 }
 
 pub struct UrlGachaSource {
@@ -53,37 +61,44 @@ impl GachaService for UrlGachaSource {
         let language = self.get_query_data("lang")?;
         let player_id = self.get_query_data("player_id")?;
         let record_id = self.get_query_data("record_id")?;
-        let mut params = HashMap::new();
-        params.insert("convene_id", convene_id);
-        params.insert("server_id", server_id);
-        params.insert("lang", language);
-        params.insert("player_id", player_id);
-        params.insert("record_id", record_id);
         let client = Client::new();
+        let mut headers = reqwest::header::HeaderMap::new();
+        headers.insert("Content-Type", "application/json".parse().unwrap());
         let mut res: Vec<GachaLog> = Vec::new();
-        for convene_id in 1..6 {
-            let request = client
-                .get(GACHA_RECORD_BASE_URL.as_str())
-                .query(&params)
-                .query(&("cardPoolType", convene_id));
-            let response = request
+        for convene_type in 1..6 {
+            let body = json!({
+                "playerId": player_id,
+                "cardPoolId": convene_id,
+                "cardPoolType": convene_type,
+                "serverId": server_id,
+                "languageCode": language,
+                "recordId": record_id
+            });
+            let response = client
+                .post(GACHA_RECORD_BASE_URL.as_str())
+                .headers(headers.clone())
+                .json(&body)
                 .send()
                 .await
-                .map_err(|_| GachaError::RequestFailed {
+                .map_err(|e| GachaError::RequestFailed {
                     url: GACHA_RECORD_BASE_URL.clone(),
+                    source: Box::new(e),
                 })?;
             let response_text = response
                 .text()
                 .await
-                .map_err(|_| GachaError::RequestFailed {
+                .map_err(|e| GachaError::RequestFailed {
                     url: GACHA_RECORD_BASE_URL.clone(),
+                    source: Box::new(e),
                 })?;
-            let items: Vec<GachaLogItem> =
-                serde_json::from_str(&response_text).map_err(|_| GachaError::RequestFailed {
+            let data_response: GachaResponse<Vec<GachaLogItem>> =
+                serde_json::from_str(&response_text).map_err(|e| GachaError::RequestFailed {
                     url: GACHA_RECORD_BASE_URL.clone(),
+                    source: Box::new(e),
                 })?;
+            let items: Vec<GachaLogItem> = data_response.data;
             res.push(GachaLog {
-                convene: Convene::Beginner,
+                convene: Convene::from_i32(convene_type).unwrap(),
                 items,
             })
         }
@@ -91,12 +106,16 @@ impl GachaService for UrlGachaSource {
     }
 }
 
-// #[tokio::test]
-// async fn test_get_gacha_data() {
-//     use std::env;
-//     // let raw_url = env::var("GACHA_TEST_URL").unwrap();
-//     let raw_url = "https://aki-gm-resources.aki-game.com/aki/gacha/index.html#/record?svr_id=76402e5b20be2c39f095a152090afddc&player_id=117668137&lang=zh-Hans&gacha_id=4&gacha_type=6&svr_area=cn&record_id=17f6b1abb3f5b97dfbf8d80bf269deb0&resources_id=917dfa695d6c6634ee4e972bb9168f6a".to_string();
-//     let source = UrlGachaSource::new(Url::parse(&raw_url).unwrap()).unwrap();
-//     let r = source.get_gacha_data().await;
-//     assert!(r.unwrap().len() > 0);
-// }
+#[cfg(test)]
+mod tests {
+    use crate::gacha::{url::UrlGachaSource, GachaService};
+    use std::env;
+    use url::Url;
+    #[tokio::test]
+    async fn test_get_gacha_data() {
+        let raw_url = env::var("GACHA_TEST_URL").unwrap();
+        let source = UrlGachaSource::new(Url::parse(&raw_url).unwrap()).unwrap();
+        let r = source.get_gacha_data().await;
+        assert!(r.unwrap().len() > 0);
+    }
+}

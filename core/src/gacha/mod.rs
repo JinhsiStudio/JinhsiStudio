@@ -1,9 +1,12 @@
 pub mod local;
 pub mod url;
 
+use std::error::Error;
+
 use ::url::Url;
 use local::LocalGachaSource;
-use serde::{Deserialize, Serialize};
+use num_derive::{FromPrimitive, ToPrimitive};
+use serde::{de, Deserialize, Serialize};
 use snafu::Snafu;
 use url::UrlGachaSource;
 
@@ -13,8 +16,8 @@ pub enum GachaError {
     InvalidUrl { url: String },
     #[snafu(display("Unable to probe gacha url, input it manually"))]
     ProbeFailed,
-    #[snafu(display("Unable to fetch gacha from url {}", url))]
-    RequestFailed { url: Url },
+    #[snafu(display("Unable to fetch gacha from url {} since {}", url, source))]
+    RequestFailed { url: Url, source: Box<dyn Error> },
 }
 
 pub enum GachaLogSource {
@@ -30,10 +33,10 @@ pub struct GachaLogItem {
     rarity: usize,
     name: String,
     #[serde(alias = "time")]
-    date: chrono::NaiveDate,
+    date: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, FromPrimitive, ToPrimitive)]
 pub enum Convene {
     EventCharacter = 1,           //角色活动唤取 Featured Resonator Convene
     EventWeapon = 2,              //武器活动唤取 Featured Weapon Convene
