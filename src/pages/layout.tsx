@@ -1,26 +1,24 @@
-"use client";
-
-import { BackwardOutlined, FileSearchOutlined, HomeOutlined, LeftOutlined, SettingOutlined, TeamOutlined } from "@ant-design/icons";
+import { FileSearchOutlined, HomeOutlined, LeftOutlined, SettingOutlined, TeamOutlined } from "@ant-design/icons";
 import { Layout, Menu, MenuProps } from "antd";
 import { Content, Footer } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import { useRouter } from "next/navigation";
+import { useNavigate, useRoutes } from "react-router-dom";
 import { useState } from "react";
+import { routers } from "./routers";
+import React from "react";
+
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-export default function RootLayoutPage({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
-    const router = useRouter();
+export default function RootLayoutPage() {
+    const routersEles = useRoutes(routers)!;
+    const navigate = useNavigate();
     const [selectedKeys, setSelectedKeys] = useState<string[]>(['Home']);
     const [collapsed, setCollapsed] = useState(false);
 
     const handleMenuClick = (key: string, path: string) => {
         setSelectedKeys([...selectedKeys, key]);
-        router.push(path);
+        navigate(path);
     };
 
     const items: MenuItem[] = [
@@ -82,21 +80,21 @@ export default function RootLayoutPage({
                                 const newSelectedKeys = [...selectedKeys];
                                 newSelectedKeys.pop();
                                 setSelectedKeys(newSelectedKeys);
-                                router.back();
+                                navigate(-1);
                             }
                         }}
                     />
                 </div>
                 <Menu
                     theme="light"
-                    selectedKeys={[selectedKeys[selectedKeys.length - 1]]}
+                    selectedKeys={selectedKeys}
                     defaultSelectedKeys={['Home']}
                     items={items}
                 />
             </Sider>
             <Layout>
                 <Content style={{ margin: '0 16px' }}>
-                    {children}
+                    {React.cloneElement(routersEles, { key: location.pathname })}
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     Jinhsi Studio ©{new Date().getFullYear()} Created by Chiichen
