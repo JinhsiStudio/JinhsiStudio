@@ -113,9 +113,11 @@ mod tests {
     use url::Url;
     #[tokio::test]
     async fn test_get_gacha_data() {
-        let raw_url = env::var("GACHA_TEST_URL").unwrap();
-        let source = UrlGachaSource::new(Url::parse(&raw_url).unwrap()).unwrap();
-        let r = source.get_gacha_data().await;
-        assert!(r.unwrap().len() > 0);
+        if let Ok(raw_url) = env::var("GACHA_TEST_URL") {
+            let source = UrlGachaSource::new(Url::parse(&raw_url).unwrap()).unwrap();
+            let r = source.get_gacha_data().await;
+            assert!(r.unwrap().len() > 0);
+        }
+        println!("Skip test if GACHA_TEST_URL is not specified")
     }
 }
