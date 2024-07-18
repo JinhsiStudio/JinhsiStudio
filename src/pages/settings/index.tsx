@@ -1,5 +1,5 @@
-import { Button } from "antd";
+import AppSetting from "@/components/setttings/setting-app";
 
 export default function SettingsPage() {
-    return <Button>Setting</Button>
+    return <AppSetting></AppSetting>
 }
