@@ -1,7 +1,7 @@
 {
     "productName": "jinhsi-studio",
     "version": "0.0.0",
-    "identifier": "com.tauri.dev",
+    "identifier": "cn.chiichen.JinhsiStudio",
     "build": {
         "beforeDevCommand": "pnpm dev",
         "devUrl": "http://localhost:5173",

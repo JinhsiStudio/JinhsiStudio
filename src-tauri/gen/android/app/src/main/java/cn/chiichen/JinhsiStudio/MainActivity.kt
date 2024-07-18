@@ -1,3 +1,3 @@
-package com.tauri.dev
+package cn.chiichen.JinhsiStudio
 
 class MainActivity : TauriActivity()

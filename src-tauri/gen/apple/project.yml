@@ -1,6 +1,6 @@
 name: jinhsi-studio
 options:
-  bundleIdPrefix: com.tauri.dev
+  bundleIdPrefix: cn.chiichen.JinhsiStudio
   deploymentTarget:
     iOS: 13.0
 fileGroups: [../../src]
@@ -11,7 +11,7 @@ settingGroups:
   app:
     base:
       PRODUCT_NAME: jinhsi-studio
-      PRODUCT_BUNDLE_IDENTIFIER: com.tauri.dev
+      PRODUCT_BUNDLE_IDENTIFIER: cn.chiichen.JinhsiStudio
       CODE_SIGN_STYLE: Automatic
 targetTemplates:
   app:
