@@ -1,0 +1,52 @@
+name: ci-android(beta) # 
+
+on: ["push","pull_request"]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+          - os: macos-latest
+          - os: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17' # Tauri use gradle  8.4, which is not supported by Java21 in Github Action Image
+      - name: Update Rust Toolchain
+        run: rustup update 
+      - name: Install Rust Target
+        run: rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android 
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Pnpm install
+        run: pnpm install
+      - name: Install Tauri Dependencies (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+      - name: Set environment variables (Unix)
+        if: matrix.os != 'windows-latest'
+        run: echo "NDK_HOME=$ANDROID_NDK_HOME" >> $GITHUB_ENV
+      - name: Set environment variables (Windows)
+        if: matrix.os == 'windows-latest'
+        run: echo "NDK_HOME=$env:ANDROID_NDK_HOME" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Tauri build(Android)
+        run: pnpm tauri android build
