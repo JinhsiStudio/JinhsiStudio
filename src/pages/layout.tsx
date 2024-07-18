@@ -5,6 +5,7 @@ import Sider from "antd/es/layout/Sider";
 import { useNavigate, } from "react-router-dom";
 import { useState } from "react";
 import AppRoutes from "./routers";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -13,7 +14,7 @@ export const RootLayoutPage = () => {
     const navigate = useNavigate();
     const [selectedKeys, setSelectedKeys] = useState(['Home']);
     const [collapsed, setCollapsed] = useState(false);
-
+    const { t } = useTranslation();
     const handleMenuClick = (key: string, path: string) => {
         setSelectedKeys([...selectedKeys, key]);
         navigate(path);
@@ -22,18 +23,18 @@ export const RootLayoutPage = () => {
     const items: MenuItem[] = [
         {
             key: 'Home',
-            label: '首页',
+            label: t('Label-Home'),
             icon: <HomeOutlined />,
             onClick: () => handleMenuClick('Home', "/")
         },
         {
             key: 'tools',
-            label: '工具',
+            label: t('Label-Tools'),
             type: 'group',
             children: [
                 {
                     key: 'Gacha',
-                    label: '唤取分析',
+                    label: t('Label-GachaTracker'),
                     icon: <FileSearchOutlined />,
                     onClick: () => handleMenuClick('Gacha', "/gacha")
                 },
@@ -41,12 +42,12 @@ export const RootLayoutPage = () => {
         },
         {
             key: 'data',
-            label: '数据',
+            label: t('Label-Data'),
             type: 'group',
             children: [
                 {
                     key: 'characterData',
-                    label: '角色数据',
+                    label: t('Label-Data-Character'),
                     icon: <TeamOutlined />,
                     onClick: () => handleMenuClick('characterData', "/data/character")
                 },
@@ -54,12 +55,12 @@ export const RootLayoutPage = () => {
         },
         {
             key: 'profile',
-            label: '个人',
+            label: t('Label-Profile'),
             type: 'group',
             children: [
                 {
                     key: 'Setting',
-                    label: '设置',
+                    label: t('Label-Settings'),
                     icon: <SettingOutlined />,
                     onClick: () => handleMenuClick('Setting', "/settings")
                 },
