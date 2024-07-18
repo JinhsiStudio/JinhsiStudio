@@ -3,7 +3,7 @@ import { Layout, Menu, MenuProps } from "antd";
 import { Content, Footer } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { useNavigate, } from "react-router-dom";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import AppRoutes from "./routers";
 
 
