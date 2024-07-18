@@ -2,18 +2,16 @@ import { FileSearchOutlined, HomeOutlined, LeftOutlined, SettingOutlined, TeamOu
 import { Layout, Menu, MenuProps } from "antd";
 import { Content, Footer } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import { useNavigate, useRoutes } from "react-router-dom";
-import { useState } from "react";
-import { routers } from "./routers";
-import React from "react";
+import { useNavigate, } from "react-router-dom";
+import { ReactNode, useState } from "react";
+import AppRoutes from "./routers";
+
 
 
 type MenuItem = Required<MenuProps>['items'][number];
-
-export default function RootLayoutPage() {
-    const routersEles = useRoutes(routers)!;
+export const RootLayoutPage = () => {
     const navigate = useNavigate();
-    const [selectedKeys, setSelectedKeys] = useState<string[]>(['Home']);
+    const [selectedKeys, setSelectedKeys] = useState(['Home']);
     const [collapsed, setCollapsed] = useState(false);
 
     const handleMenuClick = (key: string, path: string) => {
@@ -87,14 +85,14 @@ export default function RootLayoutPage() {
                 </div>
                 <Menu
                     theme="light"
-                    selectedKeys={selectedKeys}
+                    selectedKeys={[selectedKeys[selectedKeys.length - 1]]}
                     defaultSelectedKeys={['Home']}
                     items={items}
                 />
             </Sider>
             <Layout>
                 <Content style={{ margin: '0 16px' }}>
-                    {React.cloneElement(routersEles, { key: location.pathname })}
+                    <AppRoutes />
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     Jinhsi Studio ©{new Date().getFullYear()} Created by Chiichen
@@ -102,4 +100,4 @@ export default function RootLayoutPage() {
             </Layout>
         </Layout>
     );
-}
+};

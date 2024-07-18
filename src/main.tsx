@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 
 import { BaseErrorBoundary } from "./components/base/base-error-boundary";
 import { BrowserRouter } from "react-router-dom";
-import RootLayoutPage from "./pages/layout";
+import { RootLayoutPage } from "./pages/layout";
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>

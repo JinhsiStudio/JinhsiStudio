@@ -3,8 +3,9 @@ import HomePage from "./home";
 import RouteErrorPage from "../components/base/base-route-error";
 import GachaPage from "./gacha";
 import { BaseErrorBoundary } from "../components/base/base-error-boundary";
+import { useRoutes } from "react-router-dom";
 
-export const routers = [
+const routers = [
     {
         label: "Label-Home",
         path: "/",
@@ -23,3 +24,10 @@ export const routers = [
         <BaseErrorBoundary key={router.label}>{router.element}</BaseErrorBoundary>
     ),
 }))
+
+const AppRoutes = () => {
+    const element = useRoutes(routers);
+    return element;
+};
+
+export default AppRoutes;
