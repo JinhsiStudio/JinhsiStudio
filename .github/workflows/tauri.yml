@@ -35,20 +35,20 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
-          sudo apt install libwebkit2gtk-4.0-dev \
+          sudo apt install libwebkit2gtk-4.1-dev \
             build-essential \
             curl \
             wget \
             file \
+            libxdo-dev \
             libssl-dev \
-            libgtk-3-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev
       - name: Format check
-        run: cargo +nightly fmt -p app
+        run: cargo +nightly fmt -p jinhsi-studio
       - name: Build
-        run: cargo +nightly build -p app --verbose --target ${{matrix.target}}
+        run: cargo +nightly build -p jinhsi-studio --verbose --target ${{matrix.target}}
       - name: Clippy
-        run: cargo +nightly clippy -p app --verbose --target ${{matrix.target}}
+        run: cargo +nightly clippy -p jinhsi-studio --verbose --target ${{matrix.target}}
       - name: Run tests
-        run: cargo +nightly test -p app --verbose --target ${{matrix.target}}
+        run: cargo +nightly test -p jinhsi-studio --verbose --target ${{matrix.target}}
