@@ -1548,11 +1548,13 @@ dependencies = [
 name = "jinhsi-studio"
 version = "0.0.0"
 dependencies = [
+ "jinhsi-core",
  "serde",
  "serde_json",
  "tauri",
  "tauri-build",
  "tauri-plugin-shell",
+ "url",
 ]
 
 [[package]]
