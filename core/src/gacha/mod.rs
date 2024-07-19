@@ -6,7 +6,7 @@ use std::error::Error;
 use ::url::Url;
 use local::LocalGachaSource;
 use num_derive::{FromPrimitive, ToPrimitive};
-use serde::{de, Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 use snafu::Snafu;
 use url::UrlGachaSource;
 

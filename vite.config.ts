@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { internalIpV4 } from "internal-ip";
+import path from "path";
 
-// @ts-expect-error process is a nodejs global
 const mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
 
 // https://vitejs.dev/config/
@@ -27,7 +27,13 @@ export default defineConfig(async () => ({
       : undefined,
     watch: {
       // 3. tell vite to ignore watching `src-tauri`
-      ignored: ["**/src-tauri/**","./core"],
+      ignored: [".//src-tauri/**","./core"],
+    },
+  },
+resolve: {
+    alias: {
+      "@": path.resolve("./src"),
+      "@root": path.resolve("."),
     },
   },
 }));
