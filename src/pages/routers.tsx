@@ -14,7 +14,7 @@ const routers = [
         errorElement: <RouteErrorPage></RouteErrorPage>
     },
     {
-        label: "Label-Home",
+        label: "Label-GachaTracker",
         path: "/gacha",
         element: <GachaPage></GachaPage>,
         errorElement: <RouteErrorPage></RouteErrorPage >

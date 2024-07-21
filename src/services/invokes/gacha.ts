@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
 
-export async function getGachaLog() {
-  return invoke<IGachaLog>("get_gachalog");
+export async function getGachaLogFromUrl(url:string) {
+  return invoke<GachaLog[]>("get_gachalog_from_url",{url});
 }

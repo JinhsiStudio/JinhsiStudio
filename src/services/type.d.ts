@@ -15,7 +15,7 @@ enum Convene {
     BeginnerGiveBackSelected = 7, //新手自选唤取(感恩回馈) Beginner's Choice Convene（Giveback Custom Convene)
 }
 
-interface IGachaLog{
+interface    IGachaLog{
     convene: Convene,
     items:IGachaItem[],
 }
