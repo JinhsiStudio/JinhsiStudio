@@ -4,15 +4,16 @@ import { Input, Button, Row, Col, message } from 'antd';
 import { getGachaLogFromUrl } from '@/services/invokes/gacha';
 import GachaCard from '@/components/gacha/gacha-card';
 import { GachaLog } from '@/models/gacha/gacha-log';
+import { useTranslation } from 'react-i18next';
 
 const fetcher = async (url: string): Promise<GachaLog[] | void> => {
     const response = await getGachaLogFromUrl(url);
     return response;
 };
-const GachaPage: React.FC = () => {
+export default function GachaPage() {
     const [url, setUrl] = useState<string>('');
     const { data, error, mutate } = useSWR(url, fetcher, { revalidateOnFocus: false });
-
+    const { t } = useTranslation()
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUrl(e.target.value);
     };
@@ -21,14 +22,14 @@ const GachaPage: React.FC = () => {
         if (url) {
             mutate();
         } else {
-            message.warning('请输入有效的URL');
+            message.warning(t('Message-Please-Input-Valid-Gacha-Url'));
         }
     };
 
     return (
         <div>
             <Input
-                placeholder="请输入URL"
+                placeholder={t('Message-Please-Input-Gacha-Url')}
                 value={url}
                 onChange={handleInputChange}
                 onPressEnter={handleFetchData}
@@ -52,5 +53,3 @@ const GachaPage: React.FC = () => {
         </div>
     );
 };
-
-export default GachaPage;

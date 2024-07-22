@@ -7,5 +7,7 @@
     "Label-Profile": "Profile",
     "Label-Settings": "Settings",
     "App-Settings": "App Settings",
-    "Language": "Language"
+    "Language": "Language",
+    "Message-Please-Input-Valid-Gacha-Url": "Please input valid Gacha Log URL",
+    "Message-Please-Input-Gacha-Url": "Please input Gacha Log URL"
 }
