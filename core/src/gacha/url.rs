@@ -65,7 +65,7 @@ impl GachaService for UrlGachaSource {
         let mut headers = reqwest::header::HeaderMap::new();
         headers.insert("Content-Type", "application/json".parse().unwrap());
         let mut res: Vec<GachaLog> = Vec::new();
-        for convene_type in 1..6 {
+        for convene_type in 1..8 {
             let body = json!({
                 "playerId": player_id,
                 "cardPoolId": convene_id,
@@ -120,7 +120,7 @@ mod tests {
             }
             let source = UrlGachaSource::new(Url::parse(&raw_url).unwrap()).unwrap();
             let r = source.get_gacha_data().await;
-            assert!(r.unwrap().len() > 0);
+            assert_eq!(r.unwrap().len(), 7);
         }
         println!("Skip test if GACHA_TEST_URL is not specified")
     }
