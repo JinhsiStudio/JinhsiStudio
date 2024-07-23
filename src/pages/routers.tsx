@@ -5,6 +5,7 @@ import GachaPage from "./gacha";
 import { BaseErrorBoundary } from "../components/base/base-error-boundary";
 import { useRoutes } from "react-router-dom";
 import SettingsPage from "./settings";
+import CharacterDataPage from "./data/character";
 
 const routers = [
     {
@@ -23,6 +24,12 @@ const routers = [
         label: "Label-Settings",
         path: "/settings",
         element: <SettingsPage></SettingsPage>,
+        errorElement: <RouteErrorPage></RouteErrorPage >
+    },
+    {
+        label: "Label-Data-Character",
+        path: "/data/character",
+        element: <CharacterDataPage></CharacterDataPage>,
         errorElement: <RouteErrorPage></RouteErrorPage >
     }
 ].map((router) => ({
