@@ -72,19 +72,25 @@ export default function GachaCard(props: GachaCardProps) {
             <Statistic title="距离上个四星" value={lastFourStar} />
             <Tabs defaultActiveKey="1">
                 <TabPane tab="统计" key="1">
-                    <Statistic title="五星平均抽数" value={averageFiveStar} />
-                    <Statistic title="四星平均抽数" value={averageFourStar} />
-                    <div className="gacha-avatar-container">
-                        {fiveStarItems.map((item, index) => (
-                            <GachaAvatarCard key={index} number={fiveStarDistances[index]} name={item.name} resourceId={item.id} />
-                        ))}
+                    <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                        <Statistic title="五星平均抽数" value={averageFiveStar} />
+                        <Statistic title="四星平均抽数" value={averageFourStar} />
+                        <div className="gacha-avatar-container">
+                            {fiveStarItems.map((item, index) => (
+                                <GachaAvatarCard key={index} number={fiveStarDistances[index]} name={item.name} resourceId={item.id} />
+                            ))}
+                        </div>
                     </div>
                 </TabPane>
                 <TabPane tab="比例" key="2">
-                    {/* 比例内容 */}
+                    <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                        {/* 比例内容 */}
+                    </div>
                 </TabPane>
                 <TabPane tab="预测" key="3">
-                    {/* 预测内容 */}
+                    <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                        {/* 预测内容 */}
+                    </div>
                 </TabPane>
             </Tabs>
         </Card>
