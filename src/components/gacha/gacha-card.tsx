@@ -16,16 +16,18 @@ const calculateDistance = (items: GachaItem[], rarity: number): number[] => {
     let lastIndex = -1;
     for (let i = 0; i < items.length; i++) {
         if (items[i].rarity === rarity) {
-            if (lastIndex === -1) {
-                distances.push(i);
-            } else {
+            if (lastIndex !== -1) {
                 distances.push(i - lastIndex);
             }
             lastIndex = i;
         }
     }
+    if (lastIndex !== -1) {
+        distances.push(items.length - lastIndex);
+    }
     return distances;
 };
+
 
 const getConveneName = (convene: Convene) => {
     switch (convene) {
@@ -54,8 +56,8 @@ export default function GachaCard(props: GachaCardProps) {
     const fiveStarDistances = calculateDistance(items, 5);
     const fourStarDistances = calculateDistance(items, 4);
 
-    const lastFiveStar = fiveStarDistances.length > 0 ? fiveStarDistances[fiveStarDistances.length - 1] : items.length;
-    const lastFourStar = fourStarDistances.length > 0 ? fourStarDistances[fourStarDistances.length - 1] : items.length;
+    const lastFiveStar = fiveStarDistances.length > 0 ? fiveStarDistances[0] : items.length;
+    const lastFourStar = fourStarDistances.length > 0 ? fourStarDistances[0] : items.length;
 
     const fiveStarItems = items.filter(item => item.rarity === 5);
     const fourStarItems = items.filter(item => item.rarity === 4);
