@@ -1,7 +1,9 @@
 import { Convene } from '@/models/gacha/convene';
 import { GachaItem } from '@/models/gacha/gacha-item';
 import { GachaLog } from '@/models/gacha/gacha-log';
-import { Card, List, Typography, Tabs, Statistic, Row, Col } from 'antd';
+import { Card, Typography, Tabs, Statistic } from 'antd';
+import GachaAvatarCard from './gacha-avatar-card';
+import './gacha-card.css';
 
 const { TabPane } = Tabs;
 const { Title } = Typography;
@@ -46,6 +48,7 @@ const getConveneName = (convene: Convene) => {
             return convene;
     }
 };
+
 export default function GachaCard(props: GachaCardProps) {
     const { convene, items } = props.data;
 
@@ -70,28 +73,11 @@ export default function GachaCard(props: GachaCardProps) {
                 <TabPane tab="统计" key="1">
                     <Statistic title="五星平均抽数" value={averageFiveStar} />
                     <Statistic title="四星平均抽数" value={averageFourStar} />
-                    <List
-                        grid={{ gutter: 16, column: 4 }}
-                        dataSource={fiveStarItems}
-                        renderItem={(item, index) => (
-                            <List.Item>
-                                <Row style={{ width: '100%' }}>
-                                    <Col span={24}>
-                                        <Title level={4}>{item.name}</Title>
-                                    </Col>
-                                    <Col span={24}>
-                                        <p>稀有度: {item.rarity} 星</p>
-                                    </Col>
-                                    <Col span={24}>
-                                        <p>日期: {item.date}</p>
-                                    </Col>
-                                    <Col span={24}>
-                                        <p>距离上一个五星: {fiveStarDistances[index]}</p>
-                                    </Col>
-                                </Row>
-                            </List.Item>
-                        )}
-                    />
+                    <div className="gacha-avatar-container">
+                        {fiveStarItems.map((item, index) => (
+                            <GachaAvatarCard key={index} number={fiveStarDistances[index]} name={item.name} resourceId={item.id} />
+                        ))}
+                    </div>
                 </TabPane>
                 <TabPane tab="比例" key="2">
                     {/* 比例内容 */}
@@ -103,4 +89,3 @@ export default function GachaCard(props: GachaCardProps) {
         </Card>
     );
 }
-
