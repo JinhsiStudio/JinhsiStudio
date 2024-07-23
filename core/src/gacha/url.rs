@@ -114,6 +114,10 @@ mod tests {
     #[tokio::test]
     async fn test_get_gacha_data() {
         if let Ok(raw_url) = env::var("GACHA_TEST_URL") {
+            if raw_url.is_empty() {
+                println!("Skip test if GACHA_TEST_URL is empty");
+                return;
+            }
             let source = UrlGachaSource::new(Url::parse(&raw_url).unwrap()).unwrap();
             let r = source.get_gacha_data().await;
             assert!(r.unwrap().len() > 0);
