@@ -1,12 +1,11 @@
 import { Convene } from '@/models/gacha/convene';
 import { GachaItem } from '@/models/gacha/gacha-item';
 import { GachaLog } from '@/models/gacha/gacha-log';
-import { Card, Typography, Tabs, Statistic } from 'antd';
+import { Card, Tabs, Statistic } from 'antd';
 import GachaAvatarCard from './gacha-avatar-card';
 import './gacha-card.css';
 
 const { TabPane } = Tabs;
-const { Title } = Typography;
 
 interface GachaCardProps {
     data: GachaLog,
