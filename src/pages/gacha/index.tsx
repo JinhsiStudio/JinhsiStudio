@@ -32,13 +32,17 @@ export default function GachaPage() {
         };
     }, []);
 
-    const handleFetchData = () => {
+    const handleFetchDataFromUrl = () => {
         if (url) {
             mutate();
         } else {
             message.warning(t('Message-Please-Input-Valid-Gacha-Url'));
         }
     };
+
+    const handleFetchDataFromLocal = () => {
+
+    }
 
     const filterDataByConvene = (conveneTypes: number[]) => {
         return data?.filter(log => conveneTypes.includes(log.convene)) || [];
@@ -63,10 +67,10 @@ export default function GachaPage() {
                 placeholder={t('Message-Please-Input-Gacha-Url')}
                 value={url}
                 onChange={handleInputChange}
-                onPressEnter={handleFetchData}
+                onPressEnter={handleFetchDataFromUrl}
                 style={{ width: '80%', marginRight: 8 }}
             />
-            <Button type="primary" onClick={handleFetchData}>
+            <Button type="primary" onClick={handleFetchDataFromUrl}>
                 获取数据
             </Button>
             {error && <div>获取数据时出错: {error.message}</div>}

@@ -1478,6 +1478,7 @@ name = "jinhsi-studio"
 version = "0.0.0"
 dependencies = [
  "jinhsi-core",
+ "log",
  "serde",
  "serde_json",
  "tauri",
