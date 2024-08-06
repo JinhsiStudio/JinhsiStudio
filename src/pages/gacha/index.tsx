@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import useSWR from 'swr';
-import { Input, Button, Row, Col, message, Tabs } from 'antd';
+import { Input, Button, Row, Col, message, Tabs, Spin } from 'antd';
 import { getGachaLogFromUrl } from '@/services/invokes/gacha';
 import GachaCard from '@/components/gacha/gacha-card';
 import { GachaLog } from '@/models/gacha/gacha-log';
-import { useTranslation } from 'react-i18next';
+import { LoadingOutlined } from '@ant-design/icons';
+import i18next from 'i18next';
 
 const { TabPane } = Tabs;
 
@@ -15,8 +16,8 @@ const fetcher = async (url: string): Promise<GachaLog[] | void> => {
 
 export default function GachaPage() {
     const [url, setUrl] = useState<string>('');
-    const { data, error, mutate } = useSWR(url, fetcher, { revalidateOnFocus: false });
-    const { t } = useTranslation();
+    const { data, error, isLoading, mutate } = useSWR(url, fetcher, { revalidateOnFocus: false });
+    const t = i18next.t;
     const [activeTab, setActiveTab] = useState<string>('1');
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,9 +41,9 @@ export default function GachaPage() {
         }
     };
 
-    const handleFetchDataFromLocal = () => {
+    // const handleFetchDataFromLocal = () => {
 
-    }
+    // }
 
     const filterDataByConvene = (conveneTypes: number[]) => {
         return data?.filter(log => conveneTypes.includes(log.convene)) || [];
@@ -60,6 +61,15 @@ export default function GachaPage() {
             </Row>
         );
     };
+    const tabBarButton = <Button type="primary" onClick={handleFetchDataFromUrl}>
+        {t("Label-Fetch-Data")}
+    </Button>;
+
+    const errorMessge = (errorMessage: any) => {
+        console.error("Failed to fetch gacha data with error: ", errorMessage);
+        message.error(t("message:Message-Failed-To-Load-Gacha-Data"))
+        return <div></div>
+    }
 
     return (
         <div>
@@ -70,18 +80,16 @@ export default function GachaPage() {
                 onPressEnter={handleFetchDataFromUrl}
                 style={{ width: '80%', marginRight: 8 }}
             />
-            <Button type="primary" onClick={handleFetchDataFromUrl}>
-                获取数据
-            </Button>
-            {error && <div>获取数据时出错: {error.message}</div>}
-            <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }}>
-                <TabPane tab="限定" key="1">
+            {error && errorMessge(error.message)}
+            {isLoading && <Spin indicator={<LoadingOutlined spin />} />}
+            <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }} tabBarExtraContent={tabBarButton}>
+                <TabPane tab={t("Label-Featured")} key="1">
                     {renderCards(filterDataByConvene([1, 2]))}
                 </TabPane>
-                <TabPane tab="常驻" key="2">
+                <TabPane tab={t("Label-Permanent")} key="2">
                     {renderCards(filterDataByConvene([3, 4]))}
                 </TabPane>
-                <TabPane tab="新手" key="3">
+                <TabPane tab={t("Label-Beginner")} key="3">
                     {renderCards(filterDataByConvene([5, 6, 7]))}
                 </TabPane>
             </Tabs>

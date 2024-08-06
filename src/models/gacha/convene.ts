@@ -1,6 +1,6 @@
 
 export enum Convene {
-    EventCharacter = 1,        //角色活动唤取 Featured Resonator Convene
+    EventCharacter = 1,           //角色活动唤取 Featured Resonator Convene
     EventWeapon = 2,              //武器活动唤取 Featured Weapon Convene
     PermanentCharacter = 3,       // 角色常驻唤取 Standard Resonator Convene
     PermanentWeapon = 4,          //武器常驻唤取 Standard Weapon Convene
