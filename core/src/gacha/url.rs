@@ -28,8 +28,11 @@ pub struct UrlGachaSource {
 
 impl UrlGachaSource {
     pub fn new(raw_url: Url) -> Result<Self, GachaError> {
+        let fragment = raw_url.fragment().ok_or(GachaError::InvalidUrl {
+            url: raw_url.to_string(),
+        })?;
         let normalized_url = Url::parse(
-            &("https://example.com".to_owned() + raw_url.fragment().unwrap()), // The Url looks like https://aki-gm-resources.aki-game.com/aki/gacha/index.html#/record?svr_id=xxxxxxx, which hides the query behind fragment. So we need to mock a fake base domain to make it works
+            &("https://example.com".to_owned() + fragment), // The Url looks like https://aki-gm-resources.aki-game.com/aki/gacha/index.html#/record?svr_id=xxxxxxx, which hides the query behind fragment. So we need to mock a fake base domain to make it works
         )
         .map_err(|_| GachaError::InvalidUrl {
             url: raw_url.to_string(),
