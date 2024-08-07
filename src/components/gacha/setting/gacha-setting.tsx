@@ -5,10 +5,9 @@ import { useTranslation } from "react-i18next"
 export default function GachaSetting() {
     const { t } = useTranslation()
 
-    return <SettingList title={t("App-Settings")}>
-
+    return <SettingList title={t("Gacha-Settings")}>
         <SettingItem label={t("Label-Gacha-Url")}>
-            <Input></Input>
         </SettingItem>
+        <Input />
     </SettingList>
 }
