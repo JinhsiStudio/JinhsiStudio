@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import { useRequest } from 'ahooks';
 import { Input, Button, Row, Col, message, Tabs, Spin, Flex } from 'antd';
 import { getGachaLogFromUrl } from '@/services/invokes/gacha';
 import GachaCard from '@/components/gacha/gacha-card';
@@ -18,7 +18,10 @@ const fetcher = async (url: string): Promise<GachaLog[] | void> => {
 export default function GachaPage() {
     const navigate = useNavigate();
     const [url, setUrl] = useState<string>('');
-    const { data, error, isLoading, mutate } = useSWR(url, fetcher, { revalidateOnFocus: false });
+    const { data, error, loading, run } = useRequest(() => fetcher(url), {
+        manual: true,
+        refreshOnWindowFocus:false,
+    });
     const t = i18next.t;
     const [activeTab, setActiveTab] = useState<string>('1');
 
@@ -37,15 +40,11 @@ export default function GachaPage() {
 
     const handleFetchDataFromUrl = () => {
         if (url) {
-            mutate();
+            run();
         } else {
             message.warning(t('Message-Please-Input-Valid-Gacha-Url'));
         }
     };
-
-    // const handleFetchDataFromLocal = () => {
-
-    // }
 
     const filterDataByConvene = (conveneTypes: number[]) => {
         return data?.filter(log => conveneTypes.includes(log.convene)) || [];
@@ -63,6 +62,7 @@ export default function GachaPage() {
             </Row>
         );
     };
+
     const tabBarButtonWithSetting = <Flex justify="space-between" gap="small">
         <Button type="primary" onClick={handleFetchDataFromUrl}>
             {t("Label-Fetch-Data")}
@@ -70,13 +70,13 @@ export default function GachaPage() {
         <Button type="primary" onClick={() => navigate("/gacha/setting")}>
             {t("Label-Gacha-Setting")}
         </Button>
+    </Flex>;
 
-    </Flex>
     const errorMessge = (errorMessage: any) => {
         console.error("Failed to fetch gacha data with error: ", errorMessage);
         message.error(t("message:Message-Failed-To-Load-Gacha-Data"))
-        return <div></div>
-    }
+        return <div></div>;
+    };
 
     return (
         <div>
@@ -88,7 +88,7 @@ export default function GachaPage() {
                 style={{ width: '80%', marginRight: 8 }}
             />
             {error && errorMessge(error.message)}
-            {isLoading && <Spin indicator={<LoadingOutlined spin />} />}
+            {loading && <Spin indicator={<LoadingOutlined spin />} />}
             <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }} tabBarExtraContent={tabBarButtonWithSetting}>
                 <TabPane tab={t("Label-Featured")} key="1">
                     {renderCards(filterDataByConvene([1, 2]))}
