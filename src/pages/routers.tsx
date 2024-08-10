@@ -6,7 +6,6 @@ import { BaseErrorBoundary } from "../components/base/base-error-boundary";
 import { useRoutes } from "react-router-dom";
 import SettingsPage from "./settings";
 import CharacterDataPage from "./data/character";
-import GachaSettingPage from "./gacha/setting";
 
 const routers = [
     {
@@ -19,12 +18,6 @@ const routers = [
         label: "Label-GachaTracker",
         path: "/gacha",
         element: <GachaPage></GachaPage>,
-        errorElement: <RouteErrorPage></RouteErrorPage >
-    },
-    {
-        label: "Label-GachaSetting",
-        path: "/gacha/Setting",
-        element: <GachaSettingPage></GachaSettingPage>,
         errorElement: <RouteErrorPage></RouteErrorPage >
     },
     {
