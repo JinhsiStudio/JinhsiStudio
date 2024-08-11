@@ -4,11 +4,11 @@ import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting"
 import { GachaSetting } from "@/models/gacha/gacha-setting"
 import { useLockFn } from "ahooks"
 import { Input, List, message, Modal, Typography } from "antd"
-import i18next from "i18next"
 import { forwardRef, useImperativeHandle, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
-    const t = i18next.t;
+    const {t} = useTranslation();
     const [isOpen, setOpen] = useState<boolean>(false);
     useImperativeHandle(ref, () => ({
         open: () => {
@@ -21,11 +21,11 @@ export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
     const [gachaUrl, setGachaUrl] = useState(gachaSetting?.url || "");
     const onSave = useLockFn(async () => {
         try {
-            message.success(t("message:Message-Modify-Gacha-Url-Success"), 1)
+            message.success(t("Message-Modify-Gacha-Url-Success",{ns:'message'}), 1)
             await setGachaSetting(new GachaSetting(gachaUrl))
             setOpen(false);
         } catch (err: any) {
-            message.error(t("message:Message-Modify-Gacha-Url-Fail"), 3);
+            message.error(t("Message-Modify-Gacha-Url-Fail", { ns: 'message' }), 3);
             console.error("Failed to update gacha url", err.toString())
         }
     });

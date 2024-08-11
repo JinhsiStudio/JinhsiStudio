@@ -26,7 +26,7 @@ export default function useStorage<T>(key: string, defaultValue: T): {
 
     };
 
-    const { data: storedValue, run } = useRequest(fetchValue, {
+    const { data: storedValue,mutate, run } = useRequest(fetchValue, {
         cacheKey: key
     });
 
@@ -35,8 +35,10 @@ export default function useStorage<T>(key: string, defaultValue: T): {
     }, [key]);
 
     const setValue: (value: T) => Promise<void> = async (value) => {
+        console.log("setting",value);
         await store.set(key, value);
         await store.save();
+        mutate(value);
     };
 
     return {

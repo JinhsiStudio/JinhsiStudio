@@ -3,23 +3,30 @@ import { Layout, Menu, MenuProps } from "antd";
 import { Content, Footer } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { useNavigate, } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppRoutes from "./routers";
+import { useAppSetting } from "@/hooks/storage/setting/use-app-setting";
 import { useTranslation } from "react-i18next";
 
-
-
 type MenuItem = Required<MenuProps>['items'][number];
+
 export const RootLayoutPage = () => {
     const navigate = useNavigate();
     const [selectedKeys, setSelectedKeys] = useState(['Home']);
     const [collapsed, setCollapsed] = useState(false);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const { storedValue: appSetting } = useAppSetting();
     const handleMenuClick = (key: string, path: string) => {
         setSelectedKeys([...selectedKeys, key]);
         navigate(path);
     };
-
+    useEffect(() => {
+        console.log(appSetting)
+        if (appSetting?.language) {
+            console.log("setting language");
+            i18n.changeLanguage(appSetting.language.identifier);
+        }
+    }, [appSetting]);
     const items: MenuItem[] = [
         {
             key: 'Home',

@@ -5,9 +5,9 @@ import { getGachaLogFromUrl } from '@/services/invokes/gacha';
 import GachaCard from '@/components/gacha/gacha-card';
 import { GachaLog } from '@/models/gacha/gacha-log';
 import { LoadingOutlined } from '@ant-design/icons';
-import i18next from 'i18next';
 import { GachaSettingModal } from '@/components/gacha/setting/gacha-setting';
 import { DialogRef } from '@/components/base/base-dialog';
+import { useTranslation } from 'react-i18next';
 
 const { TabPane } = Tabs;
 
@@ -26,7 +26,7 @@ export default function GachaPage() {
         };
     }, []);
 
-    const t = i18next.t;
+    const { t } = useTranslation();
     const [url, _setUrl] = useState<string>('');
     const { data, error, loading, run } = useRequest(() => fetcher(url), {
         manual: true,
@@ -76,7 +76,7 @@ export default function GachaPage() {
 
     const errorMessge = (errorMessage: any) => {
         console.error("Failed to fetch gacha data with error: ", errorMessage);
-        message.error(t("message:Message-Failed-To-Load-Gacha-Data"))
+        message.error(t("Message-Failed-To-Load-Gacha-Data", { ns: 'message' }))
         return <div></div>;
     };
 
