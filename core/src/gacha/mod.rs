@@ -4,6 +4,7 @@ pub mod url;
 use std::error::Error;
 
 use ::url::Url;
+use chrono::NaiveDateTime;
 use local::LocalGachaSource;
 use num_derive::{FromPrimitive, ToPrimitive};
 use serde::{Deserialize, Serialize};
@@ -33,8 +34,8 @@ pub struct GachaLogItem {
     #[serde(alias = "qualityLevel")]
     rarity: usize,
     name: String,
-    #[serde(alias = "time")]
-    date: String,
+    #[serde(alias = "time", with = "date_format")]
+    date: NaiveDateTime,
 }
 /// Convene enum which is expected to match the Wuthering Waves' official backend server protocol
 ///
@@ -71,5 +72,80 @@ impl GachaService for GachaLogSource {
             GachaLogSource::Url(source) => source.get_gacha_data().await,
             GachaLogSource::Local(source) => source.get_gacha_data().await,
         }
+    }
+}
+
+/// To deserialize DateTime data from request
+/// ## Reference
+/// [custom-date-format](https://serde.rs/custom-date-format.html)
+mod date_format {
+    use chrono::NaiveDateTime;
+    use serde::{self, Deserialize, Deserializer, Serializer};
+
+    const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
+
+    // The signature of a serialize_with function must follow the pattern:
+    //
+    //    fn serialize<S>(&T, S) -> Result<S::Ok, S::Error>
+    //    where
+    //        S: Serializer
+    //
+    // although it may also be generic over the input types T.
+    pub fn serialize<S>(date: &NaiveDateTime, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let s = format!("{}", date.format(FORMAT));
+        serializer.serialize_str(&s)
+    }
+
+    // The signature of a deserialize_with function must follow the pattern:
+    //
+    //    fn deserialize<'de, D>(D) -> Result<T, D::Error>
+    //    where
+    //        D: Deserializer<'de>
+    //
+    // although it may also be generic over the output types T.
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<NaiveDateTime, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        let dt = NaiveDateTime::parse_from_str(&s, FORMAT).map_err(serde::de::Error::custom)?;
+        Ok(dt)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::gacha::date_format;
+    use chrono::{NaiveDate, NaiveDateTime};
+    use serde::{Deserialize, Serialize};
+
+    #[derive(Serialize, Deserialize)]
+    struct TimeStruct {
+        #[serde(alias = "time", with = "date_format")]
+        date: NaiveDateTime,
+    }
+    #[test]
+    fn test_deserialize_chrono() {
+        let case1 = "2024-01-01 15:35:00";
+        let expected_result1: NaiveDateTime = NaiveDate::from_ymd_opt(2024, 1, 1)
+            .unwrap()
+            .and_hms_opt(15, 35, 00)
+            .unwrap();
+        let result1 = NaiveDateTime::parse_from_str(&case1, "%Y-%m-%d %H:%M:%S").unwrap();
+        assert_eq!(expected_result1, result1)
+    }
+
+    #[test]
+    fn test_deserialize_json_chrono() {
+        let case1 = r#"{"time":"2024-01-01 15:35:00"}"#;
+        let expected_result1: NaiveDateTime = NaiveDate::from_ymd_opt(2024, 1, 1)
+            .unwrap()
+            .and_hms_opt(15, 35, 00)
+            .unwrap();
+        let result1: TimeStruct = serde_json::from_str(case1).unwrap();
+        assert_eq!(expected_result1, result1.date)
     }
 }
