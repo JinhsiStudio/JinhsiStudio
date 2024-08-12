@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import AppRoutes from "./routers";
 import { useAppSetting } from "@/hooks/storage/setting/use-app-setting";
 import { useTranslation } from "react-i18next";
-
 type MenuItem = Required<MenuProps>['items'][number];
 
 export const RootLayoutPage = () => {
@@ -78,9 +77,9 @@ export const RootLayoutPage = () => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} theme="light">
-                <div style={{ padding: '8px', textAlign: 'center', borderBottom: '1px solid #f0f0f0' }}>
+                <div style={{ padding: '0.5rem', textAlign: 'center', borderBottom: '0.1rem solid #f0f0f0' }}>
                     <LeftOutlined
-                        style={{ fontSize: '16px', cursor: 'pointer' }}
+                        style={{ fontSize: '1rem', cursor: 'pointer' }}
                         onClick={() => {
                             if (selectedKeys.length > 1) {
                                 const newSelectedKeys = [...selectedKeys];
@@ -99,10 +98,10 @@ export const RootLayoutPage = () => {
                 />
             </Sider>
             <Layout>
-                <Content style={{ margin: '0 16px' }}>
+                <Content style={{ margin: '2%', height: '90%' }}>
                     <AppRoutes />
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>
+                <Footer style={{ height: '12%', textAlign: 'center' }}>
                     Jinhsi Studio ©{new Date().getFullYear()} Created by Chiichen
                 </Footer>
             </Layout>

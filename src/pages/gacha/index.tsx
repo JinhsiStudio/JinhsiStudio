@@ -18,14 +18,14 @@ const fetcher = async (url: string): Promise<GachaLog[] | void> => {
 };
 
 export default function GachaPage() {
-    useEffect(() => {
-        // 禁止页面滚动
-        document.body.style.overflow = 'hidden';
-        return () => {
-            // 恢复页面滚动
-            document.body.style.overflow = 'auto';
-        };
-    }, []);
+    // useEffect(() => {
+    //     // 禁止页面滚动
+    //     document.body.style.overflow = 'hidden';
+    //     return () => {
+    //         // 恢复页面滚动
+    //         document.body.style.overflow = 'auto';
+    //     };
+    // }, []);
 
     const { t } = useTranslation();
     const { storedValue: gachaSetting } = useGachaSetting();
@@ -84,7 +84,7 @@ export default function GachaPage() {
         <div>
             <GachaSettingModal ref={settingRef}></GachaSettingModal>
             {error && errorMessge(error.message)}
-            <Spin spinning={loading} size='large' indicator={<LoadingOutlined /> }>
+            <Spin spinning={loading} size='large' indicator={<LoadingOutlined />}>
                 <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }} tabBarExtraContent={tabBarButtonWithSetting}>
                     <TabPane tab={t("Label-Featured")} key="1">
                         {renderCards(filterDataByConvene([1, 2]))}
@@ -97,8 +97,6 @@ export default function GachaPage() {
                     </TabPane>
                 </Tabs>
             </Spin>
-            {/* {loading && <Spin indicator={<LoadingOutlined spin />} />} */}
-
         </div>
     );
 }

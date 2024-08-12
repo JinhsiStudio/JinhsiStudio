@@ -19,7 +19,7 @@ const SettingItem: React.FC<ItemProps> = (props) => {
     const clickable = !!onClick;
 
     const primary = (
-        <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', fontSize: '1rem' }}>
             <span>{label}</span>
             {extra && <div style={{ marginLeft: 'auto' }}>{extra}</div>}
         </div>
@@ -67,7 +67,7 @@ interface SettingListProps {
 const SettingList: React.FC<SettingListProps> = (props) => (
     <List
         header={
-            <div style={{ fontSize: '16px', fontWeight: '700' }}>{props.title}</div>
+            <div style={{ fontSize: '1rem', fontWeight: '700' }}>{props.title}</div>
         }
     >
         {props.children}
