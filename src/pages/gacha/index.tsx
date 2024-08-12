@@ -8,6 +8,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { GachaSettingModal } from '@/components/gacha/setting/gacha-setting';
 import { DialogRef } from '@/components/base/base-dialog';
 import { useTranslation } from 'react-i18next';
+import { useGachaSetting } from '@/hooks/storage/gacha/use-gacha-setting';
 
 const { TabPane } = Tabs;
 
@@ -27,20 +28,19 @@ export default function GachaPage() {
     }, []);
 
     const { t } = useTranslation();
-    const [url, _setUrl] = useState<string>('');
+    const { storedValue: gachaSetting } = useGachaSetting();
+    const [url, setUrl] = useState(gachaSetting?.url || '');
     const { data, error, loading, run } = useRequest(() => fetcher(url), {
-        manual: true,
         refreshOnWindowFocus: false,
     });
     const [activeTab, setActiveTab] = useState<string>('1');
 
     const settingRef = useRef<DialogRef>(null);
 
-    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     setUrl(e.target.value);
-    // };
-
     const handleFetchDataFromUrl = () => {
+        if (gachaSetting && gachaSetting.url != url) {
+            setUrl(gachaSetting.url);
+        }
         if (url) {
             run();
         } else {
@@ -84,18 +84,21 @@ export default function GachaPage() {
         <div>
             <GachaSettingModal ref={settingRef}></GachaSettingModal>
             {error && errorMessge(error.message)}
-            {loading && <Spin indicator={<LoadingOutlined spin />} />}
-            <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }} tabBarExtraContent={tabBarButtonWithSetting}>
-                <TabPane tab={t("Label-Featured")} key="1">
-                    {renderCards(filterDataByConvene([1, 2]))}
-                </TabPane>
-                <TabPane tab={t("Label-Permanent")} key="2">
-                    {renderCards(filterDataByConvene([3, 4]))}
-                </TabPane>
-                <TabPane tab={t("Label-Beginner")} key="3">
-                    {renderCards(filterDataByConvene([5, 6, 7]))}
-                </TabPane>
-            </Tabs>
+            <Spin spinning={loading} size='large' indicator={<LoadingOutlined /> }>
+                <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }} tabBarExtraContent={tabBarButtonWithSetting}>
+                    <TabPane tab={t("Label-Featured")} key="1">
+                        {renderCards(filterDataByConvene([1, 2]))}
+                    </TabPane>
+                    <TabPane tab={t("Label-Permanent")} key="2">
+                        {renderCards(filterDataByConvene([3, 4]))}
+                    </TabPane>
+                    <TabPane tab={t("Label-Beginner")} key="3">
+                        {renderCards(filterDataByConvene([5, 6, 7]))}
+                    </TabPane>
+                </Tabs>
+            </Spin>
+            {/* {loading && <Spin indicator={<LoadingOutlined spin />} />} */}
+
         </div>
     );
 }
