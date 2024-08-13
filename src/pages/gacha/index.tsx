@@ -19,8 +19,7 @@ const fetcher = async (url: string): Promise<GachaLog[] | void> => {
 export default function GachaPage() {
     const { t } = useTranslation();
     const { storedValue: gachaSetting } = useGachaSetting();
-    const [url, setUrl] = useState(gachaSetting?.url || '');
-    const { data, loading, run } = useRequest(() => fetcher(url), {
+    const { data, loading, run } = useRequest(() => fetcher(gachaSetting?.url || ''), {
         refreshOnWindowFocus: false,
         onError: (e) => throwErrorMessge(e)
     });
@@ -28,10 +27,7 @@ export default function GachaPage() {
     const settingRef = useRef<DialogRef>(null);
 
     const handleFetchDataFromUrl = () => {
-        if (gachaSetting && gachaSetting.url != url) {
-            setUrl(gachaSetting.url);
-        }
-        if (url) {
+        if (gachaSetting?.url) {
             run();
         } else {
             message.warning(t('Message-Please-Input-Valid-Gacha-Url'));
