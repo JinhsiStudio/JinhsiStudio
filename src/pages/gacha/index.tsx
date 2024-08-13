@@ -9,8 +9,7 @@ import { GachaSettingModal } from '@/components/gacha/setting/gacha-setting';
 import { DialogRef } from '@/components/base/base-dialog';
 import { useTranslation } from 'react-i18next';
 import { useGachaSetting } from '@/hooks/storage/gacha/use-gacha-setting';
-
-const { TabPane } = Tabs;
+import type { TabsProps } from 'antd';
 
 const fetcher = async (url: string): Promise<GachaLog[] | void> => {
     const response = await getGachaLogFromUrl(url);
@@ -56,6 +55,11 @@ export default function GachaPage() {
         );
     };
 
+    const throwErrorMessge = (error: Error) => {
+        console.error("Failed to fetch gacha data with error: ", error);
+        message.error(t("Message-Failed-To-Load-Gacha-Data", { ns: 'message' }))
+    };
+
     const tabBarButtonWithSetting = <Flex justify="space-between" gap="small">
         <Button type="primary" onClick={handleFetchDataFromUrl}>
             {t("Label-Fetch-Data")}
@@ -65,26 +69,31 @@ export default function GachaPage() {
         </Button>
     </Flex>;
 
-    const throwErrorMessge = (error: Error) => {
-        console.error("Failed to fetch gacha data with error: ", error);
-        message.error(t("Message-Failed-To-Load-Gacha-Data", { ns: 'message' }))
-    };
+
+    const tabItems: TabsProps['items'] = [
+        {
+            key: '1',
+            label: t("Label-Featured"),
+            children: renderCards(filterDataByConvene([1, 2])),
+        },
+        {
+            key: '2',
+            label: t("Label-Permanent"),
+            children: renderCards(filterDataByConvene([3, 4])),
+        },
+        {
+            key: '3',
+            label: t("Label-Beginner"),
+            children: renderCards(filterDataByConvene([5, 6, 7])),
+        },
+
+    ]
 
     return (
         <div>
             <GachaSettingModal ref={settingRef}></GachaSettingModal>
             <Spin spinning={loading} size='large' indicator={<LoadingOutlined />}>
-                <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }} tabBarExtraContent={tabBarButtonWithSetting}>
-                    <TabPane tab={t("Label-Featured")} key="1">
-                        {renderCards(filterDataByConvene([1, 2]))}
-                    </TabPane>
-                    <TabPane tab={t("Label-Permanent")} key="2">
-                        {renderCards(filterDataByConvene([3, 4]))}
-                    </TabPane>
-                    <TabPane tab={t("Label-Beginner")} key="3">
-                        {renderCards(filterDataByConvene([5, 6, 7]))}
-                    </TabPane>
-                </Tabs>
+                <Tabs items={tabItems} activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }} tabBarExtraContent={tabBarButtonWithSetting} />
             </Spin>
         </div>
     );
