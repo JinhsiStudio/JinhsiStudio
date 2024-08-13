@@ -21,11 +21,11 @@ export default function GachaPage() {
     const { t } = useTranslation();
     const { storedValue: gachaSetting } = useGachaSetting();
     const [url, setUrl] = useState(gachaSetting?.url || '');
-    const { data, error, loading, run } = useRequest(() => fetcher(url), {
+    const { data, loading, run } = useRequest(() => fetcher(url), {
         refreshOnWindowFocus: false,
+        onError: (e) => throwErrorMessge(e)
     });
     const [activeTab, setActiveTab] = useState<string>('1');
-
     const settingRef = useRef<DialogRef>(null);
 
     const handleFetchDataFromUrl = () => {
@@ -65,16 +65,14 @@ export default function GachaPage() {
         </Button>
     </Flex>;
 
-    const errorMessge = (errorMessage: any) => {
-        console.error("Failed to fetch gacha data with error: ", errorMessage);
+    const throwErrorMessge = (error: Error) => {
+        console.error("Failed to fetch gacha data with error: ", error);
         message.error(t("Message-Failed-To-Load-Gacha-Data", { ns: 'message' }))
-        return <div></div>;
     };
 
     return (
         <div>
             <GachaSettingModal ref={settingRef}></GachaSettingModal>
-            {error && errorMessge(error.message)}
             <Spin spinning={loading} size='large' indicator={<LoadingOutlined />}>
                 <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ marginTop: 16 }} tabBarExtraContent={tabBarButtonWithSetting}>
                     <TabPane tab={t("Label-Featured")} key="1">
