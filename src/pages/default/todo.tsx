@@ -9,8 +9,8 @@ export default function TodoPage() {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
             <Result
                 icon={<SmileOutlined />}
-                title={t('Message-Todo-Page-Tittle', { ns: 'message' })}
-                subTitle={t('Message-Todo-Page-SubTittle', { ns: 'message' })}
+                title={t('Message-Todo-Page-Title', { ns: 'message' })}
+                subTitle={t('Message-Todo-Page-SubTitle', { ns: 'message' })}
             />
         </div>
     );
