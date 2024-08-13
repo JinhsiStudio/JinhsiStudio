@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRequest } from 'ahooks';
 import { Button, Row, Col, message, Tabs, Spin, Flex } from 'antd';
 import { getGachaLogFromUrl } from '@/services/invokes/gacha';
@@ -18,15 +18,6 @@ const fetcher = async (url: string): Promise<GachaLog[] | void> => {
 };
 
 export default function GachaPage() {
-    // useEffect(() => {
-    //     // 禁止页面滚动
-    //     document.body.style.overflow = 'hidden';
-    //     return () => {
-    //         // 恢复页面滚动
-    //         document.body.style.overflow = 'auto';
-    //     };
-    // }, []);
-
     const { t } = useTranslation();
     const { storedValue: gachaSetting } = useGachaSetting();
     const [url, setUrl] = useState(gachaSetting?.url || '');

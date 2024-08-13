@@ -11,7 +11,7 @@ interface GachaCardProps {
     data: GachaLog,
 }
 
-const calculateDistance = (items: GachaItem[], rarity: number): number[] => {
+function calculateDistance(items: GachaItem[], rarity: number): number[] {
     const distances: number[] = [];
     let lastIndex = -1;
     for (let i = 0; i < items.length; i++) {
@@ -27,6 +27,14 @@ const calculateDistance = (items: GachaItem[], rarity: number): number[] => {
     }
     return distances;
 };
+
+function sum(arr: number[]): number {
+    if (arr.length !== 0) {
+        return arr.reduce((prev, cur) => prev + cur)
+    } else {
+        return 0
+    }
+}
 
 
 const getConveneName = (convene: Convene) => {
@@ -56,8 +64,8 @@ export default function GachaCard(props: GachaCardProps) {
     const fiveStarDistances = calculateDistance(items, 5);
     const fourStarDistances = calculateDistance(items, 4);
 
-    const lastFiveStar = fiveStarDistances.length > 0 ? fiveStarDistances[0] : items.length;
-    const lastFourStar = fourStarDistances.length > 0 ? fourStarDistances[0] : items.length;
+    const lastFiveStar = items.length - sum(fiveStarDistances);
+    const lastFourStar = items.length - sum(fourStarDistances);
 
     const fiveStarItems = items.filter(item => item.rarity === 5);
     const fourStarItems = items.filter(item => item.rarity === 4);
