@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useGachaSetting } from '@/hooks/storage/gacha/use-gacha-setting';
 import type { TabsProps } from 'antd';
 
-const fetcher = async (url: string): Promise<GachaLog[] | void> => {
+const fetcher = async (url: string): Promise<void | GachaLog[]> => {
     const response = await getGachaLogFromUrl(url);
     return response;
 };
