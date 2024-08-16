@@ -124,7 +124,8 @@ mod tests {
             let source = UrlGachaSource::new(Url::parse(&raw_url).unwrap()).unwrap();
             let r = source.get_gacha_data().await;
             assert_eq!(r.unwrap().len(), 7);
+        } else {
+            println!("Skip test if GACHA_TEST_URL is not specified")
         }
-        println!("Skip test if GACHA_TEST_URL is not specified")
     }
 }
