@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, os::raw};
 
 use crate::gacha::GachaError;
 use lazy_static::lazy_static;
@@ -29,13 +29,16 @@ pub struct UrlGachaSource {
 impl UrlGachaSource {
     pub fn new(raw_url: Url) -> Result<Self, GachaError> {
         let fragment = raw_url.fragment().ok_or(GachaError::InvalidUrl {
-            url: raw_url.to_string(),
+            desc: format!("Unable to extract fragment part from url {}", raw_url),
         })?;
         let normalized_url = Url::parse(
             &("https://example.com".to_owned() + fragment), //TODO The Url looks like https://aki-gm-resources.aki-game.com/aki/gacha/index.html#/record?svr_id=xxxxxxx, which hides the query behind fragment. So we need to mock a fake base domain to make it works. Better impl?
         )
         .map_err(|_| GachaError::InvalidUrl {
-            url: raw_url.to_string(),
+            desc: format!(
+                "Unable to parse url from {} with fragment part {}",
+                raw_url, fragment
+            ),
         })?;
         let mut query_map = HashMap::new();
         for query in normalized_url.query_pairs() {
@@ -51,7 +54,7 @@ impl UrlGachaSource {
         self.query
             .get(key)
             .ok_or(GachaError::InvalidUrl {
-                url: self.url.to_string(),
+                desc: format!("Failed to get query data with key {} in {}", key, self.url),
             })
             .map(|x| x.to_owned())
     }
@@ -99,6 +102,11 @@ impl GachaService for UrlGachaSource {
                     url: GACHA_RECORD_BASE_URL.clone(),
                     source: Box::new(e),
                 })?;
+            if data_response.code == -1 {
+                return Err(GachaError::InvalidUrl {
+                    desc: format!("Failed to get gacha data with response:{:?}", data_response),
+                });
+            }
             let items: Vec<GachaLogItem> = data_response.data;
             res.push(GachaLog {
                 convene: Convene::from_i32(convene_type).unwrap(),

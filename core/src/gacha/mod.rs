@@ -14,8 +14,8 @@ use url::UrlGachaSource;
 
 #[derive(Debug, Snafu)]
 pub enum GachaError {
-    #[snafu(display("Invalid Url: {} ", url))]
-    InvalidUrl { url: String },
+    #[snafu(display("Invalid Url: {} ", desc))]
+    InvalidUrl { desc: String },
     #[snafu(display("Unable to probe gacha url, input it manually"))]
     ProbeFailed,
     #[snafu(display("Unable to fetch gacha from url {} since {}", url, source))]

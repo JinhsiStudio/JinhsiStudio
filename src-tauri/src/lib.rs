@@ -7,9 +7,12 @@ use url::Url;
 
 #[tauri::command]
 async fn get_gachalog_from_url(url: String) -> Result<Vec<GachaLog>, String> {
-    let source = UrlGachaSource::new(
-        Url::parse(&url).map_err(|_| GachaError::InvalidUrl { url }.to_string())?,
-    )
+    let source = UrlGachaSource::new(Url::parse(&url).map_err(|_| {
+        GachaError::InvalidUrl {
+            desc: format!("Input url {} is invalid", url),
+        }
+        .to_string()
+    })?)
     .map_err(|e| e.to_string())?;
     return source.get_gacha_data().await.map_err(|e| format!("{}", e));
 }

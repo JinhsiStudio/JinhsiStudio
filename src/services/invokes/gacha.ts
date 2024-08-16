@@ -8,7 +8,7 @@ export async function getGachaLogFromUrl(
   console.log("getGachaLogFromUrl", url);
   let daoData = invoke<GachaLogDao[] | void>("get_gachalog_from_url", {
     url,
-  }).catch((error) => console.error(error));
+  });
   return daoData.then((data) => data?.map(GachaLog.fromDao));
 }
 export async function getGachaLogFromLocal(
@@ -17,6 +17,6 @@ export async function getGachaLogFromLocal(
   console.log("getGachaLogFromUrl", path);
   let daoData = invoke<GachaLogDao[] | void>("get_gachalog_from_local", {
     path,
-  }).catch((error) => console.error(error));
+  });
   return daoData.then((data) => data?.map(GachaLog.fromDao));
 }
