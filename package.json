@@ -53,7 +53,7 @@
         "useTabs": false,
         "semi": true,
         "singleQuote": false,
-        "endOfLine": "lf"
+        "endOfLine": "auto"
     },
     "husky": {
         "hooks": {
