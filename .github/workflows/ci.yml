@@ -34,6 +34,8 @@ jobs:
         run: npm install -g pnpm
       - name: Pnpm install
         run: pnpm install
+      - name: Format check
+        run: pnpm lint
       - name: Install Tauri Dependencies (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
