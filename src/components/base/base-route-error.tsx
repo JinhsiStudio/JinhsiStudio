@@ -1,15 +1,14 @@
+import { Result } from "antd";
 import { useRouteError } from "react-router-dom";
 
 export default function RouteErrorPage() {
-    const error: any = useRouteError();
-    console.error(error);
-    return (
-        <div id="route-error-page">
-            <h1>404</h1>
-            <p>Sorry, an unexpected error has occurred.</p>
-            <p>
-                <i>{error.statusText || error.message}</i>
-            </p>
-        </div>
-    );
+  const error: unknown = useRouteError();
+  console.error(error);
+  return (
+    <Result
+      status="404"
+      title="404"
+      subTitle="Sorry, the page you visited does not exist."
+    />
+  );
 }

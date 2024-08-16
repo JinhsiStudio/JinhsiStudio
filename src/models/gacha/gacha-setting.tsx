@@ -1,9 +1,9 @@
 export interface IGachaSetting {
-    url: string,
+  url: string;
 }
 export class GachaSetting implements IGachaSetting {
-    url: string;
-    constructor(url: string) {
-        this.url = url;
-    }
+  url: string;
+  constructor(url: string) {
+    this.url = url;
+  }
 }

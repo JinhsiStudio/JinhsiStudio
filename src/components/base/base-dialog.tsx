@@ -1,4 +1,4 @@
 export interface DialogRef {
-    open: () => void;
-    close: () => void;
+  open: () => void;
+  close: () => void;
 }

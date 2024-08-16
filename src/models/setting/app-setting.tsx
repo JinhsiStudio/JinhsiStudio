@@ -4,24 +4,24 @@
  * @see /services/i18n.ts
  */
 export interface ILanguageSetting {
-    identifier: string,
-    label: string,
+  identifier: string;
+  label: string;
 }
 
 export class LanguageSetting implements ILanguageSetting {
-    identifier: string;
-    label: string;
-    constructor(identifier: string, label: string) {
-        this.identifier = identifier;
-        this.label = label;
-    }
+  identifier: string;
+  label: string;
+  constructor(identifier: string, label: string) {
+    this.identifier = identifier;
+    this.label = label;
+  }
 }
 export interface IAppSetting {
-    language: ILanguageSetting;
+  language: ILanguageSetting;
 }
 export class AppSetting implements IAppSetting {
-    language: ILanguageSetting;
-    constructor(language: ILanguageSetting) {
-        this.language = language
-    }
+  language: ILanguageSetting;
+  constructor(language: ILanguageSetting) {
+    this.language = language;
+  }
 }
