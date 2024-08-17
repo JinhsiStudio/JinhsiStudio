@@ -9,11 +9,12 @@
         "preview": "vite preview",
         "tauri": "tauri",
         "format": "prettier --write ./src && cargo fmt",
-        "lint":"prettier --check ./src && npx eslint ./src && cargo fmt --check"
+        "lint": "prettier --check ./src && npx eslint ./src && cargo fmt --check"
     },
     "dependencies": {
         "@ant-design/icons": "^5.4.0",
         "@tauri-apps/api": "2.0.0-rc.0",
+        "@tauri-apps/plugin-dialog": "2.0.0-rc.0",
         "@tauri-apps/plugin-shell": "2.0.0-rc.0",
         "@tauri-apps/plugin-store": "2.0.0-rc.0",
         "ahooks": "^3.8.0",

@@ -14,7 +14,7 @@ export async function getGachaLogFromUrl(
 export async function getGachaLogFromLocal(
   path: string | null,
 ): Promise<GachaLog[] | void> {
-  console.log("getGachaLogFromUrl", path);
+  console.log("getGachaLogFromLocal", path);
   let daoData = invoke<GachaLogDao[] | void>("get_gachalog_from_local", {
     path,
   });

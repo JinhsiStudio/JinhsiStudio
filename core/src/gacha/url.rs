@@ -1,4 +1,4 @@
-use std::{collections::HashMap, os::raw};
+use std::collections::HashMap;
 
 use crate::gacha::GachaError;
 use lazy_static::lazy_static;
@@ -27,8 +27,11 @@ pub struct UrlGachaSource {
 }
 
 impl UrlGachaSource {
-    pub fn new(raw_url: Url) -> Result<Self, GachaError> {
-        let fragment = raw_url.fragment().ok_or(GachaError::InvalidUrl {
+    pub fn new(raw_url: String) -> Result<Self, GachaError> {
+        let original_url = Url::parse(&raw_url).map_err(|_| GachaError::InvalidUrl {
+            desc: format!("Unable to parse url {}", raw_url),
+        })?;
+        let fragment = original_url.fragment().ok_or(GachaError::InvalidUrl {
             desc: format!("Unable to extract fragment part from url {}", raw_url),
         })?;
         let normalized_url = Url::parse(
@@ -46,7 +49,7 @@ impl UrlGachaSource {
             debug_assert!(r.is_none());
         }
         return Ok(Self {
-            url: raw_url,
+            url: original_url,
             query: query_map,
         });
     }
@@ -119,9 +122,8 @@ impl GachaService for UrlGachaSource {
 
 #[cfg(test)]
 mod tests {
-    use crate::gacha::{url::UrlGachaSource,GachaService};
+    use crate::gacha::{url::UrlGachaSource, GachaService};
     use std::env;
-    use url::Url;
     #[tokio::test]
     async fn test_get_gacha_data() {
         if let Ok(raw_url) = env::var("GACHA_TEST_URL") {
@@ -129,9 +131,9 @@ mod tests {
                 println!("Skip test if GACHA_TEST_URL is empty");
                 return;
             }
-            let source = UrlGachaSource::new(Url::parse(&raw_url).unwrap()).unwrap();
+            let source = UrlGachaSource::new(raw_url).unwrap();
             let r = source.get_gacha_data().await;
-            assert!(r.is_err());//Make ci test happy
+            assert!(r.is_err()); //Make ci test happy
         } else {
             println!("Skip test if GACHA_TEST_URL is not specified")
         }

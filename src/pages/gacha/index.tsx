@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
 import { useRequest } from "ahooks";
 import { Button, Row, Col, message, Tabs, Spin, Flex } from "antd";
-import { getGachaLogFromUrl } from "@/services/invokes/gacha";
+import {
+  getGachaLogFromLocal,
+  getGachaLogFromUrl,
+} from "@/services/invokes/gacha";
 import GachaCard from "@/components/gacha/gacha-card";
 import { GachaLog } from "@/models/gacha/gacha-log";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -11,25 +14,30 @@ import { useTranslation } from "react-i18next";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
 import type { TabsProps } from "antd";
 
-const fetcher = async (url: string): Promise<void | GachaLog[]> => {
-  const response = await getGachaLogFromUrl(url);
-  return response;
+const fetcher = async (
+  url: string,
+  logPath: string,
+): Promise<void | GachaLog[]> => {
+  return Promise.any([getGachaLogFromUrl(url), getGachaLogFromLocal(logPath)]);
+  //   const response = await getGachaLogFromUrl(url);
+  //   return response;
 };
 
 export default function GachaPage() {
   const { t } = useTranslation();
   const { storedValue: gachaSetting } = useGachaSetting();
+  const [activeTab, setActiveTab] = useState<string>("1");
+  const settingRef = useRef<DialogRef>(null);
+
   const { data, loading, run } = useRequest(
-    () => fetcher(gachaSetting?.url || ""),
+    () => fetcher(gachaSetting?.url || "", gachaSetting?.logPath || ""),
     {
       refreshOnWindowFocus: false,
       onError: (e) => throwErrorMessge(e),
     },
   );
-  const [activeTab, setActiveTab] = useState<string>("1");
-  const settingRef = useRef<DialogRef>(null);
 
-  const handleFetchDataFromUrl = () => {
+  const handleFetchData = () => {
     if (gachaSetting?.url) {
       run();
     } else {
@@ -61,7 +69,7 @@ export default function GachaPage() {
 
   const tabBarButtonWithSetting = (
     <Flex justify="space-between" gap="small">
-      <Button type="primary" onClick={handleFetchDataFromUrl}>
+      <Button type="primary" onClick={handleFetchData}>
         {t("Label-Fetch-Data")}
       </Button>
       <Button type="primary" onClick={() => settingRef.current?.open()}>
