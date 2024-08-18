@@ -214,6 +214,7 @@ impl LocalGachaSource {
                     "\\Wuthering Waves\\Wuthering Waves Game",
                     "\\Program Files\\Epic Games\\WutheringWavesj3oFh",
                     "\\Program Files\\Epic Games\\WutheringWavesj3oFh\\Wuthering Waves Game",
+                    "\\WeGameApps\\rail_apps\\Wuthering Waves(2002137)",
                 ];
 
                 for disk_letter in disk_letters {
@@ -257,7 +258,7 @@ impl LocalGachaSource {
                     return Ok(raw_url);
                 }
             } else {
-                log::info!("Game path not found in registry.");
+                log::info!("Game path not found in MUI Cache.");
             }
 
             // Check Firewall rules
@@ -268,7 +269,7 @@ impl LocalGachaSource {
                     return Ok(raw_url);
                 }
             } else {
-                log::info!("Game path not found in registry.");
+                log::info!("Game path not found in Firewall records.");
             }
 
             // Check common installation paths
@@ -279,7 +280,7 @@ impl LocalGachaSource {
                     return Ok(raw_url);
                 }
             } else {
-                log::info!("Game path not found in registry.");
+                log::info!("Game path not found in installation path.");
             }
 
             Err(GachaError::ProbeFailed)
