@@ -28,12 +28,17 @@ impl LocalGachaSource {
         if let Some(path) = &self.path {
             if path.is_file() {
                 return Self::try_get_url_from_file(path).map_or(self.probe_url_locally(), Ok);
+            } else if path.is_dir() {
+                return Self::try_get_url_from_dir(path).map_or(self.probe_url_locally(), Ok);
             }
         }
         return self.probe_url_locally();
     }
 
     fn try_get_url_from_dir<P: AsRef<Path>>(game_path: P) -> Option<String> {
+        if game_path.as_ref().is_dir() {
+            return None;
+        }
         let gacha_log_path = game_path.as_ref().join("\\Client\\Saved\\Logs\\Client.log");
         let debug_log_path = game_path.as_ref().join("\\Client\\Binaries\\Win64\\ThirdParty\\KrPcSdk_Global\\KRSDKRes\\KRSDKWebView\\debug.log");
 
