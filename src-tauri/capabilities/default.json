@@ -19,6 +19,7 @@
     "store:allow-set",
     "store:allow-save",
     "store:allow-load",
-    "dialog:default"
+    "dialog:default",
+    "log:default"
   ]
 }
