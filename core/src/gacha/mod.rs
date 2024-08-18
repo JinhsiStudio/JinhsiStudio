@@ -27,7 +27,7 @@ pub enum GachaLogSource {
     Local(LocalGachaSource), //Probe the client cache locally
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct GachaLogItem {
     #[serde(alias = "resourceId")]
     id: usize,
@@ -37,6 +37,26 @@ pub struct GachaLogItem {
     #[serde(alias = "time", with = "date_format")]
     date: NaiveDateTime,
 }
+
+impl PartialEq for GachaLogItem {
+    fn eq(&self, other: &Self) -> bool {
+        self.date == other.date
+    }
+}
+
+impl PartialOrd for GachaLogItem {
+    fn partial_cmp(&self, other: &GachaLogItem) -> std::option::Option<std::cmp::Ordering> {
+        return Some(self.date.cmp(&other.date));
+    }
+}
+
+impl Eq for GachaLogItem {}
+
+impl Ord for GachaLogItem {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        return self.date.cmp(&other.date);
+    }
+}
 /// Convene enum which is expected to match the Wuthering Waves' official backend server protocol
 ///
 ///
@@ -44,7 +64,9 @@ pub struct GachaLogItem {
 ///
 /// - We use `Serialize_repr, Deserialize_repr` to ensure this enum to be serialized as number in ipc channel, otherwise, it will be serialized as plain string such as `"EventCharater"``.
 ///
-#[derive(Debug, Serialize_repr, Deserialize_repr, FromPrimitive, ToPrimitive)]
+#[derive(
+    Clone, Debug, Serialize_repr, Deserialize_repr, FromPrimitive, ToPrimitive, PartialEq, Eq,
+)]
 #[repr(u8)]
 pub enum Convene {
     EventCharacter = 1,           //角色活动唤取 Featured Resonator Convene
@@ -56,10 +78,40 @@ pub enum Convene {
     BeginnerGiveBackSelected = 7, //新手自选唤取(感恩回馈) Beginner's Choice Convene（Giveback Custom Convene)
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GachaLog {
     convene: Convene,
     items: Vec<GachaLogItem>,
+}
+
+impl GachaLog {
+    pub fn new(convene: Convene, items: Vec<GachaLogItem>) -> Self {
+        return Self { convene, items };
+    }
+    /// Merge two gacha log data record
+    pub fn merge(&self, other: &GachaLog) -> Option<GachaLog> {
+        if self.convene != other.convene {
+            return None;
+        }
+        if self.items.len() == 0 {
+            return Some(other.clone());
+        }
+        if other.items.len() == 0 {
+            return Some(self.clone());
+        }
+        let max_self = self.items.get(0).unwrap();
+        let max_other = other.items.get(0).unwrap();
+        let (mut left, right) = if max_self >= max_other {
+            (self.clone(), other)
+        } else {
+            (other.clone(), self)
+        };
+        if left.items.last().unwrap() > right.items.first().unwrap() {
+            left.items.extend_from_slice(&right.items);
+            return Some(left);
+        }
+        None
+    }
 }
 
 pub trait GachaService {
@@ -82,7 +134,7 @@ mod date_format {
     use chrono::NaiveDateTime;
     use serde::{self, Deserialize, Deserializer, Serializer};
 
-    const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
+    const FORMAT: &str = "%Y-%m-%d %H:%M:%S";
 
     // The signature of a serialize_with function must follow the pattern:
     //
@@ -128,14 +180,23 @@ mod tests {
         date: NaiveDateTime,
     }
     #[test]
-    fn test_deserialize_chrono() {
+    fn test_baic_chrono() {
         let case1 = "2024-01-01 15:35:00";
         let expected_result1: NaiveDateTime = NaiveDate::from_ymd_opt(2024, 1, 1)
             .unwrap()
             .and_hms_opt(15, 35, 00)
             .unwrap();
         let result1 = NaiveDateTime::parse_from_str(&case1, "%Y-%m-%d %H:%M:%S").unwrap();
-        assert_eq!(expected_result1, result1)
+        assert_eq!(expected_result1, result1);
+        let case2 = "2024-01-01 15:35:00";
+        let result2 = NaiveDateTime::parse_from_str(&case2, "%Y-%m-%d %H:%M:%S").unwrap();
+        assert_eq!(result1, result2);
+        let case3 = "2024-01-01 16:00:00";
+        let result3 = NaiveDateTime::parse_from_str(&case3, "%Y-%m-%d %H:%M:%S").unwrap();
+        assert!(result3 > result1);
+        let case4 = "2024-01-01 15:00:00";
+        let result4 = NaiveDateTime::parse_from_str(&case4, "%Y-%m-%d %H:%M:%S").unwrap();
+        assert!(result4 < result1)
     }
 
     #[test]

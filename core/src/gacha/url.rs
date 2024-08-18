@@ -110,7 +110,8 @@ impl GachaService for UrlGachaSource {
                     desc: format!("Failed to get gacha data with response:{:?}", data_response),
                 });
             }
-            let items: Vec<GachaLogItem> = data_response.data;
+            let mut items: Vec<GachaLogItem> = data_response.data;
+            items.sort_by(|a, b| b.cmp(a)); //The data received is most probally sorted, but we must ensure it's sorted by date descending
             res.push(GachaLog {
                 convene: Convene::from_i32(convene_type).unwrap(),
                 items,
