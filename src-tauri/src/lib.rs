@@ -9,7 +9,9 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![
             cmd::gacha::get_gachalog_from_url,
-            cmd::gacha::get_gachalog_from_local
+            cmd::gacha::get_gachalog_from_local,
+            cmd::gacha::update_gachalog_from_url,
+            cmd::gacha::update_gachalog_from_local,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -2,8 +2,10 @@ import { useRef, useState } from "react";
 import { useRequest } from "ahooks";
 import { Button, Row, Col, message, Tabs, Spin, Flex } from "antd";
 import {
-  getGachaLogFromLocal,
-  getGachaLogFromUrl,
+  //   getGachaLogFromLocal,
+  //   getGachaLogFromUrl,
+  updateGachaLogFromLocal,
+  updateGachaLogFromUrl,
 } from "@/services/invokes/gacha";
 import GachaCard from "@/components/gacha/gacha-card";
 import { GachaLog } from "@/models/gacha/gacha-log";
@@ -13,24 +15,53 @@ import { DialogRef } from "@/components/base/base-dialog";
 import { useTranslation } from "react-i18next";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
 import type { TabsProps } from "antd";
+import { useGachaArchive } from "@/hooks/storage/gacha/use-gacha-archive";
+import {
+  GachaLogArchive,
+  IGachaLogArchive,
+} from "@/models/gacha/gacha-archive";
 
-const fetcher = async (
-  url: string,
-  logPath: string,
+const DEAFULT_UID = 0;
+
+// const fetcher = async (
+//   url: string,
+//   logPath: string,
+// ): Promise<void | GachaLog[]> =>
+//   Promise.any([getGachaLogFromUrl(url), getGachaLogFromLocal(logPath)]);
+
+const updater = async (
+  url: string | void,
+  logPath: string | void,
+  gachaArchive: IGachaLogArchive | void,
+  setGachaArchive: (value: IGachaLogArchive) => Promise<void>,
 ): Promise<void | GachaLog[]> => {
-  return Promise.any([getGachaLogFromUrl(url), getGachaLogFromLocal(logPath)]);
-  //   const response = await getGachaLogFromUrl(url);
-  //   return response;
-};
+  if (!url || !logPath || !gachaArchive) {
+    return Promise.reject("data required by udpater are not ready");
+  }
 
+  return Promise.any([
+    updateGachaLogFromUrl(gachaArchive.logs, url),
+    updateGachaLogFromLocal(gachaArchive.logs, logPath),
+  ]).then((data) => {
+    if (data) setGachaArchive(new GachaLogArchive(gachaArchive.uid, data));
+  });
+};
 export default function GachaPage() {
   const { t } = useTranslation();
   const { storedValue: gachaSetting } = useGachaSetting();
+  const { storedValue: gachaArchive, setValue: setGachaArchive } =
+    useGachaArchive(DEAFULT_UID);
   const [activeTab, setActiveTab] = useState<string>("1");
   const settingRef = useRef<DialogRef>(null);
 
   const { data, loading, run } = useRequest(
-    () => fetcher(gachaSetting?.url || "", gachaSetting?.logPath || ""),
+    () =>
+      updater(
+        gachaSetting?.url,
+        gachaSetting?.logPath,
+        gachaArchive,
+        setGachaArchive,
+      ),
     {
       refreshOnWindowFocus: false,
       onError: (e) => throwErrorMessge(e),

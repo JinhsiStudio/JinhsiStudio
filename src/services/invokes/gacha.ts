@@ -20,3 +20,25 @@ export async function getGachaLogFromLocal(
   });
   return daoData.then((data) => data?.map(GachaLog.fromDao));
 }
+export async function updateGachaLogFromUrl(
+  data: GachaLog[] | null,
+  url: string,
+): Promise<GachaLog[] | void> {
+  console.log("getGachaLogFromUrl", url);
+  let daoData = invoke<GachaLogDao[] | void>("update_gachalog_from_url", {
+    data,
+    url,
+  });
+  return daoData.then((data) => data?.map(GachaLog.fromDao));
+}
+export async function updateGachaLogFromLocal(
+  data: GachaLog[] | null,
+  path: string | null,
+): Promise<GachaLog[] | void> {
+  console.log("getGachaLogFromLocal", path);
+  let daoData = invoke<GachaLogDao[] | void>("update_gachalog_from_local", {
+    data,
+    path,
+  });
+  return daoData.then((data) => data?.map(GachaLog.fromDao));
+}
