@@ -63,6 +63,7 @@ export default function GachaPage() {
         setGachaArchive,
       ),
     {
+      manual: true,
       refreshOnWindowFocus: false,
       onError: (e) => throwErrorMessge(e),
     },
