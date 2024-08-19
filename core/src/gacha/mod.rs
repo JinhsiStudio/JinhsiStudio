@@ -88,7 +88,15 @@ impl GachaLog {
     pub fn new(convene: Convene, items: Vec<GachaLogItem>) -> Self {
         return Self { convene, items };
     }
-    /// Merge two gacha log data record
+    /// Merge the [`GachaLog::items`] in two `GachaLog` objects.
+    ///
+    /// Requiring the [`GachaLog::items`] to be sorted in descending time order.
+    /// Also, the two GachaLog objects are currently required to be two consecutive subsequences in the complete sequence.
+    /// For example, if the complete sequence is \[9,8,8,7,6,5\], then \[9,8,8,7\] and \[8,8,7,6,5\] meet the requirement, but \[9,8,7\] and \[7,6,5\] do not.
+    ///
+    /// # Return
+    /// - `None`: if [`GachaLog::convene`] between `self` and `other` doesn't match.
+    /// - `Some(GachaLog)`: The merged `GachaLog`
     pub fn merge(&self, other: &GachaLog) -> Option<GachaLog> {
         if self.convene != other.convene {
             return None;
@@ -106,11 +114,18 @@ impl GachaLog {
         } else {
             (other.clone(), self)
         };
-        if left.items.last().unwrap() > right.items.first().unwrap() {
-            left.items.extend_from_slice(&right.items);
-            return Some(left);
-        }
-        None
+        let left_last = left.items.last().unwrap();
+        let split_point = right.items.partition_point(|x| x >= left_last);
+        left.items.extend_from_slice(&right.items[split_point..]);
+        return Some(left);
+    }
+
+    pub fn convene(&self) -> &Convene {
+        &self.convene
+    }
+
+    pub fn items(&self) -> &[GachaLogItem] {
+        &self.items
     }
 }
 

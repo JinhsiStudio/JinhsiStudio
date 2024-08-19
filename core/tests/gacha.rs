@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod test {
-    use std::{fs::File, io::BufReader, path::Path};
 
     use jinhsi_core::gacha::{GachaLog, GachaLogItem};
     use serde::{Deserialize, Serialize};
@@ -23,9 +22,31 @@ mod test {
     #[test]
     fn test_merge_gacha_log() {
         let full_record = load_test_case(include_str!("./data/gacha/full_record.json"));
+        // Split1
         {
-            let mut base = load_test_case(include_str!("./data/gacha/split1/base.json"));
+            let base = load_test_case(include_str!("./data/gacha/split1/base.json"));
             let other = load_test_case(include_str!("./data/gacha/split1/other.json"));
+            let merged_record = base.merge(&other).unwrap();
+            assert_eq!(merged_record, full_record)
+        }
+        // Split1 exchanging base and other
+        {
+            let other = load_test_case(include_str!("./data/gacha/split1/base.json"));
+            let base = load_test_case(include_str!("./data/gacha/split1/other.json"));
+            let merged_record = base.merge(&other).unwrap();
+            assert_eq!(merged_record, full_record)
+        }
+        // Split2
+        {
+            let base = load_test_case(include_str!("./data/gacha/split2/base.json"));
+            let other = load_test_case(include_str!("./data/gacha/split2/other.json"));
+            let merged_record = base.merge(&other).unwrap();
+            assert_eq!(merged_record, full_record)
+        }
+        // Split2 exchanging base and other
+        {
+            let other = load_test_case(include_str!("./data/gacha/split2/base.json"));
+            let base = load_test_case(include_str!("./data/gacha/split2/other.json"));
             let merged_record = base.merge(&other).unwrap();
             assert_eq!(merged_record, full_record)
         }
