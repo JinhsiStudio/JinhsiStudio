@@ -44,7 +44,6 @@ export default function useStorage<T>(
     mutate(value);
     await store.set(key, value);
     await store.save();
-    console.log("saving", value);
   };
 
   return {
