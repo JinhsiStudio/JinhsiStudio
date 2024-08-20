@@ -291,6 +291,7 @@ impl LocalGachaSource {
 impl GachaService for LocalGachaSource {
     async fn get_gacha_data(&self) -> Result<Vec<super::GachaLog>, GachaError> {
         let url_source = UrlGachaSource::new(self.try_get_url()?)?;
+        log::info!("Fetching data from url source {:?}", url_source);
         url_source.get_gacha_data().await
     }
 }

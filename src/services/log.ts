@@ -5,8 +5,8 @@ function forwardConsole(
   logger: (message: string) => Promise<void>,
 ) {
   const original = console[fnName];
-  console[fnName] = (message) => {
-    original(message);
+  console[fnName] = (message?, ...optionalParams) => {
+    original(message, optionalParams);
     logger(message);
   };
 }

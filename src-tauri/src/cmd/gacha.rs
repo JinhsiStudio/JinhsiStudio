@@ -36,6 +36,9 @@ pub(crate) async fn update_gachalog_from_url(
     let source = UrlGachaSource::new(url).map_err(handle_error)?;
     let new_data = source.get_gacha_data().await.map_err(handle_error)?;
     if let Some(data) = data {
+        if data.len() == 0 {
+            return Ok(new_data);
+        }
         let merged_data = data
             .iter()
             .map(|old_log| {
@@ -74,6 +77,9 @@ pub(crate) async fn update_gachalog_from_local(
     let source = LocalGachaSource::new(path);
     let new_data = source.get_gacha_data().await.map_err(handle_error)?;
     if let Some(data) = data {
+        if data.len() == 0 {
+            return Ok(new_data);
+        }
         let merged_data = data
             .iter()
             .map(|old_log| {

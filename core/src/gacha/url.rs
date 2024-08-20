@@ -20,7 +20,7 @@ struct GachaResponse<T: Serialize> {
     data: T,
     message: String,
 }
-
+#[derive(Debug)]
 pub struct UrlGachaSource {
     url: url::Url,
     query: HashMap<String, String>,
@@ -83,10 +83,11 @@ impl GachaService for UrlGachaSource {
                 "languageCode": language,
                 "recordId": record_id
             });
-            let response = client
+            let request = client
                 .post(GACHA_RECORD_BASE_URL.as_str())
                 .headers(headers.clone())
-                .json(&body)
+                .json(&body);
+            let response = request
                 .send()
                 .await
                 .map_err(|e| GachaError::RequestFailed {

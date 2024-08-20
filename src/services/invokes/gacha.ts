@@ -1,5 +1,5 @@
 import { GachaLogDao } from "@/models/gacha/dao/gacha-log-dao";
-import { GachaLog } from "@/models/gacha/gacha-log";
+import { GachaLog, IGachaLog } from "@/models/gacha/gacha-log";
 import { invoke } from "@tauri-apps/api/core";
 
 export async function getGachaLogFromUrl(
@@ -21,23 +21,23 @@ export async function getGachaLogFromLocal(
   return daoData.then((data) => data?.map(GachaLog.fromDao));
 }
 export async function updateGachaLogFromUrl(
-  data: GachaLog[] | null,
+  data: IGachaLog[],
   url: string,
 ): Promise<GachaLog[] | void> {
-  console.log("getGachaLogFromUrl", url);
+  console.log("updateGachaLogFromUrl", url);
   let daoData = invoke<GachaLogDao[] | void>("update_gachalog_from_url", {
-    data,
+    data: data.map((item) => item.intoDao()),
     url,
   });
   return daoData.then((data) => data?.map(GachaLog.fromDao));
 }
 export async function updateGachaLogFromLocal(
-  data: GachaLog[] | null,
+  data: IGachaLog[],
   path: string | null,
 ): Promise<GachaLog[] | void> {
-  console.log("getGachaLogFromLocal", path);
+  console.log("updateGachaLogFromLocal", path);
   let daoData = invoke<GachaLogDao[] | void>("update_gachalog_from_local", {
-    data,
+    data: data.map((item) => item.intoDao()),
     path,
   });
   return daoData.then((data) => data?.map(GachaLog.fromDao));

@@ -33,7 +33,6 @@ const updater = async (
   url: string | void,
   logPath: string | void,
   gachaArchive: IGachaLogArchive | void,
-  setGachaArchive: (value: IGachaLogArchive) => Promise<void>,
 ): Promise<void | GachaLog[]> => {
   if (!url || !logPath || !gachaArchive) {
     return Promise.reject("data required by udpater are not ready");
@@ -42,9 +41,7 @@ const updater = async (
   return Promise.any([
     updateGachaLogFromUrl(gachaArchive.logs, url),
     updateGachaLogFromLocal(gachaArchive.logs, logPath),
-  ]).then((data) => {
-    if (data) setGachaArchive(new GachaLogArchive(gachaArchive.uid, data));
-  });
+  ]);
 };
 export default function GachaPage() {
   const { t } = useTranslation();
@@ -54,18 +51,15 @@ export default function GachaPage() {
   const [activeTab, setActiveTab] = useState<string>("1");
   const settingRef = useRef<DialogRef>(null);
 
-  const { data, loading, run } = useRequest(
-    () =>
-      updater(
-        gachaSetting?.url,
-        gachaSetting?.logPath,
-        gachaArchive,
-        setGachaArchive,
-      ),
+  const { loading, run } = useRequest(
+    () => updater(gachaSetting?.url, gachaSetting?.logPath, gachaArchive),
     {
       manual: true,
       refreshOnWindowFocus: false,
       onError: (e) => throwErrorMessge(e),
+      onSuccess: (data) => {
+        if (data) setGachaArchive(new GachaLogArchive(gachaArchive!.uid, data));
+      },
     },
   );
 
@@ -78,7 +72,10 @@ export default function GachaPage() {
   };
 
   const filterDataByConvene = (conveneTypes: number[]) => {
-    return data?.filter((log) => conveneTypes.includes(log.convene)) || [];
+    return (
+      gachaArchive?.logs.filter((log) => conveneTypes.includes(log.convene)) ||
+      []
+    );
   };
 
   const renderCards = (logs: GachaLog[]) => {
