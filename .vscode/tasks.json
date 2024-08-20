@@ -12,14 +12,14 @@
       "isBackground": true,
       // change this to your `beforeDevCommand`:
       "command": "pnpm",
-      "args": ["tauri", "dev"]
+      "args": ["dev"]
     },
     {
       "label": "ui:build",
       "type": "shell",
       // change this to your `beforeBuildCommand`:
       "command": "pnpm",
-      "args": ["tauri", "build"]
+      "args": ["build"]
     }
   ]
 }
