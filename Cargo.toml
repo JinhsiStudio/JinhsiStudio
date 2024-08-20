@@ -3,3 +3,4 @@ members = ["core", "src-tauri"]
 resolver = "2"
 [patch.crates-io]
 jinhsi-core = { path = "./core" }
+jinhsi-studio = { path = "./src-tauri" }

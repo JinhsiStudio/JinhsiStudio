@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Update Rust Toolchain
-        run: rustup update 
+        run: rustup update
       - name: Install Rust Target
         run: rustup target add ${{matrix.target}}
       - name: Install Node
@@ -34,6 +34,8 @@ jobs:
         run: npm install -g pnpm
       - name: Pnpm install
         run: pnpm install
+      - name: Format check
+        run: pnpm lint
       - name: Install Tauri Dependencies (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -55,19 +57,19 @@ jobs:
         with:
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}
-          
-      - name: Upload Macos Artifacts
-        if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/bundle/dmg/*.dmg
-          if-no-files-found: error
 
-      - name: Upload Windows Artifacts
-        if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/bundle/nsis/*.exe
-          if-no-files-found: error
+      # - name: Upload Macos Artifacts
+      #   if: matrix.os == 'macos-latest'
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ${{ matrix.target }}
+      #     path: target/${{ matrix.target }}/release/bundle/dmg/*.dmg
+      #     if-no-files-found: error
+
+      # - name: Upload Windows Artifacts
+      #   if: matrix.os == 'windows-latest'
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ${{ matrix.target }}
+      #     path: target/${{ matrix.target }}/release/bundle/nsis/*.exe
+      #     if-no-files-found: error
