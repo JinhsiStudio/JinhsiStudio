@@ -7,7 +7,12 @@ function forwardConsole(
   const original = console[fnName];
   console[fnName] = (message?, ...optionalParams) => {
     original(message, optionalParams);
-    logger(message);
+    let finalMessage: string = message ?? "";
+    for (let param of optionalParams) {
+      finalMessage += " ";
+      finalMessage += JSON.stringify(param);
+    }
+    logger(finalMessage);
   };
 }
 
