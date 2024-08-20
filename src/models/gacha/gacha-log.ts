@@ -20,13 +20,13 @@ export class GachaLog implements IGachaLog {
       dao.items.map((item) => GachaItem.fromDao(item)),
     );
   }
-  intoDao(): IGachaLogDao {
+  public intoDao(): IGachaLogDao {
     return new GachaLogDao(
       this.convene,
       this.items.map((item) => item.intoDao()),
     );
   }
-  public static initEmptyGachaLog(convene: Convene) {
+  public static initEmptyGachaLog(convene: Convene): GachaLog {
     return new GachaLog(convene, []);
   }
 }

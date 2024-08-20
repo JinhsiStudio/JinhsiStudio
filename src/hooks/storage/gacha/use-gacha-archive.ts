@@ -2,7 +2,7 @@ import useStorage from "../use-storage";
 import {
   GachaLogArchive,
   IGachaLogArchive,
-} from "@/models/gacha/gacha-archive";
+} from "@/models/gacha/dao/gacha-archive";
 
 export const useGachaArchive = (uid: number) =>
   useStorage<IGachaLogArchive>(

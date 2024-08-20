@@ -19,9 +19,10 @@ import { useGachaArchive } from "@/hooks/storage/gacha/use-gacha-archive";
 import {
   GachaLogArchive,
   IGachaLogArchive,
-} from "@/models/gacha/gacha-archive";
+} from "@/models/gacha/dao/gacha-archive";
+import { GachaLogDao } from "@/models/gacha/dao/gacha-log-dao";
 
-const DEAFULT_UID = 0;
+const DEAFULT_UID = 0; //TODO remove it
 
 // const fetcher = async (
 //   url: string,
@@ -33,7 +34,7 @@ const updater = async (
   url: string | void,
   logPath: string | void,
   gachaArchive: IGachaLogArchive | void,
-): Promise<void | GachaLog[]> => {
+): Promise<void | GachaLogDao[]> => {
   if (!url || !logPath || !gachaArchive) {
     return Promise.reject("data required by udpater are not ready");
   }
@@ -64,7 +65,7 @@ export default function GachaPage() {
   );
 
   const handleFetchData = () => {
-    if (gachaSetting?.url) {
+    if (gachaSetting?.logPath) {
       run();
     } else {
       message.warning(t("Message-Please-Input-Valid-Gacha-Url"));
@@ -73,8 +74,9 @@ export default function GachaPage() {
 
   const filterDataByConvene = (conveneTypes: number[]) => {
     return (
-      gachaArchive?.logs.filter((log) => conveneTypes.includes(log.convene)) ||
-      []
+      gachaArchive?.logs
+        .map((log) => GachaLog.fromDao(log))
+        .filter((log) => conveneTypes.includes(log.convene)) || []
     );
   };
 

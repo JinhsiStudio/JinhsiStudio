@@ -6,10 +6,13 @@ export interface IGachaLogDao {
   items: IGachaItemDao[];
 }
 export class GachaLogDao implements IGachaLogDao {
+  convene: Convene;
+  items: GachaItemDao[];
   constructor(convene: Convene, items: GachaItemDao[]) {
     this.convene = convene;
     this.items = items;
   }
-  convene: Convene;
-  items: GachaItemDao[];
+  public static initEmptyGachaLogDao(convene: Convene) {
+    return new GachaLogDao(convene, []);
+  }
 }
