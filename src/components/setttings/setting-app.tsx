@@ -1,10 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { SettingItem, SettingList } from "./mod/setting-component";
-import { Select } from "antd";
+import { Button, Select } from "antd";
 import { defaultLanguage, supportedLanguages } from "@/services/i18n";
 import { useAppSetting } from "@/hooks/storage/setting/use-app-setting";
 import { useRef } from "react";
 import { AppSetting, LanguageSetting } from "@/models/setting/app-setting";
+import { store } from "@/hooks/storage/use-storage";
 
 export default function AppSettingList() {
   const { t, i18n } = useTranslation();
@@ -40,6 +41,19 @@ export default function AppSettingList() {
             };
           })}
         />
+      </SettingItem>
+      <SettingItem label={t("Label-Clear-App-Data")}>
+        <Button
+          type="primary"
+          danger
+          onClick={async () => {
+            //TODO show a confirming modal to double check
+            await store.clear();
+            await store.save();
+          }}
+        >
+          {t("Label-Clear-App-Data")}
+        </Button>
       </SettingItem>
     </SettingList>
   );
