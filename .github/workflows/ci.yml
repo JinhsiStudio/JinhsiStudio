@@ -36,8 +36,6 @@ jobs:
         run: npm install -g pnpm
       - name: Pnpm install
         run: pnpm install
-      - name: Format check
-        run: pnpm lint
       - name: Install Tauri Dependencies (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -51,6 +49,8 @@ jobs:
             libssl-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev
+      - name: Format check
+        run: pnpm lint
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
         env:
