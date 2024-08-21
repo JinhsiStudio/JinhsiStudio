@@ -1,0 +1,95 @@
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: release-please
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      jinhsi-studio-core--tag_name: ${{ steps.release.outputs.jinhsi-studio-core--tag_name}}
+      jinhsi-studio-core--release_created: ${{ steps.release.outputs.jinhsi-studio-core--release_created}}
+      jinhsi-studio--tag_name: ${{ steps.release.outputs.jinhsi-studio--tag_name}}
+      jinhsi-studio--release_created: ${{ steps.release.outputs.jinhsi-studio--release_created}}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: script/release/release-please-config.json
+          manifest-file: script/release/.release-please-manifest.json
+      - name: Print release outputs for debugging
+        continue-on-error: true
+        run: |
+          echo "Release outputs:"
+          echo "${{ toJson(steps.release.outputs) }}"
+
+
+
+  release-app:
+    if: ${{needs.release-please.outputs.jinhsi-studio--release_created}}
+    needs: release-please
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            bundle: nsis
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            bundle: dmg
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            bundle: dmg
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            bundle: appimage
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update Rust Toolchain
+        run: rustup update
+      - name: Install Rust Target
+        run: rustup target add ${{matrix.target}}
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: ${{matrix.target}}
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Pnpm install
+        run: pnpm install
+      - name: Install Tauri Dependencies (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+      - name: Format check
+        run: pnpm lint
+      - name: Tauri build
+        uses: tauri-apps/tauri-action@v0
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tauriScript: pnpm tauri
+          args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}
+          tagName: ${{ needs.release-please.outputs.jinhsi-studio--tag_name }}
