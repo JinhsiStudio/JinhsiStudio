@@ -44,7 +44,7 @@
         "eslint-plugin-react-hooks": "^4.6.2",
         "globals": "^15.9.0",
         "husky": "^9.1.4",
-        "internal-ip": "^7.0.0",
+        "internal-ip": "^8.0.0",
         "prettier": "^3.3.3",
         "typescript": "^5.5.4",
         "typescript-eslint": "^8.0.1",
