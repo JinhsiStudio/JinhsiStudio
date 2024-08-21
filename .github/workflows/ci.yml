@@ -28,6 +28,8 @@ jobs:
         run: rustup target add ${{matrix.target}}
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: ${{matrix.target}}
       - name: Install Node
         uses: actions/setup-node@v4
         with:
