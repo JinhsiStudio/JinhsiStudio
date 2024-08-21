@@ -26,6 +26,8 @@ jobs:
         run: rustup update
       - name: Install Rust Target
         run: rustup target add ${{matrix.target}}
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
       - name: Install Node
         uses: actions/setup-node@v4
         with:
