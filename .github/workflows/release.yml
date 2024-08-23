@@ -85,7 +85,7 @@ jobs:
       - name: Format check
         run: pnpm lint
       - name: Tauri build
-        uses: tauri-apps/tauri-action@v0
+        uses: Chiichen/tauri-action@feat-upload-with-tag-name
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
