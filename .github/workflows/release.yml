@@ -24,13 +24,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: script/release/release-please-config.json
           manifest-file: script/release/.release-please-manifest.json
-      - name: Print release outputs for debugging
-        continue-on-error: true
-        run: |
-          echo "Release outputs:"
-          echo "${{ toJson(steps.release.outputs) }}"
-
-
 
   release-app:
     if: ${{needs.release-please.outputs.jinhsi-studio--release_created}}
