@@ -19,6 +19,7 @@
     "store:allow-load",
     "store:allow-clear",
     "dialog:default",
-    "log:default"
+    "log:default",
+    "updater:default"
   ]
 }
