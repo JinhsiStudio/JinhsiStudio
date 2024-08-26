@@ -85,5 +85,5 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{secrets.TAURI_SIGNING_PRIVATE_KEY}}
         with:
           tauriScript: pnpm tauri
-          args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}
+          args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}  --config src-tauri/tauri.conf.release.json
           tagName: ${{ needs.release-please.outputs.jinhsi-studio--tag_name }}
