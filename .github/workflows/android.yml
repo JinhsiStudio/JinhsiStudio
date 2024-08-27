@@ -1,4 +1,4 @@
-name: ci-android(beta) # 
+name: ci-android(beta) #
 
 on: ["push","pull_request"]
 
@@ -18,9 +18,9 @@ jobs:
           distribution: 'zulu'
           java-version: '17' # Tauri use gradle  8.4, which is not supported by Java21 in Github Action Image
       - name: Update Rust Toolchain
-        run: rustup update 
+        run: rustup update
       - name: Install Rust Target
-        run: rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android 
+        run: rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
       - name: Install Node
         uses: actions/setup-node@v4
         with:
@@ -49,4 +49,4 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: echo "NDK_HOME=$env:ANDROID_NDK_HOME" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: Tauri build(Android)
-        run: pnpm tauri android build
+        run: pnpm tauri android build --target aarch64 armv7
