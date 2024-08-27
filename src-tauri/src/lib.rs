@@ -13,7 +13,7 @@ pub fn run() {
             cmd::gacha::update_gachalog_from_url,
             cmd::gacha::update_gachalog_from_local,
         ]);
-    #[cfg(not(any(target_os = "android", target_os = "ios")))]
+    #[cfg(all(desktop, debug_assertions, dev))]
     let builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
     builder
         .run(tauri::generate_context!())
