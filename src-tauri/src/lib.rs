@@ -15,8 +15,8 @@ pub fn run() {
         ]);
     #[cfg(all(
         not(any(target_os = "android", target_os = "ios")),
-        debug_assertions,
-        dev
+        not(debug_assertions),
+        not(dev)
     ))]
     let builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
     builder
