@@ -65,13 +65,13 @@ export default function GachaCard(props: GachaCardProps) {
   const lastFourStar = items.length - sum(fourStarDistances);
 
   const fiveStarItems = items.filter((item) => item.rarity === 5);
-  const fourStarItems = items.filter((item) => item.rarity === 4);
+  //   const fourStarItems = items.filter((item) => item.rarity === 4);
 
-  const averageFiveStar = fiveStarItems.length
-    ? (items.length / fiveStarItems.length).toFixed(2)
+  const averageFiveStar = fiveStarDistances.length
+    ? (sum(fiveStarDistances) / fiveStarDistances.length).toFixed(2)
     : "N/A";
-  const averageFourStar = fourStarItems.length
-    ? (items.length / fourStarItems.length).toFixed(2)
+  const averageFourStar = fourStarDistances.length
+    ? (sum(fourStarDistances) / fourStarDistances.length).toFixed(2)
     : "N/A";
 
   const tabItems: TabsProps["items"] = [
