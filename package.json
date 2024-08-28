@@ -20,7 +20,7 @@
         "@tauri-apps/plugin-store": "2.0.0-rc.0",
         "@tauri-apps/plugin-updater": "2.0.0-rc.0",
         "ahooks": "^3.8.0",
-        "antd": "^5.20.2",
+        "antd": "^5.20.3",
         "dayjs": "^1.11.13",
         "i18next": "^23.14.0",
         "react": "^18.3.1",

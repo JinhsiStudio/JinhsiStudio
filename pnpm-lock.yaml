@@ -33,8 +33,8 @@ importers:
         specifier: ^3.8.0
         version: 3.8.0(react@18.3.1)
       antd:
-        specifier: ^5.20.2
-        version: 5.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.20.3
+        version: 5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -891,8 +891,8 @@ packages:
     resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
     engines: {node: '>=8'}
 
-  antd@5.20.2:
-    resolution: {integrity: sha512-9d6Bs5ZKIV+JhB0eD7KxYnIfnhUh86kNtTGIuNiIxHFUhbuyT1DXN2SuMksDmtSfuRYZ82/C4hq+OJjWNNbmHg==}
+  antd@5.20.3:
+    resolution: {integrity: sha512-v2s5LJlhuccIKLT17ESXQDkiQJdPK4jXg4x2pmSSRlrKXAxfftn8Zhd/7pdF3qR3OkwheQpSRjynrNZKp9Tgkg==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -3089,7 +3089,7 @@ snapshots:
     dependencies:
       color-convert: 2.0.1
 
-  antd@5.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  antd@5.20.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/colors': 7.1.0
       '@ant-design/cssinjs': 1.21.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
