@@ -2,7 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { internalIpV4 } from "internal-ip";
 import path from "path";
-
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 const mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
 
 // https://vitejs.dev/config/
@@ -34,6 +35,11 @@ export default defineConfig(async () => ({
     alias: {
       "@": path.resolve("./src"),
       "@root": path.resolve("."),
+    },
+  },
+  css: {
+    postcss: {
+      plugins: [tailwindcss, autoprefixer],
     },
   },
 }));
