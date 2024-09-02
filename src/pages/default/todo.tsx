@@ -8,7 +8,7 @@ export default function TodoPage() {
   return (
     <div
       style={{
-        display: "flex",
+        display: "fl",
         justifyContent: "center",
         alignItems: "center",
         height: "100%",

@@ -6,7 +6,7 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, MenuProps } from "antd";
-import { Content, Footer } from "antd/es/layout/layout";
+import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -115,12 +115,15 @@ export const RootLayoutPage = () => {
         />
       </Sider>
       <Layout>
-        <Content style={{ margin: "2%", height: "90%" }}>
+        <Content
+          style={{
+            marginLeft: "1vw",
+            marginRight: "1vw",
+            height: "100vh",
+          }}
+        >
           <AppRoutes />
         </Content>
-        <Footer style={{ height: "12%", textAlign: "center" }}>
-          Jinhsi Studio ©{new Date().getFullYear()} Created by Chiichen
-        </Footer>
       </Layout>
     </Layout>
   );

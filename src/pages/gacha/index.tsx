@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useRequest } from "ahooks";
-import { Button, Row, Col, message, Tabs, Spin, Flex } from "antd";
+import { Button, message, Spin, Space, Flex } from "antd";
 import {
   //   getGachaLogFromLocal,
   //   getGachaLogFromUrl,
@@ -14,7 +14,6 @@ import { GachaSettingModal } from "@/components/gacha/setting/gacha-setting";
 import { DialogRef } from "@/components/base/base-dialog";
 import { useTranslation } from "react-i18next";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
-import type { TabsProps } from "antd";
 import { useGachaArchive } from "@/hooks/storage/gacha/use-gacha-archive";
 import {
   GachaLogArchive,
@@ -49,7 +48,6 @@ export default function GachaPage() {
   const { storedValue: gachaSetting } = useGachaSetting();
   const { storedValue: gachaArchive, setValue: setGachaArchive } =
     useGachaArchive(DEAFULT_UID);
-  const [activeTab, setActiveTab] = useState<string>("1");
   const settingRef = useRef<DialogRef>(null);
 
   const { loading, run } = useRequest(
@@ -72,26 +70,13 @@ export default function GachaPage() {
     }
   };
 
-  const filterDataByConvene = (conveneTypes: number[]) => {
-    return (
-      gachaArchive?.logs
-        .map((log) => GachaLog.fromDao(log))
-        .filter((log) => conveneTypes.includes(log.convene)) || []
-    );
-  };
-
-  const renderCards = (logs: GachaLog[]) => {
-    const colSpan = 24 / (logs.length || 1); // 动态计算每个 Col 的 span 值
-    return (
-      <Row gutter={[16, 16]}>
-        {logs.map((log, index) => (
-          <Col key={index} span={colSpan}>
-            <GachaCard data={log} />
-          </Col>
-        ))}
-      </Row>
-    );
-  };
+  //   const filterDataByConvene = (conveneTypes: number[]) => {
+  //     return (
+  //       gachaArchive?.logs
+  //         .map((log) => GachaLog.fromDao(log))
+  //         .filter((log) => conveneTypes.includes(log.convene)) || []
+  //     );
+  //   };
 
   const throwErrorMessge = (error: Error) => {
     console.error("Failed to fetch gacha data with error: ", error);
@@ -99,46 +84,24 @@ export default function GachaPage() {
   };
 
   const tabBarButtonWithSetting = (
-    <Flex justify="space-between" gap="small">
+    <Space>
       <Button type="primary" onClick={handleFetchData}>
         {t("Label-Fetch-Data")}
       </Button>
       <Button type="primary" onClick={() => settingRef.current?.open()}>
         {t("Label-Gacha-Setting")}
       </Button>
-    </Flex>
+    </Space>
   );
 
-  const tabItems: TabsProps["items"] = [
-    {
-      key: "1",
-      label: t("Label-Featured"),
-      children: renderCards(filterDataByConvene([1, 2])),
-    },
-    {
-      key: "2",
-      label: t("Label-Permanent"),
-      children: renderCards(filterDataByConvene([3, 4])),
-    },
-    {
-      key: "3",
-      label: t("Label-Beginner"),
-      children: renderCards(filterDataByConvene([5, 6, 7])),
-    },
-  ];
-
   return (
-    <div>
+    <Flex vertical={true}>
       <GachaSettingModal ref={settingRef}></GachaSettingModal>
       <Spin spinning={loading} size="large" indicator={<LoadingOutlined />}>
-        <Tabs
-          items={tabItems}
-          activeKey={activeTab}
-          onChange={setActiveTab}
-          style={{ marginTop: 16 }}
-          tabBarExtraContent={tabBarButtonWithSetting}
-        />
+        <GachaCard
+          data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
+        ></GachaCard>
       </Spin>
-    </div>
+    </Flex>
   );
 }
