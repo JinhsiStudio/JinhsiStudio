@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useRequest } from "ahooks";
-import { Button, message, Spin, Space, Flex } from "antd";
+import { message, Spin, FloatButton } from "antd";
 import {
   //   getGachaLogFromLocal,
   //   getGachaLogFromUrl,
@@ -9,7 +9,12 @@ import {
 } from "@/services/invokes/gacha";
 import GachaCard from "@/components/gacha/gacha-card";
 import { GachaLog } from "@/models/gacha/gacha-log";
-import { LoadingOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  MoreOutlined,
+  ReloadOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { GachaSettingModal } from "@/components/gacha/setting/gacha-setting";
 import { DialogRef } from "@/components/base/base-dialog";
 import { useTranslation } from "react-i18next";
@@ -22,12 +27,6 @@ import {
 import { GachaLogDao } from "@/models/gacha/dao/gacha-log-dao";
 
 const DEAFULT_UID = 0; //TODO remove it
-
-// const fetcher = async (
-//   url: string,
-//   logPath: string,
-// ): Promise<void | GachaLog[]> =>
-//   Promise.any([getGachaLogFromUrl(url), getGachaLogFromLocal(logPath)]);
 
 const updater = async (
   url: string | void,
@@ -70,38 +69,35 @@ export default function GachaPage() {
     }
   };
 
-  //   const filterDataByConvene = (conveneTypes: number[]) => {
-  //     return (
-  //       gachaArchive?.logs
-  //         .map((log) => GachaLog.fromDao(log))
-  //         .filter((log) => conveneTypes.includes(log.convene)) || []
-  //     );
-  //   };
-
   const throwErrorMessge = (error: Error) => {
     console.error("Failed to fetch gacha data with error: ", error);
     message.error(t("Message-Failed-To-Load-Gacha-Data", { ns: "message" }));
   };
 
-  const tabBarButtonWithSetting = (
-    <Space>
-      <Button type="primary" onClick={handleFetchData}>
-        {t("Label-Fetch-Data")}
-      </Button>
-      <Button type="primary" onClick={() => settingRef.current?.open()}>
-        {t("Label-Gacha-Setting")}
-      </Button>
-    </Space>
-  );
-
   return (
-    <Flex vertical={true}>
+    <div className="h-full">
       <GachaSettingModal ref={settingRef}></GachaSettingModal>
-      <Spin spinning={loading} size="large" indicator={<LoadingOutlined />}>
-        <GachaCard
-          data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
-        ></GachaCard>
-      </Spin>
-    </Flex>
+      <Spin
+        spinning={loading}
+        size="large"
+        indicator={<LoadingOutlined />}
+        fullscreen
+      />
+      <GachaCard
+        data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
+      />
+      <FloatButton.Group trigger="hover" type="primary" icon={<MoreOutlined />}>
+        <FloatButton
+          icon={<ReloadOutlined />}
+          onClick={handleFetchData}
+          tooltip={t("Label-Fetch-Data")}
+        />
+        <FloatButton
+          icon={<SettingOutlined />}
+          onClick={() => settingRef.current?.open()}
+          tooltip={t("Label-Gacha-Setting")}
+        />
+      </FloatButton.Group>
+    </div>
   );
 }

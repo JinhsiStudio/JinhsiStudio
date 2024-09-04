@@ -1,9 +1,8 @@
 import { Convene } from "@/models/gacha/convene";
 import { GachaItem } from "@/models/gacha/gacha-item";
 import { GachaLog } from "@/models/gacha/gacha-log";
-import { Card, Tabs, Statistic, TabsProps, Select, Empty, Flex } from "antd";
+import { Card, Statistic, Select, Empty, Flex, Divider } from "antd";
 import GachaAvatarCard from "./gacha-avatar-card";
-import "./gacha-card.css";
 import { useState } from "react";
 interface GachaCardProps {
   data: GachaLog[];
@@ -79,42 +78,6 @@ export default function GachaCard(props: GachaCardProps) {
       ? (sum(fourStarDistances) / fourStarDistances.length).toFixed(2)
       : "N/A";
 
-    const tabItems: TabsProps["items"] = [
-      {
-        key: "1",
-        label: "统计",
-        children: (
-          <Flex vertical={true}>
-            <Statistic title="五星平均抽数" value={averageFiveStar} />
-            <Statistic title="四星平均抽数" value={averageFourStar} />
-            <div className="gacha-avatar-container">
-              {fiveStarItems.map((item, index) => (
-                <GachaAvatarCard
-                  key={index}
-                  number={fiveStarDistances[index]}
-                  name={item.name}
-                  resourceId={item.id}
-                />
-              ))}
-            </div>
-          </Flex>
-        ),
-        style: { overflowY: "auto" },
-      },
-      {
-        key: "2",
-        label: "比例",
-        children: <div>{/* 比例内容 */}</div>,
-        style: { overflowY: "auto" },
-      },
-      {
-        key: "3",
-        label: "预测",
-        children: <div>{/* 预测内容 */}</div>,
-        style: { overflowY: "auto" },
-      },
-    ];
-
     const titleItems = props.data.map((value: GachaLog, index: number) => {
       return {
         value: index,
@@ -123,6 +86,7 @@ export default function GachaCard(props: GachaCardProps) {
     });
     return (
       <Card
+        className="h-full"
         title={getConveneName(currentGacha.convene)}
         extra={
           <Select
@@ -131,18 +95,56 @@ export default function GachaCard(props: GachaCardProps) {
             defaultValue={0}
           ></Select>
         }
-        // style={{ height: "100vh" }}
-        // styles={{ body: { height: "100%" } }}
+        classNames={{ body: "h-full" }}
       >
-        <Flex vertical={true}>
-          <Statistic title="总抽数" value={currentGacha.items.length} />
-          <Statistic title="距离上个五星" value={lastFiveStar} />
-          <Statistic title="距离上个四星" value={lastFourStar} />
-          <Tabs
-            items={tabItems}
-            defaultActiveKey="1"
-            style={{ height: "100%" }}
-          ></Tabs>
+        <Flex vertical={true} className="h-full">
+          <Flex justify="space-around" className="flex-shrink-0">
+            <div>
+              <Statistic
+                title="总抽数"
+                value={currentGacha.items.length}
+                className="flex-shrink-0"
+              />
+              <Statistic
+                title="距离上个五星"
+                value={lastFiveStar}
+                className="flex-shrink-0"
+              />
+              <Statistic
+                title="距离上个四星"
+                value={lastFourStar}
+                className="flex-shrink-0"
+              />
+            </div>
+            <div>
+              <Statistic
+                title="五星平均抽数"
+                value={averageFiveStar}
+                className="flex-shrink-0"
+              />
+              <Statistic
+                title="四星平均抽数"
+                value={averageFourStar}
+                className="flex-shrink-0"
+              />
+            </div>
+          </Flex>
+
+          <Divider className="flex-shrink-0" />
+          <Flex
+            justify="flex-start"
+            wrap="wrap"
+            className="flex-shrink overflow-auto"
+          >
+            {fiveStarItems.map((item, index) => (
+              <GachaAvatarCard
+                key={index}
+                number={fiveStarDistances[index]}
+                name={item.name}
+                resourceId={item.id}
+              />
+            ))}
+          </Flex>
         </Flex>
       </Card>
     );

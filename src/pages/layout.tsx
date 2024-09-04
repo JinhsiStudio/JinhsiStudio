@@ -1,7 +1,6 @@
 import {
   FileSearchOutlined,
   HomeOutlined,
-  LeftOutlined,
   SettingOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
