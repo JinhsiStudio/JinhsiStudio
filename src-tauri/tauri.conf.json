@@ -13,7 +13,11 @@
       {
         "title": "JinhsiStudio",
         "width": 1200,
-        "height": 900
+        "height": 900,
+        "minWidth": 900,
+        "minHeight": 600,
+        "maxHeight": 1200,
+        "maxWidth": 1600
       }
     ],
     "security": {
