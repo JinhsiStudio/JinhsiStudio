@@ -81,32 +81,19 @@ export const RootLayoutPage = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout
+      style={{
+        height: "100vh",
+        width: "100%",
+        overflow: "hidden",
+      }}
+    >
       <Sider
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
         theme="light"
       >
-        <div
-          style={{
-            padding: "0.5rem",
-            textAlign: "center",
-            borderBottom: "0.1rem solid #f0f0f0",
-          }}
-        >
-          <LeftOutlined
-            style={{ fontSize: "1rem", cursor: "pointer" }}
-            onClick={() => {
-              if (selectedKeys.length > 1) {
-                const newSelectedKeys = [...selectedKeys];
-                newSelectedKeys.pop();
-                setSelectedKeys(newSelectedKeys);
-                navigate(-1);
-              }
-            }}
-          />
-        </div>
         <Menu
           theme="light"
           selectedKeys={[selectedKeys[selectedKeys.length - 1]]}
@@ -114,17 +101,15 @@ export const RootLayoutPage = () => {
           items={items}
         />
       </Sider>
-      <Layout>
-        <Content
-          style={{
-            marginLeft: "1vw",
-            marginRight: "1vw",
-            height: "100vh",
-          }}
-        >
-          <AppRoutes />
-        </Content>
-      </Layout>
+      <Content
+        style={{
+          marginLeft: "1vw",
+          marginRight: "1vw",
+          height: "100%",
+        }}
+      >
+        <AppRoutes />
+      </Content>
     </Layout>
   );
 };
