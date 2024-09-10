@@ -1,18 +1,15 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
-
 hero:
   name: "JinhsiStudio"
-  text: "鸣潮多功能工具箱 🧰 | Multifunctional Wuthering Waves Toolkit 🧰"
-  tagline: 选择语言 | Select Language
+  text: "Multifunctional Wuthering Waves Toolkit 🧰"
+  image:
+    src: /jinhsi.webp
+    alt: JinhsiStudio
   actions:
-    - text: 简体中文
-      link: ./zh-cn/
-      type: primary
-
-    - text: English
-      link: ./en-us/
+    - text: 快速开始
+      link: ./develop/development
       type: primary
 features:
   - title: Feature A
