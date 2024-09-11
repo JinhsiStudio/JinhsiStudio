@@ -2,7 +2,9 @@ on:
   push:
     branches:
       - master
-
+    paths-ignore:
+      - ".github/workflows/docs.yml"
+      - 'docs/**'
 permissions:
   contents: write
   pull-requests: write
