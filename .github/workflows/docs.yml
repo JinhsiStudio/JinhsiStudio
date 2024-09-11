@@ -58,11 +58,15 @@ jobs:
       # - name: Copy Google Auth File
       #   run: cp docs/public/google0125794c904df104.html docs/dist
 
-      - name: Upload artifact to GitHub
-        uses: actions/upload-artifact@v4
+      # - name: Upload artifact to GitHub
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: github-pages
+      #     path: "./docs/.vitepress/dist"
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
-          path: "./docs/.vitepress/dist"
+          path: docs/.vitepress/dist
 
   publish:
     environment:

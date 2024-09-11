@@ -3,6 +3,7 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export const shared = defineConfig({
+  base: "/JinhsiStudio",
   title: "JinhsiStudio",
   lastUpdated: true,
   cleanUrls: true,
