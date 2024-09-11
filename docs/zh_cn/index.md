@@ -9,15 +9,17 @@ hero:
     src: /jinhsi.webp
     alt: JinhsiStudio
   actions:
-    - text: 快速开始
+    - theme: brand
+      text: 快速开始
+      link: ./guide/quick-start
+    - theme: alt
+      text: 参与开发
       link: ./develop/development
-      type: primary
+    - theme: alt
+      text: Github
+      link: https://github.com/JinhsiStudio/JinhsiStudio
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 唤取分析
+    details: 记录并分析你的唤取记录
 ---
 

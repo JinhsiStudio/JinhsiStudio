@@ -8,15 +8,17 @@ hero:
     src: /jinhsi.webp
     alt: JinhsiStudio
   actions:
-    - text: 快速开始
+    - theme: brand
+      text: Quick Start
+      link: ./guide/quick-start
+    - theme: alt
+      text: Development
       link: ./develop/development
-      type: primary
+    - theme: alt
+      text: Github
+      link: https://github.com/JinhsiStudio/JinhsiStudio
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Gacha Analyze
+    details: Record and analyze your gacha records
 ---
 
