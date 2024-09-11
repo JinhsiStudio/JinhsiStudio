@@ -4,6 +4,7 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     { text: "Home", link: "/en_us" },
     { text: "Development Docs", link: "/en_us/develop/development" },
+    { text: "Quick Start", link: "/en_us/guide/quick-start" },
   ];
 }
 
@@ -15,6 +16,10 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         { text: "Development Docs", link: "/en_us/develop/development" },
         { text: "TODO List", link: "/en_us/develop/TODO" },
       ],
+    },
+    {
+      text: "User Manual",
+      items: [{ text: "Quick Start", link: "/en_us/guide/quick-start" }],
     },
   ];
 }

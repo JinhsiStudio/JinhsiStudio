@@ -97,6 +97,10 @@ function nav(): DefaultTheme.NavItem[] {
       link: "/zh_cn/develop/development",
       activeMatch: "/zh_cn/develop",
     },
+    {
+      text: "用户手册",
+      link: "/zh_cn/guide/quick-start",
+    },
   ];
 }
 
@@ -107,6 +111,15 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       items: [
         { text: "开发须知", link: "/zh_cn/develop/development" },
         { text: "计划案", link: "/zh_cn/develop/TODO" },
+      ],
+    },
+    {
+      text: "用户手册",
+      items: [
+        {
+          text: "快速开始",
+          link: "/zh_cn/guide/quick-start",
+        },
       ],
     },
   ];
