@@ -3,9 +3,11 @@ name: ci-android(beta) #
 on:
   push:
     paths-ignore:
+      - ".github/workflows/docs.yml"
       - 'docs/**'
   pull_request:
     paths-ignore:
+      - ".github/workflows/docs.yml"
       - 'docs/**'
 
 jobs:
