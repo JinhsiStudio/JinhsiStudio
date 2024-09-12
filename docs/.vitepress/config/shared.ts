@@ -8,9 +8,6 @@ export const shared = defineConfig({
   lastUpdated: true,
   cleanUrls: true,
   metaChunk: true,
-  rewrites: {
-    "en_us/:rest*": ":rest*",
-  },
 
   //   sitemap: {
   //     hostname: "https://vitepress.dev",
