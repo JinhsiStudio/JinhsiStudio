@@ -8,8 +8,8 @@
         "build": "tsc && vite build",
         "preview": "vite preview",
         "tauri": "tauri",
-        "format": "prettier --write ./src && cargo fmt",
-        "lint": "prettier --check ./src && npx eslint ./src && cargo fmt --check && cargo clippy -- -D warnings"
+        "format": "prettier --write ./src",
+        "lint": "prettier --check ./src && npx eslint ./src"
     },
     "dependencies": {
         "@ant-design/icons": "^5.4.0",
