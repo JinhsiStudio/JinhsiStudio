@@ -9,12 +9,12 @@ export const shared = defineConfig({
   cleanUrls: true,
   metaChunk: true,
 
-  //   sitemap: {
-  //     hostname: "https://vitepress.dev",
-  //     transformItems(items) {
-  //       return items.filter((item) => !item.url.includes("migration"));
-  //     },
-  //   },
+  sitemap: {
+    hostname: "https://jinhsistudio.github.io/JinhsiStudio/",
+    transformItems(items) {
+      return items.filter((item) => !item.url.includes("migration"));
+    },
+  },
 
   head: [["link", { rel: "icon", href: "/JinhsiStudio/jinhsi.webp" }]], //If base is set, use /base/path-to-ico then
   themeConfig: {
