@@ -16,9 +16,9 @@ export const shared = defineConfig({
   //     },
   //   },
 
-  head: [["link", { rel: "icon", href: "/jinhsi.webp" }]],
+  head: [["link", { rel: "icon", href: "/JinhsiStudio/jinhsi.webp" }]], //If base is set, use /base/path-to-ico then
   themeConfig: {
-    logo: { src: "/jinhsi.webp" },
+    logo: { src: "/jinhsi.ico" },
     socialLinks: [
       { icon: "github", link: "https://github.com/JinhsiStudio/JinhsiStudio" },
     ],
