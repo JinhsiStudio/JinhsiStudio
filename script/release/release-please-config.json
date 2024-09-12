@@ -15,6 +15,14 @@
       "bump-patch-for-minor-pre-major": true,
       "draft": false,
       "prerelease": false
+    },
+    "docs": {
+      "changelog-path": "docs/CHANGELOG.md",
+      "release-type": "node",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true,
+      "draft": false,
+      "prerelease": false
     }
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"

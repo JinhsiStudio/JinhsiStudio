@@ -1,7 +1,14 @@
 name: ci
 
-on: ["push","pull_request"]
-
+on:
+  push:
+    paths-ignore:
+      - ".github/workflows/docs.yml"
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - ".github/workflows/docs.yml"
+      - 'docs/**'
 jobs:
   build:
     strategy:
