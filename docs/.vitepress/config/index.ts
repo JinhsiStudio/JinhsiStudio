@@ -7,7 +7,7 @@ import { shared } from "./shared";
 export default defineConfig({
   ...shared,
   locales: {
-    root: {
+    en_us: {
       label: "English",
       ...en_us,
     },

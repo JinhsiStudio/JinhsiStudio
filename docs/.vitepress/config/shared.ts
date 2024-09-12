@@ -3,25 +3,22 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export const shared = defineConfig({
-  base: "/JinhsiStudio",
+  base: "/JinhsiStudio/",
   title: "JinhsiStudio",
   lastUpdated: true,
   cleanUrls: true,
   metaChunk: true,
-  rewrites: {
-    "en_us/:rest*": ":rest*",
+
+  sitemap: {
+    hostname: "https://jinhsistudio.github.io/JinhsiStudio/",
+    transformItems(items) {
+      return items.filter((item) => !item.url.includes("migration"));
+    },
   },
 
-  //   sitemap: {
-  //     hostname: "https://vitepress.dev",
-  //     transformItems(items) {
-  //       return items.filter((item) => !item.url.includes("migration"));
-  //     },
-  //   },
-
-  head: [["link", { rel: "icon", href: "/jinhsi.webp" }]],
+  head: [["link", { rel: "icon", href: "/JinhsiStudio/jinhsi.webp" }]], //If base is set, use /base/path-to-ico then
   themeConfig: {
-    logo: { src: "/jinhsi.webp" },
+    logo: { src: "/jinhsi.ico" },
     socialLinks: [
       { icon: "github", link: "https://github.com/JinhsiStudio/JinhsiStudio" },
     ],
