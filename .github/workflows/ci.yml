@@ -4,11 +4,11 @@ on:
   push:
     paths-ignore:
       - ".github/workflows/docs.yml"
-      - 'docs/**'
+      - "docs/**"
   pull_request:
     paths-ignore:
       - ".github/workflows/docs.yml"
-      - 'docs/**'
+      - "docs/**"
 jobs:
   build:
     strategy:
@@ -59,6 +59,7 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev
       - name: Format check
+        working-directory: "./app"
         run: pnpm lint
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
@@ -66,5 +67,6 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          projectPath: ./app
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}

@@ -24,7 +24,7 @@
         "noFallthroughCasesInSwitch": true,
         "paths": {
             "@/*": [
-                "src/*"
+                "app/src/*"
             ],
             "@root/*": [
                 "./*"
@@ -32,7 +32,7 @@
         },
     },
     "include": [
-        "src"
+        "app/src"
     ],
     "references": [
         {

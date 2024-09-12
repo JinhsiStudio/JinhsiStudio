@@ -13,7 +13,7 @@ crate-type = ["lib", "cdylib", "staticlib"]
 tauri-build = { version = "2.0.0-rc.0", features = [] }
 
 [dependencies]
-jinhsi-core = { path = "../core" }
+jinhsi-core = { path = "../../core" }
 tauri = { version = "2.0.0-rc.0", features = [] }
 tauri-plugin-shell = "2.0.0-rc.0"
 serde = { version = "1", features = ["derive"] }
