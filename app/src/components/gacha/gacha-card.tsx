@@ -1,4 +1,4 @@
-import { Convene } from "@/models/gacha/convene";
+import { getConveneName } from "@/models/gacha/convene";
 import { GachaItem } from "@/models/gacha/gacha-item";
 import { GachaLog } from "@/models/gacha/gacha-log";
 import { Card, Statistic, Select, Empty, Flex, Divider } from "antd";
@@ -32,27 +32,6 @@ function sum(arr: number[]): number {
     return 0;
   }
 }
-
-const getConveneName = (convene: Convene) => {
-  switch (convene) {
-    case Convene.EventCharacter:
-      return "角色活动";
-    case Convene.EventWeapon:
-      return "武器活动";
-    case Convene.PermanentCharacter:
-      return "角色常驻";
-    case Convene.PermanentWeapon:
-      return "武器常驻";
-    case Convene.Beginner:
-      return "新手";
-    case Convene.BeginnerSelected:
-      return "新手自选";
-    case Convene.BeginnerGiveBackSelected:
-      return "新手自选(感恩回馈)";
-    default:
-      return convene;
-  }
-};
 
 export default function GachaCard(props: GachaCardProps) {
   if (props.data.length === 0) {
