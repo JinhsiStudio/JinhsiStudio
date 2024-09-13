@@ -4,6 +4,7 @@ import { GachaLog } from "@/models/gacha/gacha-log";
 import { Card, Statistic, Select, Empty, Flex, Divider } from "antd";
 import GachaAvatarCard from "./gacha-avatar-card";
 import { useState } from "react";
+import { GachaStatisticPullTitle } from "./statistic/gacha-statistic-pull-title";
 interface GachaCardProps {
   data: GachaLog[];
 }
@@ -77,36 +78,38 @@ export default function GachaCard(props: GachaCardProps) {
         classNames={{ body: "h-full" }}
       >
         <Flex vertical={true} className="h-full">
-          <Flex justify="space-around" className="flex-shrink-0">
-            <div>
-              <Statistic
-                title="总抽数"
-                value={currentGacha.items.length}
-                className="flex-shrink-0"
-              />
+          <Flex vertical={true}>
+            <GachaStatisticPullTitle pullCount={currentGacha.items.length} />
+          </Flex>
+          <Flex
+            justify="space-around"
+            vertical={true}
+            className="flex-shrink-0 my-4"
+          >
+            <Flex className="my-4">
               <Statistic
                 title="距离上个五星"
                 value={lastFiveStar}
-                className="flex-shrink-0"
+                className="flex-shrink-0 mx-4"
               />
               <Statistic
                 title="距离上个四星"
                 value={lastFourStar}
-                className="flex-shrink-0"
+                className="flex-shrink-0  mx-4"
               />
-            </div>
-            <div>
+            </Flex>
+            <Flex className="my-4">
               <Statistic
                 title="五星平均抽数"
                 value={averageFiveStar}
-                className="flex-shrink-0"
+                className="flex-shrink-0  mx-4"
               />
               <Statistic
                 title="四星平均抽数"
                 value={averageFourStar}
-                className="flex-shrink-0"
+                className="flex-shrink-0  mx-4"
               />
-            </div>
+            </Flex>
           </Flex>
 
           <Divider className="flex-shrink-0" />
