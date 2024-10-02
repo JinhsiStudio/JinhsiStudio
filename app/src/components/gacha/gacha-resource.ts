@@ -2,8 +2,8 @@ import lingyang from "@/assets/resonators/lingyang.webp";
 import verina from "@/assets/resonators/verina.webp";
 import jinhsi from "@/assets/resonators/jinhsi.webp";
 import changli from "@/assets/resonators/changli.webp";
-import emerald_of_genesis from "@/assets/weapons/emerald_of_genesis.webp";
-import ages_of_harvest from "@/assets/weapons/ages_of_harvest.webp";
+import emeraldOfGenesis from "@/assets/weapons/emerald-of-genesis.webp";
+import agesOfHarvest from "@/assets/weapons/ages-of-harvest.webp";
 import { useTranslation } from "react-i18next";
 
 enum Character {
@@ -40,9 +40,9 @@ export function matchResource(name: string, resourceId: number): string | null {
   }
   switch (resourceId) {
     case Weapon.AgesOfHarvest:
-      return ages_of_harvest;
+      return agesOfHarvest;
     case Weapon.EmeraldOfGenesis:
-      return emerald_of_genesis;
+      return emeraldOfGenesis;
   }
   switch (name) {
     case t("Character.Changli"):
