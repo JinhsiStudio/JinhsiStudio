@@ -35,11 +35,11 @@ export function getConveneName(convene: Convene) {
     case Convene.PermanentWeapon:
       return "武器常驻";
     case Convene.Beginner:
-      return "新手";
+      return "新手角色";
     case Convene.BeginnerSelected:
       return "新手自选";
     case Convene.BeginnerGiveBackSelected:
-      return "新手自选(感恩回馈)";
+      return "感恩回馈";
     default:
       return convene;
   }
