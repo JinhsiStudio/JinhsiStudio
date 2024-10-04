@@ -4,7 +4,7 @@ on:
       - master
     paths-ignore:
       - ".github/workflows/docs.yml"
-      - 'docs/**'
+      - "docs/**"
 permissions:
   contents: write
   pull-requests: write
@@ -15,10 +15,10 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      jinhsi-studio-core--tag_name: ${{ steps.release.outputs.jinhsi-studio-core--tag_name}}
-      jinhsi-studio-core--release_created: ${{ steps.release.outputs.jinhsi-studio-core--release_created}}
-      jinhsi-studio--tag_name: ${{ steps.release.outputs.tag_name}}
-      jinhsi-studio--release_created: ${{ steps.release.outputs.release_created}}
+      jinhsi-studio-core--tag_name: ${{ steps.release.outputs.core--tag_name}}
+      jinhsi-studio-core--release_created: ${{ steps.release.outputs.core--release_created}}
+      jinhsi-studio--tag_name: ${{ steps.release.outputs.app.tag_name}}
+      jinhsi-studio--release_created: ${{ steps.release.outputs.app.release_created}}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -26,6 +26,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: script/release/release-please-config.json
           manifest-file: script/release/.release-please-manifest.json
+      - name: Print release outputs for debugging
+        continue-on-error: true
+        run: |
+          echo "Release outputs:"
+          echo "${{ toJson(steps.release.outputs) }}"
 
   release-app:
     if: ${{needs.release-please.outputs.jinhsi-studio--release_created}}
