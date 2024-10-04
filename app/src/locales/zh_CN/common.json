@@ -19,6 +19,6 @@
   "Gacha-Settings": "唤取设置",
   "Label-Clear-App-Data": "清除应用缓存",
   "Language": "语言",
-  "Message-Please-Input-Valid-Gacha-Url": "请输入有效的唤取查询链接",
+  "Message-Please-Input-Valid-Gacha-Url-Or-Log-Path": "请输入有效的唤取查询链接或客户端日志路径",
   "Message-Please-Input-Gacha-Url": "请输入唤取查询链接"
 }

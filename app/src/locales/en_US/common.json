@@ -19,6 +19,6 @@
   "Gacha-Settings": "Gacha Settings",
   "Label-Clear-App-Data": "Clear App Data",
   "Language": "Language",
-  "Message-Please-Input-Valid-Gacha-Url": "Please input valid Gacha Log URL",
+  "Message-Please-Input-Valid-Gacha-Url-Or-Log-Path": "Please input valid Gacha Log URL or the client log path",
   "Message-Please-Input-Gacha-Url": "Please input Gacha Log URL"
 }

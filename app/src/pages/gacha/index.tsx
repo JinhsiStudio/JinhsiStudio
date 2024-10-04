@@ -62,10 +62,10 @@ export default function GachaPage() {
   );
 
   const handleFetchData = () => {
-    if (gachaSetting?.logPath) {
+    if (gachaSetting?.logPath || gachaSetting?.url) {
       run();
     } else {
-      message.warning(t("Message-Please-Input-Valid-Gacha-Url"));
+      message.warning(t("Message-Please-Input-Valid-Gacha-Url-Or-Log-Path"));
     }
   };
 
