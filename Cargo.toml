@@ -1,6 +1,6 @@
 [workspace]
-members = ["core", "src-tauri"]
+members = ["core", "app/src-tauri"]
 resolver = "2"
 [patch.crates-io]
-jinhsi-core = { path = "./core" }
-jinhsi-studio = { path = "./src-tauri" }
+jinhsi-core = { path = "core" }
+jinhsi-studio = { path = "app/src-tauri" }

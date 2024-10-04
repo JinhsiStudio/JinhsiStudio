@@ -10,12 +10,12 @@ updates:
     schedule:
       interval: "monthly"
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/app"
     schedule:
       interval: "monthly"
   - package-ecosystem: "cargo"
-    directories: 
+    directories:
       - "/core"
-      - "/src-tauri"
+      - "/app/src-tauri"
     schedule:
       interval: "monthly"

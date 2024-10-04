@@ -1,5 +1,5 @@
 import { defineConfig } from "vitepress";
-// import { search as zhCNSearch } from "./zh_cn";
+import { search as zhCNSearch } from "./zh_cn";
 
 // https://vitepress.dev/reference/site-config
 export const shared = defineConfig({
@@ -23,16 +23,16 @@ export const shared = defineConfig({
       { icon: "github", link: "https://github.com/JinhsiStudio/JinhsiStudio" },
     ],
 
-    // search: {
-    //   provider: "algolia",
-    //   options: {
-    //     appId: "622D3TCWD1",
-    //     apiKey: "07f4c417d71b98866a552b6001ef4901",
-    //     indexName: "vitepress",
-    //     locales: {
-    //       ...zhCNSearch,
-    //     },
-    //   },
-    // },
+    search: {
+      provider: "algolia",
+      options: {
+        appId: "6BH6Y4FOJ3",
+        apiKey: "517308f6fa029f2f36da3ab6f72fed23",
+        indexName: "jinhsistudio",
+        locales: {
+          ...zhCNSearch,
+        },
+      },
+    },
   },
 });
