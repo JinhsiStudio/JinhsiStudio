@@ -69,7 +69,7 @@ export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
               <Button
                 icon={<FolderOpenOutlined />}
                 onClick={async () => {
-                  const selected = await open({
+                  const path = await open({
                     directory: false,
                     multiple: false,
                     filters: [
@@ -79,9 +79,9 @@ export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
                       },
                     ],
                   });
-                  if (selected !== null) {
-                    setLogPath(selected.path);
-                    console.log(selected.path);
+                  if (path !== null) {
+                    setLogPath(path);
+                    console.log(path);
                   }
                 }}
               ></Button>

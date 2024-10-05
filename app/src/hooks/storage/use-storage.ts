@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { Store } from "@tauri-apps/plugin-store";
+import { createStore } from "@tauri-apps/plugin-store";
 import { useRequest } from "ahooks";
 
-export const store = new Store("store.bin");
-
+export async function getStorage() {
+  return await createStore("store.bin");
+}
 /**
  *
  * @param key The key to be used in local kv storage.Generally, it's the type name in snake-case style, like `gacha_data`
@@ -18,6 +19,7 @@ export default function useStorage<T>(
   setValue: (value: T) => Promise<void>;
 } {
   const fetchValue = async () => {
+    const store = await getStorage(); //Maybe it's better to use a global object to enhence performance?
     await store.load();
     const value = await store.get<T>(key);
     if (value !== undefined && value !== null) {
@@ -41,6 +43,7 @@ export default function useStorage<T>(
   }, [key]);
 
   const setValue: (value: T) => Promise<void> = async (value) => {
+    const store = await getStorage(); //Maybe it's better to use a global object to enhence performance?
     mutate(value);
     await store.set(key, value);
     await store.save();

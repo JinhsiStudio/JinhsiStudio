@@ -5,7 +5,7 @@ import { defaultLanguage, supportedLanguages } from "@/services/i18n";
 import { useAppSetting } from "@/hooks/storage/setting/use-app-setting";
 import { useRef } from "react";
 import { AppSetting, LanguageSetting } from "@/models/setting/app-setting";
-import { store } from "@/hooks/storage/use-storage";
+import { getStorage } from "@/hooks/storage/use-storage";
 
 export default function AppSettingList() {
   const { t, i18n } = useTranslation();
@@ -48,6 +48,7 @@ export default function AppSettingList() {
           danger
           onClick={async () => {
             //TODO show a confirming modal to double check
+            const store = await getStorage();
             await store.clear();
             await store.save();
           }}
