@@ -27,7 +27,7 @@ export const shared = defineConfig({
       provider: "algolia",
       options: {
         appId: "6BH6Y4FOJ3",
-        apiKey: "517308f6fa029f2f36da3ab6f72fed23",
+        apiKey: "e037cbcea8cd19c6e712cfc240ea6a49",
         indexName: "jinhsistudio",
         locales: {
           ...zhCNSearch,
