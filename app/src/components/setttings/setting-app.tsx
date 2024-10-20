@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { SettingItem, SettingList } from "./mod/setting-component";
-import { Button, Select } from "antd";
+import { Select } from "antd";
+import { Button } from "@/components/ui/button";
 import { defaultLanguage, supportedLanguages } from "@/services/i18n";
 import { useAppSetting } from "@/hooks/storage/setting/use-app-setting";
 import { useRef } from "react";
@@ -44,8 +45,7 @@ export default function AppSettingList() {
       </SettingItem>
       <SettingItem label={t("Label-Clear-App-Data")}>
         <Button
-          type="primary"
-          danger
+          variant="destructive"
           onClick={async () => {
             //TODO show a confirming modal to double check
             const store = await getStorage();

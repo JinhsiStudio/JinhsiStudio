@@ -2,7 +2,8 @@ import { DialogRef } from "@/components/base/base-dialog";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
 import { GachaSetting } from "@/models/gacha/gacha-setting";
 import { useLockFn } from "ahooks";
-import { Button, Input, List, message, Modal, Space, Typography } from "antd";
+import { Input, List, message, Modal, Space, Typography } from "antd";
+import { Button } from "@/components/ui/button";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";
@@ -67,7 +68,8 @@ export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
             <Space.Compact direction="horizontal" style={{ width: "100%" }}>
               <Input variant="outlined" value={logPath} />
               <Button
-                icon={<FolderOpenOutlined />}
+                variant="outline"
+                size="icon"
                 onClick={async () => {
                   const path = await open({
                     directory: false,
@@ -84,7 +86,9 @@ export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
                     console.log(path);
                   }
                 }}
-              ></Button>
+              >
+                <FolderOpenOutlined />
+              </Button>
             </Space.Compact>
           </Space>
         </List.Item>
