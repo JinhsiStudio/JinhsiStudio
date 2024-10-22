@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface AppSidebarProps {
   key: string;
@@ -22,9 +23,9 @@ interface AppSidebarProps {
 
 export function AppSidebar() {
   const navigate = useNavigate();
-  // const [selectedKeys, setSelectedKeys] = useState(["Home"]);
-  // const { storedValue: appSetting } = useAppSetting();
-  const handleMenuClick = (_key: string, path: string) => {
+  const [selectedKey, setSelectedKey] = useState("Home");
+  const handleMenuClick = (key: string, path: string) => {
+    setSelectedKey(key);
     navigate(path);
   };
   const { t } = useTranslation();
@@ -74,7 +75,10 @@ export function AppSidebar() {
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.key}>
-            <SidebarMenuButton onClick={() => item.onClick?.(item.key)}>
+            <SidebarMenuButton
+              isActive={selectedKey === item.key}
+              onClick={() => item.onClick?.(item.key)}
+            >
               <item.icon />
               <span>{item.label}</span>
             </SidebarMenuButton>
