@@ -55,7 +55,7 @@ export function AppSidebar() {
       label: t("Label-Data-Character"),
       icon: Sword,
       onClick: (key: string) => {
-        handleMenuClick(key, "/data/character");
+        handleMenuClick(key, "/characterData");
       },
     },
   ];

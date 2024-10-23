@@ -27,7 +27,7 @@ const routers = [
   },
   {
     label: "Label-Data-Character",
-    path: "/data/character",
+    path: "/characterData",
     element: <CharacterDataPage></CharacterDataPage>,
     errorElement: <RouteErrorPage></RouteErrorPage>,
   },
