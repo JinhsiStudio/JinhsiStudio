@@ -12,18 +12,7 @@ pub(crate) async fn get_gachalog_from_url(url: String) -> Result<Vec<GachaLog>, 
 
 #[tauri::command]
 pub(crate) async fn get_gachalog_from_local(path: Option<String>) -> Result<Vec<GachaLog>, String> {
-    let path = {
-        if let Some(s) = &path {
-            if let Ok(pb) = PathBuf::from_str(s) {
-                Some(pb)
-            } else {
-                log::error!("invalid path {:?}", path);
-                None
-            }
-        } else {
-            None
-        }
-    };
+    let path = path.and_then(|s| PathBuf::from_str(&s).ok());
     let source = LocalGachaSource::new(path);
     source.get_gacha_data().await.map_err(handle_error)
 }
@@ -62,18 +51,7 @@ pub(crate) async fn update_gachalog_from_local(
     data: Option<Vec<GachaLog>>,
     path: Option<String>,
 ) -> Result<Vec<GachaLog>, String> {
-    let path = {
-        if let Some(s) = &path {
-            if let Ok(pb) = PathBuf::from_str(s) {
-                Some(pb)
-            } else {
-                log::error!("invalid path {:?}", path);
-                None
-            }
-        } else {
-            None
-        }
-    };
+    let path = path.and_then(|s| PathBuf::from_str(&s).ok());
     let source = LocalGachaSource::new(path);
     let new_data = source.get_gacha_data().await.map_err(handle_error)?;
     if let Some(data) = data {

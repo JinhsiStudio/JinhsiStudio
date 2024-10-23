@@ -1,5 +1,6 @@
 import React from "react";
-import { List, Spin, Button } from "antd";
+import { List, Spin } from "antd";
+import { Button } from "@/components/ui/button";
 import { LoadingOutlined } from "@ant-design/icons";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
