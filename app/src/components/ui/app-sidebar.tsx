@@ -1,4 +1,4 @@
-import { ChartPie, Home, Settings, Sword } from "lucide-react";
+import { ChartPie, Home, Settings } from "lucide-react";
 
 import {
   Sidebar,
@@ -49,16 +49,6 @@ export function AppSidebar() {
       },
     },
   ];
-  const dataItems: AppSidebarProps[] = [
-    {
-      key: "CharacterData",
-      label: t("Label-Data-Character"),
-      icon: Sword,
-      onClick: (key: string) => {
-        handleMenuClick(key, "/characterData");
-      },
-    },
-  ];
   const profileItems: AppSidebarProps[] = [
     {
       key: "Setting",
@@ -100,12 +90,6 @@ export function AppSidebar() {
           <SidebarGroupLabel>{t("Label-Tools")}</SidebarGroupLabel>
           <SidebarGroupContent>
             {renderMenuItems(toolItems)}
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>{t("Label-Data")}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            {renderMenuItems(dataItems)}
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
