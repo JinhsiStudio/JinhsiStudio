@@ -3,7 +3,7 @@ import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
 import { GachaSetting } from "@/models/gacha/gacha-setting";
 import { useLockFn } from "ahooks";
 import { Input, List, message, Modal, Space, Typography } from "antd";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/base/button";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";

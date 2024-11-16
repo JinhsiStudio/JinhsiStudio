@@ -6,8 +6,8 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/ui/app-sidebar";
+} from "@/components/ui/base/sidebar";
+import { AppSidebar } from "@/components/ui/base/app-sidebar";
 
 export const RootLayoutPage = () => {
   const { i18n } = useTranslation();

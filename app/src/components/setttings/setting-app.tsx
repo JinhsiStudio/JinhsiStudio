@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { SettingItem, SettingList } from "./mod/setting-component";
 import { Select } from "antd";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/base/button";
 import { defaultLanguage, supportedLanguages } from "@/services/i18n";
 import { useAppSetting } from "@/hooks/storage/setting/use-app-setting";
 import { useRef } from "react";

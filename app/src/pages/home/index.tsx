@@ -1,4 +1,4 @@
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/base/separator";
 
 export default function HomePage() {
   return (
