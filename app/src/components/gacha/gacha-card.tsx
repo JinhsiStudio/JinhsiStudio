@@ -1,10 +1,11 @@
 import { getConveneName } from "@/models/gacha/convene";
 import { GachaItem } from "@/models/gacha/gacha-item";
 import { GachaLog } from "@/models/gacha/gacha-log";
-import { Card, Statistic, Select, Empty, Flex, Divider } from "antd";
+import { Card, Statistic, Empty, Flex, Divider } from "antd";
 import GachaAvatarCard from "./gacha-avatar-card";
 import { useState } from "react";
 import { GachaStatisticPullTitle } from "./statistic/gacha-statistic-pull-title";
+import { SingleSelect } from "../ui/select";
 interface GachaCardProps {
   data: GachaLog[];
 }
@@ -60,7 +61,7 @@ export default function GachaCard(props: GachaCardProps) {
 
     const titleItems = props.data.map((value: GachaLog, index: number) => {
       return {
-        value: index,
+        value: index.toString(),
         label: getConveneName(value.convene),
       };
     });
@@ -69,11 +70,13 @@ export default function GachaCard(props: GachaCardProps) {
         className="h-full"
         title={getConveneName(currentGacha.convene)}
         extra={
-          <Select
+          <SingleSelect
             options={titleItems}
-            onChange={(value) => setCurrentGacha(props.data[value])}
-            defaultValue={0}
-          ></Select>
+            onValueChange={(value: string) =>
+              setCurrentGacha(props.data[Number.parseInt(value)])
+            }
+            defaultValue={"0"}
+          ></SingleSelect>
         }
         classNames={{ body: "h-full" }}
       >
