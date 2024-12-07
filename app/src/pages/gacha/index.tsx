@@ -1,6 +1,10 @@
 import { useRef } from "react";
 import { useRequest } from "ahooks";
-import { Spin, FloatButton } from "antd";
+import { Spinner } from "@/components/ui/base/spinner";
+import {
+  FloatButton,
+  FloatButtonGroup,
+} from "@/components/ui/base/float-button";
 import {
   //   getGachaLogFromLocal,
   //   getGachaLogFromUrl,
@@ -9,12 +13,7 @@ import {
 } from "@/services/invokes/gacha";
 import GachaCard from "@/components/gacha/gacha-card";
 import { GachaLog } from "@/models/gacha/gacha-log";
-import {
-  LoadingOutlined,
-  MoreOutlined,
-  ReloadOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { MoreHorizontal, RefreshCw, Settings } from "lucide-react";
 import { GachaSettingModal } from "@/components/gacha/setting/gacha-setting";
 import { DialogRef } from "@/components/base/base-dialog";
 import { useTranslation } from "react-i18next";
@@ -85,27 +84,23 @@ export default function GachaPage() {
   return (
     <div className="h-full">
       <GachaSettingModal ref={settingRef}></GachaSettingModal>
-      <Spin
-        spinning={loading}
-        size="large"
-        indicator={<LoadingOutlined />}
-        fullscreen
-      />
-      <GachaCard
-        data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
-      />
-      <FloatButton.Group trigger="hover" type="primary" icon={<MoreOutlined />}>
+      <Spinner spinning={loading} fullscreen size="large">
+        <GachaCard
+          data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
+        />
+      </Spinner>
+      <FloatButtonGroup icon={<MoreHorizontal />}>
         <FloatButton
-          icon={<ReloadOutlined />}
+          icon={<RefreshCw />}
           onClick={handleFetchData}
           tooltip={t("Label-Fetch-Data")}
         />
         <FloatButton
-          icon={<SettingOutlined />}
+          icon={<Settings />}
           onClick={() => settingRef.current?.open()}
           tooltip={t("Label-Gacha-Setting")}
         />
-      </FloatButton.Group>
+      </FloatButtonGroup>
     </div>
   );
 }
