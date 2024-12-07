@@ -8,6 +8,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/base/sidebar";
 import { AppSidebar } from "@/components/ui/base/app-sidebar";
+import { Toaster } from "@/components/ui/base/toaster";
 
 export const RootLayoutPage = () => {
   const { i18n } = useTranslation();
@@ -26,6 +27,7 @@ export const RootLayoutPage = () => {
       <SidebarInset>
         <SidebarTrigger />
         <AppRoutes />
+        <Toaster />
       </SidebarInset>
     </SidebarProvider>
   );

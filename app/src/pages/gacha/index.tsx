@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useRequest } from "ahooks";
-import { message, Spin, FloatButton } from "antd";
+import { Spin, FloatButton } from "antd";
 import {
   //   getGachaLogFromLocal,
   //   getGachaLogFromUrl,
@@ -25,6 +25,7 @@ import {
   IGachaLogArchive,
 } from "@/models/gacha/dao/gacha-archive";
 import { GachaLogDao } from "@/models/gacha/dao/gacha-log-dao";
+import { useToast } from "@/hooks/use-toast";
 
 const DEAFULT_UID = 0; //TODO remove it
 
@@ -48,6 +49,7 @@ export default function GachaPage() {
   const { storedValue: gachaArchive, setValue: setGachaArchive } =
     useGachaArchive(DEAFULT_UID);
   const settingRef = useRef<DialogRef>(null);
+  const { toast } = useToast();
 
   const { loading, run } = useRequest(
     () => updater(gachaSetting?.url, gachaSetting?.logPath, gachaArchive),
@@ -65,13 +67,19 @@ export default function GachaPage() {
     if (gachaSetting?.logPath || gachaSetting?.url) {
       run();
     } else {
-      message.warning(t("Message-Please-Input-Valid-Gacha-Url-Or-Log-Path"));
+      toast({
+        variant: "destructive",
+        title: t("Message-Please-Input-Valid-Gacha-Url-Or-Log-Path"),
+      });
     }
   };
 
   const throwErrorMessge = (error: Error) => {
     console.error("Failed to fetch gacha data with error: ", error);
-    message.error(t("Message-Failed-To-Load-Gacha-Data", { ns: "message" }));
+    toast({
+      variant: "destructive",
+      title: t("Message-Failed-To-Load-Gacha-Data", { ns: "message" }),
+    });
   };
 
   return (
