@@ -2,8 +2,9 @@ import { DialogRef } from "@/components/base/base-dialog";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
 import { GachaSetting } from "@/models/gacha/gacha-setting";
 import { useLockFn } from "ahooks";
-import { Input, List, message, Modal, Space, Typography } from "antd";
+import { List, message, Modal, Space, Typography } from "antd";
 import { Button } from "@/components/ui/base/button";
+import { Input } from "@/components/ui/base/input";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";
@@ -66,7 +67,7 @@ export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
               {t("Label-Gacha-Log-Path")}
             </Typography.Title>
             <Space.Compact direction="horizontal" style={{ width: "100%" }}>
-              <Input variant="outlined" value={logPath} />
+              <Input value={logPath} />
               <Button
                 variant="outline"
                 size="icon"
