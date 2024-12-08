@@ -82,13 +82,12 @@ export default function GachaPage() {
   };
 
   return (
-    <div className="h-full">
+    <div>
       <GachaSettingDialog ref={settingRef}></GachaSettingDialog>
-      <Spinner spinning={loading} fullscreen size="large">
-        <GachaCard
-          data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
-        />
-      </Spinner>
+      <Spinner spinning={loading} fullscreen size="large" />
+      <GachaCard
+        data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
+      />
       <FloatButtonGroup icon={<MoreHorizontal />}>
         <FloatButton
           icon={<RefreshCw />}
