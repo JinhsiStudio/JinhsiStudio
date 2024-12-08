@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { QuestionOutlined } from "@ant-design/icons";
+import { HelpCircle } from "lucide-react";
 import { matchResource } from "./gacha-resource";
 
 interface gachaAvatarCardProps {
@@ -23,7 +23,7 @@ export default function GachaAvatarCard(props: gachaAvatarCardProps) {
   return (
     <div className="w-16 h-24 flex flex-col items-center justify-center rounded-md overflow-hidden border border-gray-200 mt-1 mb-1 mx-1">
       {imageError || !imagePath ? (
-        <QuestionOutlined className="text-gray-400 text-base p-px" />
+        <HelpCircle className="text-gray-400 w-6 h-6" />
       ) : (
         <img
           src={imagePath}

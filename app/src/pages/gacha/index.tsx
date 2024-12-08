@@ -1,6 +1,10 @@
 import { useRef } from "react";
 import { useRequest } from "ahooks";
-import { message, Spin, FloatButton } from "antd";
+import { Spinner } from "@/components/ui/base/spinner";
+import {
+  FloatButton,
+  FloatButtonGroup,
+} from "@/components/ui/base/float-button";
 import {
   //   getGachaLogFromLocal,
   //   getGachaLogFromUrl,
@@ -9,13 +13,8 @@ import {
 } from "@/services/invokes/gacha";
 import GachaCard from "@/components/gacha/gacha-card";
 import { GachaLog } from "@/models/gacha/gacha-log";
-import {
-  LoadingOutlined,
-  MoreOutlined,
-  ReloadOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { GachaSettingModal } from "@/components/gacha/setting/gacha-setting";
+import { MoreHorizontal, RefreshCw, Settings } from "lucide-react";
+import { GachaSettingDialog } from "@/components/gacha/setting/gacha-setting";
 import { DialogRef } from "@/components/base/base-dialog";
 import { useTranslation } from "react-i18next";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
@@ -25,6 +24,7 @@ import {
   IGachaLogArchive,
 } from "@/models/gacha/dao/gacha-archive";
 import { GachaLogDao } from "@/models/gacha/dao/gacha-log-dao";
+import { useToast } from "@/hooks/use-toast";
 
 const DEAFULT_UID = 0; //TODO remove it
 
@@ -48,6 +48,7 @@ export default function GachaPage() {
   const { storedValue: gachaArchive, setValue: setGachaArchive } =
     useGachaArchive(DEAFULT_UID);
   const settingRef = useRef<DialogRef>(null);
+  const { toast } = useToast();
 
   const { loading, run } = useRequest(
     () => updater(gachaSetting?.url, gachaSetting?.logPath, gachaArchive),
@@ -65,39 +66,41 @@ export default function GachaPage() {
     if (gachaSetting?.logPath || gachaSetting?.url) {
       run();
     } else {
-      message.warning(t("Message-Please-Input-Valid-Gacha-Url-Or-Log-Path"));
+      toast({
+        variant: "destructive",
+        title: t("Message-Please-Input-Valid-Gacha-Url-Or-Log-Path"),
+      });
     }
   };
 
   const throwErrorMessge = (error: Error) => {
     console.error("Failed to fetch gacha data with error: ", error);
-    message.error(t("Message-Failed-To-Load-Gacha-Data", { ns: "message" }));
+    toast({
+      variant: "destructive",
+      title: t("Message-Failed-To-Load-Gacha-Data", { ns: "message" }),
+    });
   };
 
   return (
     <div className="h-full">
-      <GachaSettingModal ref={settingRef}></GachaSettingModal>
-      <Spin
-        spinning={loading}
-        size="large"
-        indicator={<LoadingOutlined />}
-        fullscreen
-      />
-      <GachaCard
-        data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
-      />
-      <FloatButton.Group trigger="hover" type="primary" icon={<MoreOutlined />}>
+      <GachaSettingDialog ref={settingRef}></GachaSettingDialog>
+      <Spinner spinning={loading} fullscreen size="large">
+        <GachaCard
+          data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
+        />
+      </Spinner>
+      <FloatButtonGroup icon={<MoreHorizontal />}>
         <FloatButton
-          icon={<ReloadOutlined />}
+          icon={<RefreshCw />}
           onClick={handleFetchData}
           tooltip={t("Label-Fetch-Data")}
         />
         <FloatButton
-          icon={<SettingOutlined />}
+          icon={<Settings />}
           onClick={() => settingRef.current?.open()}
           tooltip={t("Label-Gacha-Setting")}
         />
-      </FloatButton.Group>
+      </FloatButtonGroup>
     </div>
   );
 }

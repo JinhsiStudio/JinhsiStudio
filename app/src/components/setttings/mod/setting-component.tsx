@@ -1,6 +1,7 @@
 import React from "react";
-import { List, Spin, Button } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Spinner } from "@/components/ui/base/spinner";
+import { Button } from "@/components/ui/base/button";
+import { List } from "@/components/ui/base/list";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 const isAsyncFunction = (func: Function) => {
@@ -20,9 +21,9 @@ const SettingItem: React.FC<ItemProps> = (props) => {
   const clickable = !!onClick;
 
   const primary = (
-    <div style={{ display: "flex", alignItems: "center", fontSize: "1rem" }}>
+    <div className="flex items-center text-base">
       <span>{label}</span>
-      {extra && <div style={{ marginLeft: "auto" }}>{extra}</div>}
+      {extra && <div className="ml-auto">{extra}</div>}
     </div>
   );
 
@@ -44,21 +45,27 @@ const SettingItem: React.FC<ItemProps> = (props) => {
       <Button
         onClick={handleClick}
         disabled={isLoading}
-        style={{ width: "100%" }}
+        className="w-full"
+        variant="ghost"
       >
-        <List.Item.Meta title={primary} description={secondary} />
-        {isLoading ? (
-          <Spin
-            indicator={<LoadingOutlined style={{ color: "blue" }} spin />}
-          />
-        ) : (
-          <LoadingOutlined />
-        )}
+        <div className="flex w-full items-center">
+          <div className="flex-1">
+            {primary}
+            {secondary && (
+              <div className="text-sm text-muted-foreground">{secondary}</div>
+            )}
+          </div>
+          {isLoading && <Spinner size="small" className="ml-2" />}
+        </div>
       </Button>
     </List.Item>
   ) : (
-    <List.Item>
-      <List.Item.Meta title={primary} description={secondary} />
+    <List.Item
+      meta={{
+        title: primary,
+        description: secondary,
+      }}
+    >
       {children}
     </List.Item>
   );
@@ -70,11 +77,7 @@ interface SettingListProps {
 }
 
 const SettingList: React.FC<SettingListProps> = (props) => (
-  <List
-    header={
-      <div style={{ fontSize: "1rem", fontWeight: "700" }}>{props.title}</div>
-    }
-  >
+  <List header={<div className="text-base font-bold">{props.title}</div>}>
     {props.children}
   </List>
 );

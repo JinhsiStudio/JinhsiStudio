@@ -2,13 +2,24 @@ import { DialogRef } from "@/components/base/base-dialog";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
 import { GachaSetting } from "@/models/gacha/gacha-setting";
 import { useLockFn } from "ahooks";
-import { Button, Input, List, message, Modal, Space, Typography } from "antd";
+import { Button } from "@/components/ui/base/button";
+import { Input } from "@/components/ui/base/input";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";
 import { FolderOpenOutlined } from "@ant-design/icons";
+import { useToast } from "@/hooks/use-toast";
+import { List } from "@/components/ui/base/list";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/base/dialog";
+import { Typography } from "@/components/ui/base/typography";
 
-export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
+export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
   const { t } = useTranslation();
   const [isOpen, setOpen] = useState<boolean>(false);
   useImperativeHandle(ref, () => ({
@@ -23,74 +34,87 @@ export const GachaSettingModal = forwardRef<DialogRef>((_props, ref) => {
     useGachaSetting();
   const [gachaUrl, setGachaUrl] = useState(gachaSetting?.url || "");
   const [logPath, setLogPath] = useState(gachaSetting?.logPath || "");
+  const { toast } = useToast();
+
   const onSave = useLockFn(async () => {
     try {
-      message.success(
-        t("Message-Modify-Gacha-Url-Success", { ns: "message" }),
-        1,
-      );
+      toast({
+        title: t("Message-Modify-Gacha-Url-Success", { ns: "message" }),
+      });
       await setGachaSetting(new GachaSetting(gachaUrl, logPath));
       setOpen(false);
     } catch (err: unknown) {
-      message.error(t("Message-Modify-Gacha-Url-Fail", { ns: "message" }), 3);
+      toast({
+        variant: "destructive",
+        title: t("Message-Modify-Gacha-Url-Fail", { ns: "message" }),
+      });
       console.error("Failed to update gacha url", (err as Error).message);
     }
   });
+
   return (
-    <Modal
-      title={t("Gacha-Settings")}
-      open={isOpen}
-      onOk={onSave}
-      onClose={() => setOpen(false)}
-      onCancel={() => setOpen(false)}
-      okText={t("Label-Save")}
-      cancelText={t("Label-Cancel")}
-    >
-      <List>
-        <List.Item>
-          <div style={{ width: "100%" }}>
-            <Typography.Title level={5}>
-              {t("Label-Gacha-Url")}
-            </Typography.Title>
-            <Input
-              placeholder={t("Message-Please-Input-Gacha-Url")}
-              value={gachaUrl}
-              onChange={(e) => setGachaUrl(e.target.value)}
-            />
-          </div>
-        </List.Item>
-        <List.Item>
-          <Space direction="vertical" style={{ width: "100%" }}>
-            <Typography.Title level={5}>
-              {t("Label-Gacha-Log-Path")}
-            </Typography.Title>
-            <Space.Compact direction="horizontal" style={{ width: "100%" }}>
-              <Input variant="outlined" value={logPath} />
-              <Button
-                icon={<FolderOpenOutlined />}
-                onClick={async () => {
-                  const path = await open({
-                    directory: false,
-                    multiple: false,
-                    filters: [
-                      {
-                        name: "Log File",
-                        extensions: ["txt", "log"],
-                      },
-                    ],
-                  });
-                  if (path !== null) {
-                    setLogPath(path);
-                    console.log(path);
-                  }
-                }}
-              ></Button>
-            </Space.Compact>
-          </Space>
-        </List.Item>
-      </List>
-    </Modal>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("Gacha-Settings")}</DialogTitle>
+        </DialogHeader>
+
+        <List>
+          <List.Item>
+            <div className="flex flex-col w-full gap-2">
+              <Typography.Title level={5}>
+                {t("Label-Gacha-Url")}
+              </Typography.Title>
+              <Input
+                placeholder={t("Message-Please-Input-Gacha-Url")}
+                value={gachaUrl}
+                onChange={(e) => setGachaUrl(e.target.value)}
+              />
+            </div>
+          </List.Item>
+          <List.Item>
+            <div className="flex flex-col w-full gap-2">
+              <Typography.Title level={5}>
+                {t("Label-Gacha-Log-Path")}
+              </Typography.Title>
+              <div className="flex w-full gap-2">
+                <Input value={logPath} className="flex-1" />
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={async () => {
+                    const path = await open({
+                      directory: false,
+                      multiple: false,
+                      filters: [
+                        {
+                          name: "Log File",
+                          extensions: ["txt", "log"],
+                        },
+                      ],
+                    });
+                    if (path !== null) {
+                      setLogPath(path);
+                      console.log(path);
+                    }
+                  }}
+                >
+                  <FolderOpenOutlined />
+                </Button>
+              </div>
+            </div>
+          </List.Item>
+        </List>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            {t("Label-Cancel")}
+          </Button>
+          <Button onClick={onSave}>{t("Label-Save")}</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 });
 
-GachaSettingModal.displayName = "GachaSettingModal";
+GachaSettingDialog.displayName = "GachaSettingDialog";

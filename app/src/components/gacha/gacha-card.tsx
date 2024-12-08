@@ -1,10 +1,18 @@
 import { getConveneName } from "@/models/gacha/convene";
 import { GachaItem } from "@/models/gacha/gacha-item";
 import { GachaLog } from "@/models/gacha/gacha-log";
-import { Card, Statistic, Select, Empty, Flex, Divider } from "antd";
-import GachaAvatarCard from "./gacha-avatar-card";
 import { useState } from "react";
+import GachaAvatarCard from "./gacha-avatar-card";
 import { GachaStatisticPullTitle } from "./statistic/gacha-statistic-pull-title";
+import { SingleSelect } from "../ui/select";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/base/card";
+import { Separator } from "@/components/ui/base/separator";
+
 interface GachaCardProps {
   data: GachaLog[];
 }
@@ -36,7 +44,11 @@ function sum(arr: number[]): number {
 
 export default function GachaCard(props: GachaCardProps) {
   if (props.data.length === 0) {
-    return <Empty></Empty>;
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-muted-foreground">暂无数据</p>
+      </div>
+    );
   } else {
     const [currentGacha, setCurrentGacha] = useState(props.data[0]);
 
@@ -49,7 +61,6 @@ export default function GachaCard(props: GachaCardProps) {
     const fiveStarItems = currentGacha.items.filter(
       (item) => item.rarity === 5,
     );
-    //   const fourStarItems = items.filter((item) => item.rarity === 4);
 
     const averageFiveStar = fiveStarDistances.length
       ? (sum(fiveStarDistances) / fiveStarDistances.length).toFixed(2)
@@ -60,74 +71,111 @@ export default function GachaCard(props: GachaCardProps) {
 
     const titleItems = props.data.map((value: GachaLog, index: number) => {
       return {
-        value: index,
+        value: index.toString(),
         label: getConveneName(value.convene),
       };
     });
-    return (
-      <Card
-        className="h-full"
-        title={getConveneName(currentGacha.convene)}
-        extra={
-          <Select
-            options={titleItems}
-            onChange={(value) => setCurrentGacha(props.data[value])}
-            defaultValue={0}
-          ></Select>
-        }
-        classNames={{ body: "h-full" }}
-      >
-        <Flex vertical={true} className="h-full">
-          <Flex vertical={true}>
-            <GachaStatisticPullTitle pullCount={currentGacha.items.length} />
-          </Flex>
-          <Flex
-            justify="space-around"
-            vertical={true}
-            className="flex-shrink-0 my-4"
-          >
-            <Flex className="my-4">
-              <Statistic
-                title="距离上个五星"
-                value={lastFiveStar}
-                className="flex-shrink-0 mx-4"
-              />
-              <Statistic
-                title="距离上个四星"
-                value={lastFourStar}
-                className="flex-shrink-0  mx-4"
-              />
-            </Flex>
-            <Flex className="my-4">
-              <Statistic
-                title="五星平均抽数"
-                value={averageFiveStar}
-                className="flex-shrink-0  mx-4"
-              />
-              <Statistic
-                title="四星平均抽数"
-                value={averageFourStar}
-                className="flex-shrink-0  mx-4"
-              />
-            </Flex>
-          </Flex>
 
-          <Divider className="flex-shrink-0" />
-          <Flex
-            justify="flex-start"
-            wrap="wrap"
-            className="flex-shrink overflow-auto"
-          >
-            {fiveStarItems.map((item, index) => (
-              <GachaAvatarCard
-                key={index}
-                number={fiveStarDistances[index]}
-                name={item.name}
-                resourceId={item.id}
+    return (
+      <Card className="h-full bg-card">
+        <CardHeader className="pb-2">
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-xl font-medium">
+              {getConveneName(currentGacha.convene)}
+            </CardTitle>
+            <div className="w-fit min-w-32">
+              <SingleSelect
+                options={titleItems}
+                onValueChange={(value: string) =>
+                  setCurrentGacha(props.data[Number.parseInt(value)])
+                }
+                defaultValue={"0"}
               />
-            ))}
-          </Flex>
-        </Flex>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="h-[calc(100%-4rem)] flex flex-col space-y-6">
+          {/* 总抽数展示 */}
+          <div className="flex justify-center">
+            <GachaStatisticPullTitle pullCount={currentGacha.items.length} />
+          </div>
+
+          {/* 统计数据卡片 */}
+          <div className="grid grid-cols-2 gap-6">
+            {/* 五星统计 */}
+            <div className="relative overflow-hidden rounded-xl border bg-background/10 backdrop-blur-lg p-6 shadow-sm">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent" />
+              <div className="relative">
+                <h3 className="text-lg font-semibold text-foreground">
+                  五星统计
+                </h3>
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      距离上个五星
+                    </p>
+                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                      {lastFiveStar}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      平均抽数
+                    </p>
+                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                      {averageFiveStar}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 四星统计 */}
+            <div className="relative overflow-hidden rounded-xl border bg-background/10 backdrop-blur-lg p-6 shadow-sm">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent" />
+              <div className="relative">
+                <h3 className="text-lg font-semibold text-foreground">
+                  四星统计
+                </h3>
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      距离上个四星
+                    </p>
+                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                      {lastFourStar}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      平均抽数
+                    </p>
+                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                      {averageFourStar}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 五星角色展示 */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-medium">五星获取历史</h3>
+            <div className="flex flex-wrap gap-2 overflow-auto p-2">
+              {fiveStarItems.map((item, index) => (
+                <GachaAvatarCard
+                  key={index}
+                  number={fiveStarDistances[index]}
+                  name={item.name}
+                  resourceId={item.id}
+                />
+              ))}
+            </div>
+          </div>
+        </CardContent>
       </Card>
     );
   }
