@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/JinhsiStudio/JinhsiStudio/compare/docs-v0.0.2...docs-v0.0.3) (2024-12-08)
+
+
+### Bug Fixes
+
+* **doc:** algolia doc search config ([#93](https://github.com/JinhsiStudio/JinhsiStudio/issues/93)) ([17dd92a](https://github.com/JinhsiStudio/JinhsiStudio/commit/17dd92a0c3c922c6fa3ece060f41174c68b1b6df))
+
 ## [0.0.2](https://github.com/JinhsiStudio/JinhsiStudio/compare/docs-v0.0.1...docs-v0.0.2) (2024-10-04)
 
 
