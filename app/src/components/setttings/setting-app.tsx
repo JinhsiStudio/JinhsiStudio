@@ -45,7 +45,7 @@ export default function AppSettingList() {
             variant="destructive"
             onClick={async () => {
               //TODO show a confirming modal to double check
-              const store = await getStorage();
+              const store = getStorage();
               await store.clear();
               await store.save();
             }}
