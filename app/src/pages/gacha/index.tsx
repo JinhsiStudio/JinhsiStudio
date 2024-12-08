@@ -14,7 +14,7 @@ import {
 import GachaCard from "@/components/gacha/gacha-card";
 import { GachaLog } from "@/models/gacha/gacha-log";
 import { MoreHorizontal, RefreshCw, Settings } from "lucide-react";
-import { GachaSettingModal } from "@/components/gacha/setting/gacha-setting";
+import { GachaSettingDialog } from "@/components/gacha/setting/gacha-setting";
 import { DialogRef } from "@/components/base/base-dialog";
 import { useTranslation } from "react-i18next";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
@@ -83,7 +83,7 @@ export default function GachaPage() {
 
   return (
     <div className="h-full">
-      <GachaSettingModal ref={settingRef}></GachaSettingModal>
+      <GachaSettingDialog ref={settingRef}></GachaSettingDialog>
       <Spinner spinning={loading} fullscreen size="large">
         <GachaCard
           data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
