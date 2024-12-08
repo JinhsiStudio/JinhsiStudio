@@ -9,7 +9,7 @@ permissions:
   contents: write
   pull-requests: write
 
-name: release-please
+name: release
 
 jobs:
   release-please:
@@ -82,8 +82,19 @@ jobs:
         run: pnpm lint
       - name: Format check (Rust)
         run: cargo fmt --check && cargo clippy -- -D warnings
+      - name: Get ReleaseId
+        id: getReleaseId
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data } = await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+               tag: ${{ needs.release-please.outputs.jinhsi-studio--tag_name }},
+            })
+            return data.id
       - name: Tauri build
-        uses: Chiichen/tauri-action@feat-upload-with-tag-name
+        uses: tauri-apps/tauri-action@v0
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -92,4 +103,4 @@ jobs:
           projectPath: ./app
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}  --config src-tauri/tauri.conf.release.json
-          tagName: ${{ needs.release-please.outputs.jinhsi-studio--tag_name }}
+          releaseId: ${{ steps.getReleaseId.outputs.releaseId }}
