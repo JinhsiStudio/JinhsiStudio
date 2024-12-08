@@ -103,4 +103,4 @@ jobs:
           projectPath: ./app
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}  --config src-tauri/tauri.conf.release.json
-          releaseId: ${{ steps.getReleaseId.outputs.releaseId }}
+          releaseId: ${{ steps.getReleaseId.outputs.result }}
