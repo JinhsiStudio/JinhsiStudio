@@ -90,7 +90,7 @@ jobs:
             const { data } = await github.rest.repos.getReleaseByTag({
               owner: context.repo.owner,
               repo: context.repo.repo,
-               tag: ${{ needs.release-please.outputs.jinhsi-studio--tag_name }},
+              tag: "${{ needs.release-please.outputs.jinhsi-studio--tag_name }}",
             })
             return data.id
       - name: Tauri build
