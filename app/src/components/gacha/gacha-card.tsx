@@ -77,7 +77,7 @@ export default function GachaCard(props: GachaCardProps) {
     });
 
     return (
-      <Card className="h-full bg-card">
+      <Card className="h-full bg-card mx-4">
         <CardHeader className="pb-2">
           <div className="flex justify-between items-center">
             <CardTitle className="text-xl font-medium">
@@ -103,8 +103,7 @@ export default function GachaCard(props: GachaCardProps) {
           {/* 统计数据卡片 */}
           <div className="grid grid-cols-2 gap-6">
             {/* 五星统计 */}
-            <div className="relative overflow-hidden rounded-xl border bg-background/10 backdrop-blur-lg p-6 shadow-sm">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent" />
+            <div className="rounded-xl border bg-background p-6 shadow-sm">
               <div className="relative">
                 <h3 className="text-lg font-semibold text-foreground">
                   五星统计
@@ -131,8 +130,7 @@ export default function GachaCard(props: GachaCardProps) {
             </div>
 
             {/* 四星统计 */}
-            <div className="relative overflow-hidden rounded-xl border bg-background/10 backdrop-blur-lg p-6 shadow-sm">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent" />
+            <div className="rounded-xl border bg-background p-6 shadow-sm">
               <div className="relative">
                 <h3 className="text-lg font-semibold text-foreground">
                   四星统计
