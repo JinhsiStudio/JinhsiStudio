@@ -12,7 +12,7 @@ export default function AppSettingList() {
   const { t, i18n } = useTranslation();
   const { storedValue: appSetting, setValue: setAppSetting } = useAppSetting();
   const language = useRef(appSetting?.language || defaultLanguage);
-  // const [language, setLanguage] = useState(appSetting?.language || defaultLanguage)
+
   const handleChange = (value: string) => {
     i18n.changeLanguage(value);
     language.current = new LanguageSetting(
@@ -24,32 +24,36 @@ export default function AppSettingList() {
 
   return (
     <SettingList title={t("App-Settings")}>
-      <SettingItem label={t("Language")}>
-        <SingleSelect
-          defaultValue={i18n.language}
-          className="w-[120]"
-          onValueChange={handleChange}
-          options={supportedLanguages.map((data) => {
-            return {
+      <SettingItem
+        label={t("Language")}
+        extra={
+          <SingleSelect
+            defaultValue={i18n.language}
+            className="w-[120px]"
+            onValueChange={handleChange}
+            options={supportedLanguages.map((data) => ({
               value: data.identifier,
               label: data.label,
-            };
-          })}
-        />
-      </SettingItem>
-      <SettingItem label={t("Label-Clear-App-Data")}>
-        <Button
-          variant="destructive"
-          onClick={async () => {
-            //TODO show a confirming modal to double check
-            const store = await getStorage();
-            await store.clear();
-            await store.save();
-          }}
-        >
-          {t("Label-Clear-App-Data")}
-        </Button>
-      </SettingItem>
+            }))}
+          />
+        }
+      />
+      <SettingItem
+        label={t("Label-Clear-App-Data")}
+        extra={
+          <Button
+            variant="destructive"
+            onClick={async () => {
+              //TODO show a confirming modal to double check
+              const store = await getStorage();
+              await store.clear();
+              await store.save();
+            }}
+          >
+            {t("Label-Clear-App-Data")}
+          </Button>
+        }
+      />
     </SettingList>
   );
 }
