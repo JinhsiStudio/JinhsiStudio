@@ -2,7 +2,6 @@ import { DialogRef } from "@/components/base/base-dialog";
 import { useGachaSetting } from "@/hooks/storage/gacha/use-gacha-setting";
 import { GachaSetting } from "@/models/gacha/gacha-setting";
 import { useLockFn } from "ahooks";
-import { Space, Typography } from "antd";
 import { Button } from "@/components/ui/base/button";
 import { Input } from "@/components/ui/base/input";
 import { forwardRef, useImperativeHandle, useState } from "react";
@@ -18,6 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/base/dialog";
+import { Typography } from "@/components/ui/base/typography";
 
 export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
   const { t } = useTranslation();
@@ -61,8 +61,8 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
 
         <List>
           <List.Item>
-            <div className="w-full">
-              <Typography.Title level={5} className="mb-2">
+            <div className="flex flex-col w-full gap-2">
+              <Typography.Title level={5}>
                 {t("Label-Gacha-Url")}
               </Typography.Title>
               <Input
@@ -73,8 +73,8 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
             </div>
           </List.Item>
           <List.Item>
-            <Space direction="vertical" className="w-full">
-              <Typography.Title level={5} className="mb-2">
+            <div className="flex flex-col w-full gap-2">
+              <Typography.Title level={5}>
                 {t("Label-Gacha-Log-Path")}
               </Typography.Title>
               <div className="flex w-full gap-2">
@@ -102,7 +102,7 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
                   <FolderOpenOutlined />
                 </Button>
               </div>
-            </Space>
+            </div>
           </List.Item>
         </List>
 
