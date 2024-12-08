@@ -1,6 +1,6 @@
 {
   "productName": "JinhsiStudio",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "identifier": "cn.chiichen.JinhsiStudio",
   "build": {
     "beforeDevCommand": "pnpm dev",
@@ -22,7 +22,10 @@
     ],
     "security": {
       "csp": null,
-      "capabilities": ["default", "desktop"]
+      "capabilities": [
+        "default",
+        "desktop"
+      ]
     }
   },
   "bundle": {
