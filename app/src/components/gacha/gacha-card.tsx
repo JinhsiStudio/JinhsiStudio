@@ -77,7 +77,7 @@ export default function GachaCard(props: GachaCardProps) {
     });
 
     return (
-      <Card className="h-full bg-card mx-4">
+      <Card className="min-h-full max-h-[calc(100vh-2rem)] bg-card mx-4 overflow-y-auto overflow-x-hidden">
         <CardHeader className="pb-2">
           <div className="flex justify-between items-center">
             <CardTitle className="text-xl font-medium">
@@ -94,14 +94,14 @@ export default function GachaCard(props: GachaCardProps) {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="h-[calc(100%-4rem)] flex flex-col space-y-6">
+        <CardContent>
           {/* 总抽数展示 */}
           <div className="flex justify-center">
             <GachaStatisticPullTitle pullCount={currentGacha.items.length} />
           </div>
 
           {/* 统计数据卡片 */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="mt-6 grid grid-cols-2 gap-6">
             {/* 五星统计 */}
             <div className="rounded-xl border bg-background p-6 shadow-sm">
               <div className="relative">
@@ -157,12 +157,12 @@ export default function GachaCard(props: GachaCardProps) {
             </div>
           </div>
 
-          <Separator />
+          <Separator className="my-6" />
 
           {/* 五星角色展示 */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-medium">五星获取历史</h3>
-            <div className="flex flex-wrap gap-2 overflow-auto p-2">
+          <div>
+            <h3 className="text-lg font-medium mb-2">五星获取历史</h3>
+            <div className="flex flex-wrap gap-2">
               {fiveStarItems.map((item, index) => (
                 <GachaAvatarCard
                   key={index}
