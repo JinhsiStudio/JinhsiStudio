@@ -93,6 +93,9 @@ jobs:
               tag: "${{ needs.release-please.outputs.jinhsi-studio--tag_name }}",
             })
             return data.id
+      - name: Debug Output
+        run: |
+          echo ${{ steps.getReleaseId.outputs }}
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
         env:
@@ -103,4 +106,4 @@ jobs:
           projectPath: ./app
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}  --config src-tauri/tauri.conf.release.json
-          releaseId: ${{ steps.getReleaseId.outputs.releaseId }}
+          releaseId: ${{ steps.getReleaseId.outputs.release_id }}
