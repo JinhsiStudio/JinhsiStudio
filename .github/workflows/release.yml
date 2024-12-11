@@ -82,17 +82,17 @@ jobs:
         run: pnpm lint
       - name: Format check (Rust)
         run: cargo fmt --check && cargo clippy -- -D warnings
-      - name: Get ReleaseId
-        id: getReleaseId
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data } = await github.rest.repos.getReleaseByTag({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag: "${{ needs.release-please.outputs.jinhsi-studio--tag_name }}",
-            })
-            return data.id
+      # - name: Get ReleaseId
+      #   id: getReleaseId
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #       const { data } = await github.rest.repos.getReleaseByTag({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         tag: "${{ needs.release-please.outputs.jinhsi-studio--tag_name }}",
+      #       })
+      #       return data.id
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
         env:
@@ -103,4 +103,5 @@ jobs:
           projectPath: ./app
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}  --config src-tauri/tauri.conf.release.json
-          releaseId: ${{ steps.getReleaseId.outputs.result }}
+          tagName: ${{ needs.release-please.outputs.jinhsi-studio--tag_name }}
+          # releaseId: ${{ steps.getReleaseId.outputs.result }}
