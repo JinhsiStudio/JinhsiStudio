@@ -105,3 +105,4 @@ jobs:
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}  --config src-tauri/tauri.conf.release.json
           tagName: ${{ needs.release-please.outputs.jinhsi-studio--tag_name }}
           # releaseId: ${{ steps.getReleaseId.outputs.result }}
+          retryAttempts: 2
