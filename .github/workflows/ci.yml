@@ -72,3 +72,4 @@ jobs:
           projectPath: ./app
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}
+          retryAttempts: 2
