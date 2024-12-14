@@ -1,4 +1,4 @@
-import useStorage from "../use-storage";
+import useStorage, { StorageNameSpace } from "../use-storage";
 import {
   GachaLogArchive,
   IGachaLogArchive,
@@ -6,6 +6,7 @@ import {
 
 export const useGachaArchive = (uid: number) =>
   useStorage<IGachaLogArchive>(
+    StorageNameSpace.GACHA_ARCHIVE,
     `gacha_data_${uid}`,
     GachaLogArchive.initEmptyGachaLogArchive(uid),
   );

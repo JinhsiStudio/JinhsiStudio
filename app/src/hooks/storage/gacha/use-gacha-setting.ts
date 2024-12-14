@@ -1,5 +1,9 @@
 import { GachaSetting, IGachaSetting } from "@/models/gacha/gacha-setting";
-import useStorage from "../use-storage";
+import useStorage, { StorageNameSpace } from "../use-storage";
 
 export const useGachaSetting = () =>
-  useStorage<IGachaSetting>("gacha_setting", new GachaSetting("", ""));
+  useStorage<IGachaSetting>(
+    StorageNameSpace.GACHA_SETTING,
+    "gacha_setting",
+    new GachaSetting("", ""),
+  );
