@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/base/input";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";
-import { FolderOpenOutlined } from "@ant-design/icons";
+import { FolderOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { List } from "@/components/ui/base/list";
 import {
@@ -99,7 +99,7 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
                     }
                   }}
                 >
-                  <FolderOpenOutlined />
+                  <FolderOpen />
                 </Button>
               </div>
             </div>
