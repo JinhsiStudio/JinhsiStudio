@@ -76,12 +76,7 @@ export default function AppSettingList() {
           extra={<ChevronRight />}
         />
       </SettingList>
-      <UpdateDialog
-        ref={updateDialogRef}
-        onOpenChange={(open) => {
-          console.log("Dialog open state changed:", open);
-        }}
-      />
+      <UpdateDialog ref={updateDialogRef} />
     </>
   );
 }
