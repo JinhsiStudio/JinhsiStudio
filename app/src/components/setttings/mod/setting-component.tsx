@@ -1,5 +1,7 @@
 import React from "react";
 import { List } from "@/components/ui/base/list";
+import { Spinner } from "@/components/ui/base/spinner";
+import { cn } from "@/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 const isAsyncFunction = (func: Function) => {
@@ -16,21 +18,24 @@ interface ItemProps {
 
 const SettingItem: React.FC<ItemProps> = (props) => {
   const { label, extra, children, secondary, onClick } = props;
+  const [loading, setLoading] = React.useState(false);
 
   const primary = (
     <div className="flex items-center text-base">
       <span>{label}</span>
-      {extra && <div className="ml-auto">{extra}</div>}
+      {(extra || loading) && (
+        <div className="ml-auto">
+          {loading ? <Spinner size="medium" /> : extra}
+        </div>
+      )}
     </div>
   );
-
-  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleClick = () => {
     if (onClick) {
       if (isAsyncFunction(onClick)) {
-        setIsLoading(true);
-        onClick()?.finally(() => setIsLoading(false));
+        setLoading(true);
+        onClick()?.finally(() => setLoading(false));
       } else {
         onClick();
       }
@@ -39,7 +44,11 @@ const SettingItem: React.FC<ItemProps> = (props) => {
 
   return (
     <List.Item
-      onClick={isLoading ? undefined : handleClick}
+      onClick={loading ? undefined : handleClick}
+      className={cn(
+        loading && "opacity-50",
+        onClick && !loading && "cursor-pointer",
+      )}
       meta={{
         title: primary,
         description: secondary,

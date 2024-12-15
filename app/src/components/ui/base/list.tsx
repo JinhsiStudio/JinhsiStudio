@@ -53,12 +53,14 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
       return (
         <div className={cn("flex flex-1 space-x-4", metaClassName)}>
           {avatar && <div className="flex-shrink-0">{avatar}</div>}
-          <div className="flex-1 space-y-1">
+          <div className="flex-1 min-h-[2.5rem] flex flex-col justify-center">
             {title && (
               <div className="text-sm font-medium leading-none">{title}</div>
             )}
             {description && (
-              <div className="text-sm text-muted-foreground">{description}</div>
+              <div className="text-sm text-muted-foreground mt-1">
+                {description}
+              </div>
             )}
           </div>
         </div>
@@ -69,7 +71,7 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center px-4 py-2 hover:bg-muted/50 transition-colors",
+          "flex items-center px-4 py-3 h-[4rem] hover:bg-muted/50 transition-colors",
           className,
         )}
         {...props}
