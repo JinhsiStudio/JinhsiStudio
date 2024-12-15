@@ -1,4 +1,5 @@
 {
+  "sequential-calls": true,
   "packages": {
     "app": {
       "changelog-path": "CHANGELOG.md",
