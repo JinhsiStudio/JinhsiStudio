@@ -16,7 +16,14 @@
   "App-Settings": "应用设置",
   "Gacha-Settings": "唤取设置",
   "Label-Clear-App-Data": "清除应用缓存",
+  "Label-Check-For-Updates": "检查更新",
   "Language": "语言",
   "Message-Please-Input-Valid-Gacha-Url-Or-Log-Path": "请输入有效的唤取查询链接或客户端日志路径",
-  "Message-Please-Input-Gacha-Url": "请输入唤取查询链接"
+  "Message-Please-Input-Gacha-Url": "请输入唤取查询链接",
+  "Label-New-Version-Available": "发现新版本",
+  "Label-Version": "版本",
+  "Label-Release-Notes": "更新说明",
+  "Label-Downloading": "下载中",
+  "Label-Later": "稍后",
+  "Label-Install-Update": "立即更新"
 }
