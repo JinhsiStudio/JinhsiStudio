@@ -4,7 +4,7 @@ on:
       - master
     paths-ignore:
       - ".github/workflows/docs.yml"
-      - 'docs/**'
+      - "docs/**"
 permissions:
   contents: write
   pull-requests: write
@@ -102,7 +102,7 @@ jobs:
         with:
           projectPath: ./app
           tauriScript: pnpm tauri
-          args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}  --config src-tauri/tauri.conf.release.json
+          args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}
           tagName: ${{ needs.release-please.outputs.jinhsi-studio--tag_name }}
           # releaseId: ${{ steps.getReleaseId.outputs.result }}
           retryAttempts: 2

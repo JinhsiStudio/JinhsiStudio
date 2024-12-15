@@ -1,7 +1,7 @@
 import React from "react";
-import { Spinner } from "@/components/ui/base/spinner";
-import { Button } from "@/components/ui/base/button";
 import { List } from "@/components/ui/base/list";
+import { Spinner } from "@/components/ui/base/spinner";
+import { cn } from "@/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 const isAsyncFunction = (func: Function) => {
@@ -18,49 +18,37 @@ interface ItemProps {
 
 const SettingItem: React.FC<ItemProps> = (props) => {
   const { label, extra, children, secondary, onClick } = props;
-  const clickable = !!onClick;
+  const [loading, setLoading] = React.useState(false);
 
   const primary = (
     <div className="flex items-center text-base">
       <span>{label}</span>
-      {extra && <div className="ml-auto">{extra}</div>}
+      {(extra || loading) && (
+        <div className="ml-auto">
+          {loading ? <Spinner size="medium" /> : extra}
+        </div>
+      )}
     </div>
   );
-
-  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleClick = () => {
     if (onClick) {
       if (isAsyncFunction(onClick)) {
-        setIsLoading(true);
-        onClick()?.finally(() => setIsLoading(false));
+        setLoading(true);
+        onClick()?.finally(() => setLoading(false));
       } else {
         onClick();
       }
     }
   };
 
-  return clickable ? (
-    <List.Item>
-      <Button
-        onClick={handleClick}
-        disabled={isLoading}
-        className="w-full"
-        variant="ghost"
-      >
-        <div className="flex w-full items-center">
-          <div className="flex-1">
-            {primary}
-            {secondary && (
-              <div className="text-sm text-muted-foreground">{secondary}</div>
-            )}
-          </div>
-          {isLoading && <Spinner size="small" className="ml-2" />}
-        </div>
-      </Button>
-    </List.Item>
-  ) : (
+  return (
     <List.Item
+      onClick={loading ? undefined : handleClick}
+      className={cn(
+        loading && "opacity-50",
+        onClick && !loading && "cursor-pointer",
+      )}
       meta={{
         title: primary,
         description: secondary,

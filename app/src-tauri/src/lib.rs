@@ -7,17 +7,14 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![
             cmd::gacha::get_gachalog_from_url,
             cmd::gacha::get_gachalog_from_local,
             cmd::gacha::update_gachalog_from_url,
             cmd::gacha::update_gachalog_from_local,
         ]);
-    #[cfg(all(
-        not(any(target_os = "android", target_os = "ios")),
-        not(debug_assertions),
-        not(dev)
-    ))]
+    #[cfg(not(any(target_os = "android", target_os = "ios")))]
     let builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
     builder
         .run(tauri::generate_context!())

@@ -27,6 +27,19 @@ const Title = forwardRef<HTMLHeadingElement, TypographyProps>(
 );
 Title.displayName = "Typography.Title";
 
+const Text = forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+  return (
+    <p ref={ref} className={cn("leading-7", className)} {...props}>
+      {children}
+    </p>
+  );
+});
+Text.displayName = "Typography.Text";
+
 export const Typography = {
   Title,
+  Text,
 };
