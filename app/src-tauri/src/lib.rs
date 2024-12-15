@@ -14,11 +14,7 @@ pub fn run() {
             cmd::gacha::update_gachalog_from_url,
             cmd::gacha::update_gachalog_from_local,
         ]);
-    #[cfg(all(
-        not(any(target_os = "android", target_os = "ios")),
-        not(debug_assertions),
-        not(dev)
-    ))]
+    #[cfg(all(not(any(target_os = "android", target_os = "ios")),))]
     let builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
     builder
         .run(tauri::generate_context!())
