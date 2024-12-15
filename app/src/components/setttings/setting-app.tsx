@@ -5,7 +5,7 @@ import { defaultLanguage, supportedLanguages } from "@/services/i18n";
 import { useAppSetting } from "@/hooks/storage/setting/use-app-setting";
 import { useRef } from "react";
 import { AppSetting, LanguageSetting } from "@/models/setting/app-setting";
-import { getStorage } from "@/hooks/storage/use-storage";
+import { getStorage, StorageNameSpace } from "@/hooks/storage/use-storage";
 import { SingleSelect } from "../ui/select";
 
 export default function AppSettingList() {
@@ -45,7 +45,7 @@ export default function AppSettingList() {
             variant="destructive"
             onClick={async () => {
               //TODO show a confirming modal to double check
-              const store = await getStorage();
+              const store = await getStorage(StorageNameSpace.APP_SETTING);
               await store.clear();
               await store.save();
             }}
