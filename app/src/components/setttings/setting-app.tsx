@@ -11,12 +11,14 @@ import { ChevronRight } from "lucide-react";
 import { check, Update } from "@tauri-apps/plugin-updater";
 import { UpdateDialog } from "@/components/updater/update-dialog";
 import { DialogRefWithProps } from "@/components/base/base-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AppSettingList() {
   const { t, i18n } = useTranslation();
   const { storedValue: appSetting, setValue: setAppSetting } = useAppSetting();
   const language = useRef(appSetting?.language || defaultLanguage);
   const updateDialogRef = useRef<DialogRefWithProps<Update>>(null);
+  const { toast } = useToast();
 
   const handleChange = (value: string) => {
     i18n.changeLanguage(value);
@@ -34,6 +36,10 @@ export default function AppSettingList() {
         `found update ${newUpdate.version} from ${newUpdate.date} with notes ${newUpdate.body}`,
       );
       updateDialogRef.current?.open(newUpdate);
+    } else {
+      toast({
+        title: t("Label-Current-Is-Latest"),
+      });
     }
   };
 
