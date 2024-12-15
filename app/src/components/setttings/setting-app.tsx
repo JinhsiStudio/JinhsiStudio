@@ -12,6 +12,8 @@ import { check, Update } from "@tauri-apps/plugin-updater";
 import { UpdateDialog } from "@/components/updater/update-dialog";
 import { DialogRefWithProps } from "@/components/base/base-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { version } from "@root/package.json";
+import { Typography } from "../ui/base/typography";
 
 export default function AppSettingList() {
   const { t, i18n } = useTranslation();
@@ -80,6 +82,10 @@ export default function AppSettingList() {
           label={t("Label-Check-For-Updates")}
           onClick={handleCheckUpdate}
           extra={<ChevronRight />}
+        />
+        <SettingItem
+          label={t("Label-Current-Version")}
+          extra={<Typography.Text>{version}</Typography.Text>}
         />
       </SettingList>
       <UpdateDialog ref={updateDialogRef} />
