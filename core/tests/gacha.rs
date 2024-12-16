@@ -37,29 +37,21 @@ mod test {
     #[test]
     fn test_merge_gacha_log() {
         let full_record = load_test_case(include_str!("./data/gacha/full_record.json"));
+        macro_rules! test_split {
+            ($split_num:expr) => {{
+                subtest_merge_gacha_log(
+                    include_str!(concat!("./data/gacha/split", $split_num, "/base.json")),
+                    include_str!(concat!("./data/gacha/split", $split_num, "/other.json")),
+                    &full_record,
+                )
+            }};
+        }
+
         // Split1
-        {
-            subtest_merge_gacha_log(
-                include_str!("./data/gacha/split1/base.json"),
-                include_str!("./data/gacha/split1/other.json"),
-                &full_record,
-            )
-        }
+        test_split!("1");
         // Split2
-        {
-            subtest_merge_gacha_log(
-                include_str!("./data/gacha/split2/base.json"),
-                include_str!("./data/gacha/split2/other.json"),
-                &full_record,
-            )
-        }
+        test_split!("2");
         // Split3
-        {
-            subtest_merge_gacha_log(
-                include_str!("./data/gacha/split3/base.json"),
-                include_str!("./data/gacha/split3/other.json"),
-                &full_record,
-            )
-        }
+        test_split!("3");
     }
 }
