@@ -14,7 +14,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  ci:
     strategy:
       matrix:
         include:
@@ -49,3 +49,12 @@ jobs:
         env:
           GACHA_TEST_URL: ${{secrets.GACHA_TEST_URL}}
         run: cargo +nightly test -p jinhsi-core  --verbose --target ${{matrix.target}}
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
+      - name: Generate code coverage
+        run: cargo llvm-cov --all-features -p jinhsi-core  --lcov --output-path lcov.info
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: JinhsiStudio/JinhsiStudio
