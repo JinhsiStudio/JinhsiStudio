@@ -9,6 +9,8 @@ on:
     paths-ignore:
       - ".github/workflows/docs.yml"
       - "docs/**"
+env:
+  CODECOV_TOKEN: 754b2edc-7e88-483d-9ca3-e0ac751f42ff # For bundle analyze only
 jobs:
   build:
     strategy:
