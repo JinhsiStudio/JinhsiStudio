@@ -2,13 +2,13 @@ name: core
 
 on:
   push:
-    paths-ignore:
-      - ".github/workflows/docs.yml"
-      - "docs/**"
+    paths:
+      - ".github/workflows/core.yml"
+      - "core/**"
   pull_request:
-    paths-ignore:
-      - ".github/workflows/docs.yml"
-      - "docs/**"
+    paths:
+      - ".github/workflows/core.yml"
+      - "core/**"
 
 env:
   CARGO_TERM_COLOR: always
