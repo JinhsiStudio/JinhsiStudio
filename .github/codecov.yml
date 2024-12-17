@@ -1,7 +1,26 @@
 comment:                  # this is a top-level key
-  layout: " diff, flags, files"
+  layout: "header, diff, flags, components"
   behavior: default
   require_changes: false  # if true: only post the comment if coverage changes
   require_base: false        # [true :: must have a base report to post]
   require_head: true       # [true :: must have a head report to post]
   hide_project_coverage: false # [true :: only show coverage on the git diff]
+
+component_management:
+  default_rules:  # default rules that will be inherited by all components
+    statuses:
+      - type: project # in this case every component that doens't have a status defined will have a project type one
+        target: auto
+  individual_components:
+    - component_id: app  # this is an identifier that should not be changed
+      name: app  # this is a display name, and can be changed freely
+      paths:
+        - app/**
+    - component_id: core
+      name: core
+      paths:
+        - core/**
+      statuses:           # the core component has its own statuses
+        - type: project
+          target: auto
+        - type: patch
