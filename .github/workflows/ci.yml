@@ -76,3 +76,9 @@ jobs:
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}
           retryAttempts: 2
+      - name: Run tests
+        run: pnpm coverage
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

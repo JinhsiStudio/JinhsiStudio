@@ -18,7 +18,6 @@ export default defineConfig(async () => ({
       uploadToken: process.env.CODECOV_TOKEN,
     }),
   ],
-
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
   // 1. prevent vite from obscuring rust errors
@@ -50,5 +49,11 @@ export default defineConfig(async () => ({
     postcss: {
       plugins: [tailwindcss, autoprefixer],
     },
+  },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.ts",
+    css: true,
   },
 }));
