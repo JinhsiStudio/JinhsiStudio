@@ -76,9 +76,20 @@ jobs:
           tauriScript: pnpm tauri
           args: --target ${{ matrix.target }} -b ${{ matrix.bundle }}
           retryAttempts: 2
-      - name: Run tests
+      - name: Run coverage tests in app
+        working-directory: "./app"
         run: pnpm coverage
-      - name: Upload results to Codecov
+      - name: Upload coverage results to Codecov
+        working-directory: "./app"
         uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Generate test report for Codecov
+        working-directory: "./app"
+        run: pnpm vitest --reporter=junit --outputFile=test-report.junit.xml
+      - name: Upload test results to Codecov
+        working-directory: "./app"
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
