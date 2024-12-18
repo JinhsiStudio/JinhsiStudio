@@ -81,9 +81,9 @@ jobs:
         run: pnpm coverage
       - name: Upload coverage results to Codecov
         uses: codecov/codecov-action@v5
-        working-directory: "./app"
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          directory: "./app"
       - name: Generate test report for Codecov
         working-directory: "./app"
         run: pnpm vitest --reporter=junit --outputFile=test-report.junit.xml
@@ -92,3 +92,4 @@ jobs:
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          directory: "./app"
