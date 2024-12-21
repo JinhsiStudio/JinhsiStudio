@@ -8,6 +8,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarProvider,
+  SidebarTrigger,
 } from "./sidebar";
 import { describe, expect, it, vi } from "vitest";
 
@@ -39,24 +40,26 @@ describe("Sidebar Component", () => {
   it("handles sidebar collapse state", async () => {
     render(
       <SidebarProvider defaultOpen={true}>
-        <Sidebar data-testid="sidebar">
-          <SidebarContent>Content</SidebarContent>
+        <Sidebar>
+          <SidebarContent>
+            <SidebarTrigger data-testid="trigger" />
+            Content
+          </SidebarContent>
         </Sidebar>
       </SidebarProvider>,
     );
 
-    const sidebar = screen.getByTestId("sidebar");
-    expect(sidebar).toHaveAttribute("data-state", "expanded");
+    // Find the group element that has the data-state attribute
+    const sidebarGroup = screen.getByTestId("trigger").closest(".group");
+    expect(sidebarGroup).toHaveAttribute("data-state", "expanded");
 
     // Find and click collapse button
-    const collapseButton = screen.getByRole("button", {
-      name: /toggle sidebar/i,
-    });
-    fireEvent.click(collapseButton);
+    const trigger = screen.getByTestId("trigger");
+    fireEvent.click(trigger);
 
     // Wait for animation
     await new Promise((resolve) => setTimeout(resolve, 100));
-    expect(sidebar).toHaveAttribute("data-state", "collapsed");
+    expect(sidebarGroup).toHaveAttribute("data-state", "collapsed");
   });
 
   // Test menu button click

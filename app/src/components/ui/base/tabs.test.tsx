@@ -1,12 +1,13 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("Tabs Component", () => {
   // Test basic tabs rendering and functionality
   it("renders tabs and handles tab switching", async () => {
+    const handleValueChange = vi.fn();
     render(
-      <Tabs defaultValue="tab1">
+      <Tabs defaultValue="tab1" onValueChange={handleValueChange}>
         <TabsList>
           <TabsTrigger value="tab1">Tab 1</TabsTrigger>
           <TabsTrigger value="tab2">Tab 2</TabsTrigger>
@@ -17,20 +18,32 @@ describe("Tabs Component", () => {
     );
 
     // Check initial state
-    const content1 = screen.getByText("Content 1");
-    const content2 = screen.getByText("Content 2");
+    const tab1 = screen.getByRole("tab", { name: "Tab 1" });
+    const tab2 = screen.getByRole("tab", { name: "Tab 2" });
+    expect(tab1).toHaveAttribute("data-state", "active");
+    expect(tab2).toHaveAttribute("data-state", "inactive");
+    expect(tab1).toHaveAttribute("aria-selected", "true");
+    expect(tab2).toHaveAttribute("aria-selected", "false");
+    expect(tab1).toHaveAttribute("type", "button");
+    expect(tab2).toHaveAttribute("type", "button");
+    expect(screen.getByText("Content 1")).toBeVisible();
+    expect(screen.queryByText("Content 2")).toBeNull();
 
-    expect(content1).toBeVisible();
-    expect(content2).not.toBeVisible();
+    fireEvent.mouseDown(tab2);
 
-    // Switch tab
-    fireEvent.click(screen.getByText("Tab 2"));
-
-    // Wait for animation to complete
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
-    expect(content1).not.toBeVisible();
-    expect(content2).toBeVisible();
+    // Wait for state changes and callback
+    await waitFor(
+      () => {
+        expect(handleValueChange).toHaveBeenCalledWith("tab2");
+        expect(tab1).toHaveAttribute("data-state", "inactive");
+        expect(tab2).toHaveAttribute("data-state", "active");
+        expect(screen.queryByText("Content 1")).toBeNull();
+        expect(screen.getByText("Content 2")).toBeVisible();
+      },
+      {
+        timeout: 1000,
+      },
+    );
   });
 
   // Test active tab styling
@@ -44,7 +57,8 @@ describe("Tabs Component", () => {
       </Tabs>,
     );
 
-    const activeTab = screen.getByText("Tab 1");
+    const activeTab = screen.getByRole("tab", { name: "Tab 1" });
     expect(activeTab).toHaveAttribute("data-state", "active");
+    expect(activeTab).toHaveAttribute("aria-selected", "true");
   });
 });

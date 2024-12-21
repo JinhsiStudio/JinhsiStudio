@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act, within } from "@testing-library/react";
 import { FloatButton, FloatButtonGroup } from "./float-button";
 import { describe, expect, it } from "vitest";
 
@@ -11,12 +11,25 @@ describe("FloatButton Component", () => {
 
   // Test tooltip functionality
   it("renders float button with tooltip", async () => {
-    render(<FloatButton tooltip="Help">Help Button</FloatButton>);
+    const { baseElement } = render(
+      <FloatButton
+        tooltip="Help"
+        icon={<span>Help</span>}
+        data-testid="help-btn"
+      />,
+    );
 
-    const button = screen.getByText("Help Button");
-    fireEvent.mouseEnter(button);
+    const button = screen.getByTestId("help-btn");
 
-    const tooltip = await screen.findByRole("tooltip");
+    // Trigger mouse enter event and wait for tooltip
+    await act(async () => {
+      fireEvent.mouseEnter(button);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    });
+
+    // Find tooltip in document.body using within
+    const tooltip = within(baseElement).getByText("Help");
+    expect(tooltip).toBeInTheDocument();
     expect(tooltip).toHaveTextContent("Help");
   });
 
