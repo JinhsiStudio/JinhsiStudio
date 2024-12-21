@@ -18,6 +18,7 @@ const Separator = React.forwardRef<
       ref={ref}
       decorative={decorative}
       orientation={orientation}
+      aria-hidden={decorative}
       className={cn(
         "shrink-0 bg-border",
         orientation === "horizontal" ? "h-[1px] w-10/12" : "h-10/12 w-[1px]",
