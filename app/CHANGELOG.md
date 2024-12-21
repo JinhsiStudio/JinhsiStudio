@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.4](https://github.com/JinhsiStudio/JinhsiStudio/compare/jinhsi-studio-v0.0.3...jinhsi-studio-v0.0.4) (2024-12-21)
+
+
+### Features
+
+* support check for update and enhance List component ([#120](https://github.com/JinhsiStudio/JinhsiStudio/issues/120)) ([e74c126](https://github.com/JinhsiStudio/JinhsiStudio/commit/e74c126c7553953418d3c5b119c3f7d27ca72d6e))
+* update dependencies and restrict storage namespace ([#116](https://github.com/JinhsiStudio/JinhsiStudio/issues/116)) ([c52bfe8](https://github.com/JinhsiStudio/JinhsiStudio/commit/c52bfe8680b85e3e4e75aacebf3659471b838da7))
+
 ## [0.0.3](https://github.com/JinhsiStudio/JinhsiStudio/compare/jinhsi-studio-v0.0.2...jinhsi-studio-v0.0.3) (2024-12-08)
 
 
