@@ -43,7 +43,7 @@ const updater = async (
   ]);
 };
 export default function GachaPage() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("gacha");
   const { storedValue: gachaSetting } = useGachaSetting();
   const { storedValue: gachaArchive, setValue: setGachaArchive } =
     useGachaArchive(DEAFULT_UID);
@@ -68,7 +68,7 @@ export default function GachaPage() {
     } else {
       toast({
         variant: "destructive",
-        title: t("Message-Please-Input-Valid-Gacha-Url-Or-Log-Path"),
+        title: t("message.Message-Please-Input-Valid-Gacha-Url-Or-Log-Path"),
       });
     }
   };
@@ -77,7 +77,7 @@ export default function GachaPage() {
     console.error("Failed to fetch gacha data with error: ", error);
     toast({
       variant: "destructive",
-      title: t("Message-Failed-To-Load-Gacha-Data", { ns: "message" }),
+      title: t("message.Message-Failed-To-Load-Gacha-Data"),
     });
   };
 
@@ -92,12 +92,12 @@ export default function GachaPage() {
         <FloatButton
           icon={<RefreshCw />}
           onClick={handleFetchData}
-          tooltip={t("Label-Fetch-Data")}
+          tooltip={t("common.Label-Fetch-Data")}
         />
         <FloatButton
           icon={<Settings />}
           onClick={() => settingRef.current?.open()}
-          tooltip={t("Label-Gacha-Setting")}
+          tooltip={t("common.Label-Gacha-Setting")}
         />
       </FloatButtonGroup>
     </div>

@@ -1,0 +1,7 @@
+{
+  "Message-Failed-To-Load-Gacha-Data": "Failed to load gacha data",
+  "Message-Modify-Gacha-Url-Success": "Modified gacha url successfully",
+  "Message-Modify-Gacha-Url-Fail": "Failed to Modify gacha url",
+  "Message-Please-Input-Valid-Gacha-Url-Or-Log-Path": "Please input valid Gacha Log URL or the client log path",
+  "Message-Please-Input-Gacha-Url": "Please input Gacha Log URL"
+}

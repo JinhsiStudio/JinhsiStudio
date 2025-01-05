@@ -1,5 +1,4 @@
 import { ChartPie, Home, Settings } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -32,7 +31,7 @@ export function AppSidebar() {
   const homeItems: AppSidebarProps[] = [
     {
       key: "Home",
-      label: t("Label-Home"),
+      label: t("common.Label-Home"),
       icon: Home,
       onClick: (key: string) => {
         handleMenuClick(key, "/");
@@ -42,7 +41,7 @@ export function AppSidebar() {
   const toolItems: AppSidebarProps[] = [
     {
       key: "Gacha",
-      label: t("Label-GachaTracker"),
+      label: t("common.Label-GachaTracker", { ns: "gacha" }),
       icon: ChartPie,
       onClick: (key: string) => {
         handleMenuClick(key, "/gacha");
@@ -52,7 +51,7 @@ export function AppSidebar() {
   const profileItems: AppSidebarProps[] = [
     {
       key: "Setting",
-      label: t("Label-Settings"),
+      label: t("common.Label-Settings"),
       icon: Settings,
       onClick: (key: string) => {
         handleMenuClick(key, "/settings");
@@ -81,19 +80,19 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{t("Label-Home")}</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("common.Label-Home")}</SidebarGroupLabel>
           <SidebarGroupContent>
             {renderMenuItems(homeItems)}
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>{t("Label-Tools")}</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("common.Label-Tools")}</SidebarGroupLabel>
           <SidebarGroupContent>
             {renderMenuItems(toolItems)}
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>{t("Label-Profile")}</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("common.Label-Profile")}</SidebarGroupLabel>
           <SidebarGroupContent>
             {renderMenuItems(profileItems)}
           </SidebarGroupContent>

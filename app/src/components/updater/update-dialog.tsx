@@ -78,14 +78,14 @@ export const UpdateDialog = forwardRef<DialogRefWithProps<Update>>(
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t("Label-New-Version-Available")}</DialogTitle>
+            <DialogTitle>{t("common.Label-New-Version-Available")}</DialogTitle>
           </DialogHeader>
 
           <List>
             <List.Item>
               <div className="flex flex-col w-full gap-2">
                 <Typography.Title level={5}>
-                  {t("Label-Version")}
+                  {t("common.Label-Version")}
                 </Typography.Title>
                 <Typography.Text>{update.version}</Typography.Text>
               </div>
@@ -93,7 +93,7 @@ export const UpdateDialog = forwardRef<DialogRefWithProps<Update>>(
             <List.Item>
               <div className="flex flex-col w-full gap-2">
                 <Typography.Title level={5}>
-                  {t("Label-Release-Notes")}
+                  {t("common.Label-Release-Notes")}
                 </Typography.Title>
                 <Typography.Text>{update.body}</Typography.Text>
               </div>
@@ -102,7 +102,7 @@ export const UpdateDialog = forwardRef<DialogRefWithProps<Update>>(
               <List.Item>
                 <div className="flex flex-col w-full gap-2">
                   <Typography.Title level={5}>
-                    {t("Label-Downloading")}
+                    {t("common.Label-Downloading")}
                   </Typography.Title>
                   <Typography.Text>{downloadProgress}%</Typography.Text>
                 </div>
@@ -112,12 +112,12 @@ export const UpdateDialog = forwardRef<DialogRefWithProps<Update>>(
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
-              {t("Label-Later")}
+              {t("common.Label-Later")}
             </Button>
             <Button onClick={handleUpdate} disabled={isDownloading}>
               {isDownloading
-                ? t("Label-Downloading")
-                : t("Label-Install-Update")}
+                ? t("common.Label-Downloading")
+                : t("common.Label-Install-Update")}
             </Button>
           </DialogFooter>
         </DialogContent>
