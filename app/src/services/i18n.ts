@@ -4,7 +4,7 @@ import {
   ILanguageSetting,
   LanguageSetting,
 } from "@/models/setting/app-setting";
-import { en_US_Traslations, zh_CN_Traslations } from "@/locales";
+import { getLocaleTranslation } from "@/locales";
 
 export const supportedLanguages: ILanguageSetting[] = [
   new LanguageSetting("en_US", "English"),
@@ -14,8 +14,8 @@ export const defaultLanguage = supportedLanguages[0];
 
 export const defaultNS = "general";
 export const resources = {
-  en_US: en_US_Traslations,
-  zh_CN: zh_CN_Traslations,
+  en_US: getLocaleTranslation("en_US"),
+  zh_CN: getLocaleTranslation("zh_CN"),
 } as const;
 
 i18n.use(initReactI18next).init({
