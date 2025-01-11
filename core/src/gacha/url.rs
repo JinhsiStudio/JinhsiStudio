@@ -65,6 +65,7 @@ impl UrlGachaSource {
 
 impl GachaService for UrlGachaSource {
     async fn get_gacha_data(&self) -> Result<Vec<GachaLog>, GachaError> {
+        log::info!("getting gacha data from url {:?}", self.url);
         let convene_id = self.get_query_data("resources_id")?;
         let server_id = self.get_query_data("svr_id")?;
         let language = self.get_query_data("lang")?;
@@ -112,6 +113,9 @@ impl GachaService for UrlGachaSource {
                 });
             }
             let mut items: Vec<GachaLogItem> = data_response.data;
+            if items.is_empty() {
+                log::warn!("no record found for convene ${convene_type}")
+            }
             items.sort_by(|a, b| b.cmp(a)); //The data received is most probally sorted, but we must ensure it's sorted by date descending
             res.push(GachaLog {
                 convene: Convene::from_i32(convene_type).unwrap(),
