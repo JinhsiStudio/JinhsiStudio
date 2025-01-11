@@ -33,14 +33,19 @@ const updater = async (
   logPath: string | void,
   gachaArchive: IGachaLogArchive | void,
 ): Promise<void | GachaLogDao[]> => {
-  if (!url || !logPath || !gachaArchive) {
+  if ((!url && !logPath) || !gachaArchive) {
     return Promise.reject("data required by udpater are not ready");
   }
-
-  return Promise.any([
-    updateGachaLogFromUrl(gachaArchive.logs, url),
-    updateGachaLogFromLocal(gachaArchive.logs, logPath),
-  ]);
+  if (url && logPath) {
+    return Promise.any([
+      updateGachaLogFromUrl(gachaArchive.logs, url),
+      updateGachaLogFromLocal(gachaArchive.logs, logPath),
+    ]);
+  } else if (url) {
+    return updateGachaLogFromUrl(gachaArchive.logs, url);
+  } else if (logPath) {
+    return updateGachaLogFromLocal(gachaArchive.logs, logPath);
+  }
 };
 export default function GachaPage() {
   const { t } = useTranslation("gacha");
