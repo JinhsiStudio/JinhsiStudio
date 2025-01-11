@@ -15,7 +15,7 @@ component_management:
     - component_id: app  # this is an identifier that should not be changed
       name: app  # this is a display name, and can be changed freely
       paths:
-        - app/**
+        - app/src/**
     - component_id: core
       name: core
       paths:
