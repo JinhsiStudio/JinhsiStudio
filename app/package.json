@@ -67,7 +67,6 @@
     "glob": "^11.0.1",
     "globals": "^15.13.0",
     "husky": "^9.1.7",
-    "internal-ip": "^8.0.0",
     "jsdom": "^25.0.1",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
