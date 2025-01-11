@@ -53,12 +53,14 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
       return (
         <div className={cn("flex flex-1 space-x-4", metaClassName)}>
           {avatar && <div className="flex-shrink-0">{avatar}</div>}
-          <div className="flex-1 min-h-[2.5rem] flex flex-col justify-center">
+          <div className="flex-1 flex flex-col justify-center space-y-1 overflow-hidden">
             {title && (
-              <div className="text-sm font-medium leading-none">{title}</div>
+              <div className="text-sm font-medium leading-tight line-clamp-1">
+                {title}
+              </div>
             )}
             {description && (
-              <div className="text-sm text-muted-foreground mt-1">
+              <div className="text-sm text-muted-foreground line-clamp-2">
                 {description}
               </div>
             )}
