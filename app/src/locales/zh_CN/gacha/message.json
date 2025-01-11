@@ -1,0 +1,7 @@
+{
+  "Message-Failed-To-Load-Gacha-Data": "加载唤取数据失败",
+  "Message-Modify-Gacha-Url-Success": "修改唤取链接成功",
+  "Message-Modify-Gacha-Url-Fail": "修改唤取链接失败",
+  "Message-Please-Input-Valid-Gacha-Url-Or-Log-Path": "请输入有效的唤取查询链接或客户端日志路径",
+  "Message-Please-Input-Gacha-Url": "请输入唤取查询链接"
+}

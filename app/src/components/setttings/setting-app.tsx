@@ -16,7 +16,7 @@ import { version } from "@root/package.json";
 import { Typography } from "../ui/base/typography";
 
 export default function AppSettingList() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation("setting");
   const { storedValue: appSetting, setValue: setAppSetting } = useAppSetting();
   const language = useRef(appSetting?.language || defaultLanguage);
   const updateDialogRef = useRef<DialogRefWithProps<Update>>(null);
@@ -40,16 +40,16 @@ export default function AppSettingList() {
       updateDialogRef.current?.open(newUpdate);
     } else {
       toast({
-        title: t("Label-Current-Is-Latest"),
+        title: t("common.Label-Current-Is-Latest"),
       });
     }
   };
 
   return (
     <>
-      <SettingList title={t("App-Settings")}>
+      <SettingList title={t("common.App-Settings")}>
         <SettingItem
-          label={t("Language")}
+          label={t("common.Language")}
           extra={
             <SingleSelect
               defaultValue={i18n.language}
@@ -63,7 +63,7 @@ export default function AppSettingList() {
           }
         />
         <SettingItem
-          label={t("Label-Clear-App-Data")}
+          label={t("common.Label-Clear-App-Data")}
           extra={
             <Button
               variant="destructive"
@@ -74,17 +74,17 @@ export default function AppSettingList() {
                 await store.save();
               }}
             >
-              {t("Label-Clear-App-Data")}
+              {t("common.Label-Clear-App-Data")}
             </Button>
           }
         />
         <SettingItem
-          label={t("Label-Check-For-Updates")}
+          label={t("common.Label-Check-For-Updates")}
           onClick={handleCheckUpdate}
           extra={<ChevronRight />}
         />
         <SettingItem
-          label={t("Label-Current-Version")}
+          label={t("common.Label-Current-Version")}
           extra={<Typography.Text>{version}</Typography.Text>}
         />
       </SettingList>

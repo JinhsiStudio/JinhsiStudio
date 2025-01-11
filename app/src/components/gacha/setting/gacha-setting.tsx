@@ -20,7 +20,7 @@ import {
 import { Typography } from "@/components/ui/base/typography";
 
 export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("gacha");
   const [isOpen, setOpen] = useState<boolean>(false);
   useImperativeHandle(ref, () => ({
     open: () => {
@@ -39,14 +39,14 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
   const onSave = useLockFn(async () => {
     try {
       toast({
-        title: t("Message-Modify-Gacha-Url-Success", { ns: "message" }),
+        title: t("message.Message-Modify-Gacha-Url-Success"),
       });
       await setGachaSetting(new GachaSetting(gachaUrl, logPath));
       setOpen(false);
     } catch (err: unknown) {
       toast({
         variant: "destructive",
-        title: t("Message-Modify-Gacha-Url-Fail", { ns: "message" }),
+        title: t("message.Message-Modify-Gacha-Url-Fail"),
       });
       console.error("Failed to update gacha url", (err as Error).message);
     }
@@ -56,17 +56,17 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("Gacha-Settings")}</DialogTitle>
+          <DialogTitle>{t("common.Label-Gacha-Setting")}</DialogTitle>
         </DialogHeader>
 
         <List>
           <List.Item>
             <div className="flex flex-col w-full gap-2">
               <Typography.Title level={5}>
-                {t("Label-Gacha-Url")}
+                {t("common.Label-Gacha-Url")}
               </Typography.Title>
               <Input
-                placeholder={t("Message-Please-Input-Gacha-Url")}
+                placeholder={t("message.Message-Please-Input-Gacha-Url")}
                 value={gachaUrl}
                 onChange={(e) => setGachaUrl(e.target.value)}
               />
@@ -75,7 +75,7 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
           <List.Item>
             <div className="flex flex-col w-full gap-2">
               <Typography.Title level={5}>
-                {t("Label-Gacha-Log-Path")}
+                {t("common.Label-Gacha-Log-Path")}
               </Typography.Title>
               <div className="flex w-full gap-2">
                 <Input value={logPath} className="flex-1" />
@@ -108,9 +108,11 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
 
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
-            {t("Label-Cancel")}
+            {t("common.Label-Cancel", { ns: "general" })}
           </Button>
-          <Button onClick={onSave}>{t("Label-Save")}</Button>
+          <Button onClick={onSave}>
+            {t("common.Label-Save", { ns: "general" })}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

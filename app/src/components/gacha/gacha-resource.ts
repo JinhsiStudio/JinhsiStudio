@@ -31,7 +31,7 @@ enum Weapon {
  * Should be used in React Component
  */
 export function matchResource(name: string, resourceId: number): string | null {
-  const { t } = useTranslation("resource");
+  const { t } = useTranslation("gacha");
   //TODO match resource with resourceId instead of name
   switch (resourceId) {
     case Character.LingYang:
@@ -54,9 +54,9 @@ export function matchResource(name: string, resourceId: number): string | null {
       return stellarSymphony;
   }
   switch (name) {
-    case t("Character.Changli"):
+    case t("resource.Character.Changli"):
       return changli;
-    case t("Character.Jinhsi"):
+    case t("resource.Character.Jinhsi"):
       return jinhsi;
     default:
       console.error("Unmatched resource: ", name, "with id: ", resourceId);

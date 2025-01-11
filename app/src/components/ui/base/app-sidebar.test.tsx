@@ -3,6 +3,7 @@ import { AppSidebar } from "./app-sidebar";
 import { describe, expect, it, vi } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import { SidebarProvider } from "./sidebar";
+import { useTranslation } from "react-i18next";
 
 // Mock translations
 vi.mock("react-i18next", () => ({
@@ -12,6 +13,7 @@ vi.mock("react-i18next", () => ({
 }));
 
 describe("AppSidebar Component", () => {
+  const { t } = useTranslation();
   const renderWithRouter = (ui: React.ReactElement) => {
     return render(
       <BrowserRouter>
@@ -25,13 +27,13 @@ describe("AppSidebar Component", () => {
     renderWithRouter(<AppSidebar />);
 
     expect(
-      screen.getByRole("button", { name: "Label-Home" }),
+      screen.getByRole("button", { name: t("common.Label-Home") }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Label-GachaTracker" }),
+      screen.getByRole("button", { name: t("common.Label-GachaTracker") }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Label-Settings" }),
+      screen.getByRole("button", { name: t("common.Label-Settings") }),
     ).toBeInTheDocument();
   });
 
@@ -39,10 +41,14 @@ describe("AppSidebar Component", () => {
   it("handles navigation when menu items are clicked", () => {
     renderWithRouter(<AppSidebar />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Label-GachaTracker" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: t("common.Label-GachaTracker") }),
+    );
     expect(window.location.pathname).toBe("/gacha");
 
-    fireEvent.click(screen.getByRole("button", { name: "Label-Settings" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: t("common.Label-Settings") }),
+    );
     expect(window.location.pathname).toBe("/settings");
   });
 
@@ -50,9 +56,13 @@ describe("AppSidebar Component", () => {
   it("highlights selected menu item", () => {
     renderWithRouter(<AppSidebar />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Label-GachaTracker" }));
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: t("common.Label-GachaTracker", { ns: "gacha" }),
+      }),
+    );
     const menuButton = screen.getByRole("button", {
-      name: "Label-GachaTracker",
+      name: "common.Label-GachaTracker",
     });
     expect(menuButton).toHaveAttribute("data-active", "true");
   });
