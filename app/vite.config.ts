@@ -1,11 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { internalIpV4 } from "internal-ip";
 import path from "path";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import { codecovVitePlugin } from "@codecov/vite-plugin";
-const mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
+const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
@@ -26,11 +25,11 @@ export default defineConfig(async () => ({
   server: {
     port: 5173,
     strictPort: true,
-    host: mobile ? "0.0.0.0" : false,
-    hmr: mobile
+    host: host || false,
+    hmr: host
       ? {
           protocol: "ws",
-          host: await internalIpV4(),
+          host: host,
           port: 5174,
         }
       : undefined,
