@@ -69,9 +69,25 @@ export default function AppSettingList() {
               variant="destructive"
               onClick={async () => {
                 //TODO show a confirming modal to double check
-                const store = await getStorage(StorageNameSpace.APP_SETTING);
-                await store.clear();
-                await store.save();
+                {
+                  const store = await getStorage(StorageNameSpace.APP_SETTING);
+                  await store.clear();
+                  await store.save();
+                }
+                {
+                  const store = await getStorage(
+                    StorageNameSpace.GACHA_ARCHIVE,
+                  );
+                  await store.clear();
+                  await store.save();
+                }
+                {
+                  const store = await getStorage(
+                    StorageNameSpace.GACHA_SETTING,
+                  );
+                  await store.clear();
+                  await store.save();
+                }
               }}
             >
               {t("common.Label-Clear-App-Data")}
