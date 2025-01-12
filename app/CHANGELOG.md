@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/JinhsiStudio/JinhsiStudio/compare/jinhsi-studio-v0.0.4...jinhsi-studio-v0.0.5) (2025-01-12)
+
+
+### Bug Fixes
+
+* home page logo ([#141](https://github.com/JinhsiStudio/JinhsiStudio/issues/141)) ([d28e2f8](https://github.com/JinhsiStudio/JinhsiStudio/commit/d28e2f8145f4f98df89a3445dbd86f2957893334))
+
 ## [0.0.4](https://github.com/JinhsiStudio/JinhsiStudio/compare/jinhsi-studio-v0.0.3...jinhsi-studio-v0.0.4) (2025-01-12)
 
 
