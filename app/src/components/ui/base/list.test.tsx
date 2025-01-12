@@ -91,4 +91,33 @@ describe("List Component", () => {
     const metaElement = screen.getByText("Title").parentElement?.parentElement;
     expect(metaElement).toHaveClass("custom-meta-class");
   });
+
+  // Test layout spacing and overflow
+  it("handles long titles and descriptions without overflow", () => {
+    const longMeta = {
+      title: "This is a very long title that should be truncated",
+      description:
+        "This is a very long description that should be truncated to two lines",
+    };
+
+    render(
+      <List>
+        <List.Item meta={longMeta} data-testid="list-item">
+          Test Item
+        </List.Item>
+      </List>,
+    );
+
+    const title = screen.getByText(longMeta.title);
+    const description = screen.getByText(longMeta.description);
+    const listItem = screen.getByTestId("list-item");
+    expect(listItem).toBeInTheDocument();
+
+    // Verify truncation
+    expect(title).toHaveClass("line-clamp-1");
+    expect(description).toHaveClass("line-clamp-2");
+
+    // Verify spacing
+    expect(title.parentElement).toHaveClass("space-y-1");
+  });
 });

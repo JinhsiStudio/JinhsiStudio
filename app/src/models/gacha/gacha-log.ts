@@ -30,3 +30,10 @@ export class GachaLog implements IGachaLog {
     return new GachaLog(convene, []);
   }
 }
+
+export function getDummyGachaData(): GachaLog[] {
+  return [
+    new GachaLog(Convene.Beginner, []),
+    new GachaLog(Convene.BeginnerGiveBackSelected, []),
+  ];
+}

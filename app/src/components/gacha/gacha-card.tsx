@@ -1,7 +1,8 @@
-import { getConveneName } from "@/models/gacha/convene";
+import { getConveneLabel } from "@/models/gacha/convene";
 import { GachaItem } from "@/models/gacha/gacha-item";
 import { GachaLog } from "@/models/gacha/gacha-log";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import GachaAvatarCard from "./gacha-avatar-card";
 import { GachaStatisticPullTitle } from "./statistic/gacha-statistic-pull-title";
 import { SingleSelect } from "../ui/select";
@@ -43,45 +44,38 @@ function sum(arr: number[]): number {
 }
 
 export default function GachaCard(props: GachaCardProps) {
-  if (props.data.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <p className="text-muted-foreground">暂无数据</p>
-      </div>
-    );
-  } else {
-    const [currentGacha, setCurrentGacha] = useState(props.data[0]);
+  const { t } = useTranslation("gacha");
+  const [currentGacha, setCurrentGacha] = useState<GachaLog>(props.data[0]);
 
-    const fiveStarDistances = calculateDistance(currentGacha.items, 5);
-    const fourStarDistances = calculateDistance(currentGacha.items, 4);
+  const fiveStarDistances = calculateDistance(currentGacha.items, 5);
+  const fourStarDistances = calculateDistance(currentGacha.items, 4);
 
-    const lastFiveStar = currentGacha.items.length - sum(fiveStarDistances);
-    const lastFourStar = currentGacha.items.length - sum(fourStarDistances);
+  const lastFiveStar = currentGacha.items.length - sum(fiveStarDistances);
+  const lastFourStar = currentGacha.items.length - sum(fourStarDistances);
 
-    const fiveStarItems = currentGacha.items.filter(
-      (item) => item.rarity === 5,
-    );
+  const fiveStarItems = currentGacha.items.filter((item) => item.rarity === 5);
 
-    const averageFiveStar = fiveStarDistances.length
-      ? (sum(fiveStarDistances) / fiveStarDistances.length).toFixed(2)
-      : "N/A";
-    const averageFourStar = fourStarDistances.length
-      ? (sum(fourStarDistances) / fourStarDistances.length).toFixed(2)
-      : "N/A";
+  const averageFiveStar = fiveStarDistances.length
+    ? (sum(fiveStarDistances) / fiveStarDistances.length).toFixed(2)
+    : "N/A";
+  const averageFourStar = fourStarDistances.length
+    ? (sum(fourStarDistances) / fourStarDistances.length).toFixed(2)
+    : "N/A";
 
-    const titleItems = props.data.map((value: GachaLog, index: number) => {
-      return {
-        value: index.toString(),
-        label: getConveneName(value.convene),
-      };
-    });
+  const titleItems = props.data.map((value: GachaLog, index: number) => {
+    return {
+      value: index.toString(),
+      label: t("common." + getConveneLabel(value.convene)),
+    };
+  });
 
+  {
     return (
       <Card className="min-h-full max-h-[calc(100vh-2rem)] bg-card mx-4 overflow-y-auto overflow-x-hidden">
         <CardHeader className="pb-2">
           <div className="flex justify-between items-center">
             <CardTitle className="text-xl font-medium">
-              {getConveneName(currentGacha.convene)}
+              {t("common." + getConveneLabel(currentGacha.convene))}
             </CardTitle>
             <div className="w-fit min-w-32">
               <SingleSelect
@@ -106,12 +100,12 @@ export default function GachaCard(props: GachaCardProps) {
             <div className="rounded-xl border bg-background p-6 shadow-sm">
               <div className="relative">
                 <h3 className="text-lg font-semibold text-foreground">
-                  五星统计
+                  {t("common.Label-FiveStarStats")}
                 </h3>
                 <div className="mt-4 grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
-                      距离上个五星
+                      {t("common.Label-LastPull")} 5★
                     </p>
                     <p className="mt-1 text-3xl font-bold tracking-tight">
                       {lastFiveStar}
@@ -119,7 +113,7 @@ export default function GachaCard(props: GachaCardProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
-                      平均抽数
+                      {t("common.Label-AvgPulls")}
                     </p>
                     <p className="mt-1 text-3xl font-bold tracking-tight">
                       {averageFiveStar}
@@ -133,12 +127,12 @@ export default function GachaCard(props: GachaCardProps) {
             <div className="rounded-xl border bg-background p-6 shadow-sm">
               <div className="relative">
                 <h3 className="text-lg font-semibold text-foreground">
-                  四星统计
+                  {t("common.Label-FourStarStats")}
                 </h3>
                 <div className="mt-4 grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
-                      距离上个四星
+                      {t("common.Label-LastPull")} 4★
                     </p>
                     <p className="mt-1 text-3xl font-bold tracking-tight">
                       {lastFourStar}
@@ -146,7 +140,7 @@ export default function GachaCard(props: GachaCardProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
-                      平均抽数
+                      {t("common.Label-AvgPulls")}
                     </p>
                     <p className="mt-1 text-3xl font-bold tracking-tight">
                       {averageFourStar}
@@ -161,7 +155,9 @@ export default function GachaCard(props: GachaCardProps) {
 
           {/* 五星角色展示 */}
           <div>
-            <h3 className="text-lg font-medium mb-2">五星获取历史</h3>
+            <h3 className="text-lg font-medium mb-2">
+              {t("common.Label-FiveStarHistory")}
+            </h3>
             <div className="flex flex-wrap gap-2">
               {fiveStarItems.map((item, index) => (
                 <GachaAvatarCard

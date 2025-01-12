@@ -6,5 +6,21 @@
   "Label-Permanent": "Permanent",
   "Label-Beginner": "Beginner",
   "Label-Fetch-Data": "Fetch Data",
-  "Label-Gacha-Setting": "Gacha Setting"
+  "Label-Gacha-Setting": "Gacha Setting",
+  "Label-NoData": "No data available",
+  "Label-FiveStarStats": "5★ Statistics",
+  "Label-FourStarStats": "4★ Statistics",
+  "Label-Pull": "Pulls",
+  "Label-LastPull": "Since last pull",
+  "Label-AvgPulls": "Average pulls",
+  "Label-FiveStarHistory": "5★ History",
+  "Convene": {
+    "EventCharacter": "Featured Resonator Convene",
+    "EventWeapon": "Featured Weapon Convene",
+    "PermanentCharacter": "Standard Resonator Convene",
+    "PermanentWeapon": "Standard Weapon Convene",
+    "Beginner": "Beginner Convene",
+    "BeginnerSelected": "Beginner's Choice Convene",
+    "BeginnerGiveBackSelected": "Beginner's Choice Convene (Giveback)"
+  }
 }

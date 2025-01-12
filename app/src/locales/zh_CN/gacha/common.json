@@ -6,5 +6,21 @@
   "Label-Permanent": "常驻",
   "Label-Beginner": "新手",
   "Label-Fetch-Data": "获取数据",
-  "Label-Gacha-Setting": "唤取设置"
+  "Label-Gacha-Setting": "唤取设置",
+  "Label-NoData": "暂无数据",
+  "Label-FiveStarStats": "5★ 统计",
+  "Label-FourStarStats": "4★ 统计",
+  "Label-Pull": "抽",
+  "Label-LastPull": "距离上个",
+  "Label-AvgPulls": "平均抽数",
+  "Label-FiveStarHistory": "5★ 获取历史",
+  "Convene": {
+    "EventCharacter": "角色活动唤取",
+    "EventWeapon": "武器活动唤取",
+    "PermanentCharacter": "角色常驻唤取",
+    "PermanentWeapon": "武器常驻唤取",
+    "Beginner": "新手角色唤取",
+    "BeginnerSelected": "新手自选唤取",
+    "BeginnerGiveBackSelected": "新手自选唤取(感恩回馈)"
+  }
 }

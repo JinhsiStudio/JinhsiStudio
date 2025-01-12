@@ -2,7 +2,18 @@
   "Character": {
     "Changli": "长离",
     "Jinhsi": "今汐",
-    "Shorekeeper": "守岸人"
+    "Shorekeeper": "守岸人",
+    "LingYang": "凌阳",
+    "Verina": "维里奈",
+    "Encore": "安可",
+    "Carlotta": "珂莱塔",
+    "Camellya": "椿"
   },
-  "Weapon": {}
+  "Weapon": {
+    "EmeraldOfGenesis": "千古洑流",
+    "AgesOfHarvest": "时和岁稔",
+    "RedSpring": "裁春",
+    "StellarSymphony": "星序协响",
+    "TheLastDance": "死与舞"
+  }
 }

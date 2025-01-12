@@ -12,6 +12,9 @@
       "isBackground": true,
       // change this to your `beforeDevCommand`:
       "command": "pnpm",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "args": ["dev"]
     },
     {
@@ -19,6 +22,9 @@
       "type": "shell",
       // change this to your `beforeBuildCommand`:
       "command": "pnpm",
+      "options": {
+        "cwd": "${workspaceFolder}/app"
+      },
       "args": ["build"]
     }
   ]
