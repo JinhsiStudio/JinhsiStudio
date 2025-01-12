@@ -137,7 +137,7 @@ async function validateTranslationKeys(
     // Check for extra keys
     Object.keys(localeContent).forEach((key) => {
       if (!(key in baseContent)) {
-        result.warnings.push(ERRORS.EXTRA_KEY(path.join(locale, file), key));
+        result.errors.push(ERRORS.EXTRA_KEY(path.join(locale, file), key));
       }
     });
   }

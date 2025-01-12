@@ -3,5 +3,7 @@
   "Message-Modify-Gacha-Url-Success": "修改唤取链接成功",
   "Message-Modify-Gacha-Url-Fail": "修改唤取链接失败",
   "Message-Please-Input-Valid-Gacha-Url-Or-Log-Path": "请输入有效的唤取查询链接或客户端日志路径",
-  "Message-Please-Input-Gacha-Url": "请输入唤取查询链接"
+  "Message-Please-Input-Gacha-Url": "请输入唤取查询链接",
+  "Message-No-Url-Or-Path-Please-Set-First": "未设置唤取链接或日志路径，请先进行设置",
+  "Message-Gacha-Log-Path-Tutorial": "通常位于 游戏安装路径/Client/Saved/Logs/Client.log"
 }

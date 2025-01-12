@@ -102,6 +102,9 @@ export const GachaSettingDialog = forwardRef<DialogRef>((_props, ref) => {
                   <FolderOpen />
                 </Button>
               </div>
+              <Typography.Text className="text-sm">
+                {t("message.Message-Gacha-Log-Path-Tutorial")}
+              </Typography.Text>
             </div>
           </List.Item>
         </List>

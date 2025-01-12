@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRequest } from "ahooks";
 import { Spinner } from "@/components/ui/base/spinner";
 import {
@@ -85,6 +85,15 @@ export default function GachaPage() {
       title: t("message.Message-Failed-To-Load-Gacha-Data"),
     });
   };
+
+  useEffect(() => {
+    if (gachaSetting && !gachaSetting.logPath && !gachaSetting.url) {
+      toast({
+        title: t("message.Message-No-Url-Or-Path-Please-Set-First"),
+      });
+      settingRef.current?.open();
+    }
+  }, [gachaSetting, gachaSetting?.logPath, gachaSetting?.url]);
 
   return (
     <div>
