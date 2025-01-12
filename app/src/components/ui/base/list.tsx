@@ -73,7 +73,7 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center px-4 py-3 h-[4rem] hover:bg-muted/50 transition-colors",
+          "flex items-center px-4 py-3 hover:bg-muted/50 transition-colors",
           className,
         )}
         {...props}
