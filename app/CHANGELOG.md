@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.4](https://github.com/JinhsiStudio/JinhsiStudio/compare/jinhsi-studio-v0.0.3...jinhsi-studio-v0.0.4) (2025-01-12)
+
+
+### Features
+
+* **gacha:** guide users to set up gacha analysis related configurations ([#139](https://github.com/JinhsiStudio/JinhsiStudio/issues/139)) ([50dcf45](https://github.com/JinhsiStudio/JinhsiStudio/commit/50dcf450414791de2d79a7d0e473a6c84466065f))
+* **setting:** add clear app data dialog in setting page ([#140](https://github.com/JinhsiStudio/JinhsiStudio/issues/140)) ([543a6ed](https://github.com/JinhsiStudio/JinhsiStudio/commit/543a6edd920e7a2735c77dd6457838d68e515932))
+* support check for update and enhance List component ([#120](https://github.com/JinhsiStudio/JinhsiStudio/issues/120)) ([e74c126](https://github.com/JinhsiStudio/JinhsiStudio/commit/e74c126c7553953418d3c5b119c3f7d27ca72d6e))
+* update dependencies and restrict storage namespace ([#116](https://github.com/JinhsiStudio/JinhsiStudio/issues/116)) ([c52bfe8](https://github.com/JinhsiStudio/JinhsiStudio/commit/c52bfe8680b85e3e4e75aacebf3659471b838da7))
+
+
+### Bug Fixes
+
+* **gacha:** fix gacha fetch error and translate gacha page ([#137](https://github.com/JinhsiStudio/JinhsiStudio/issues/137)) ([e11c162](https://github.com/JinhsiStudio/JinhsiStudio/commit/e11c1621f8e8889fd7da40ae89a31f6aeec6ba9f))
+
 ## [0.0.3](https://github.com/JinhsiStudio/JinhsiStudio/compare/jinhsi-studio-v0.0.2...jinhsi-studio-v0.0.3) (2024-12-08)
 
 
