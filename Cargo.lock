@@ -1895,7 +1895,7 @@ dependencies = [
 
 [[package]]
 name = "jinhsi-core"
-version = "0.0.2"
+version = "0.0.3"
 dependencies = [
  "chrono",
  "lazy_static",
@@ -1915,7 +1915,7 @@ dependencies = [
 
 [[package]]
 name = "jinhsi-studio"
-version = "0.0.3"
+version = "0.0.4"
 dependencies = [
  "jinhsi-core",
  "log",
