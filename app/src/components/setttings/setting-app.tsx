@@ -5,21 +5,22 @@ import { defaultLanguage, supportedLanguages } from "@/services/i18n";
 import { useAppSetting } from "@/hooks/storage/setting/use-app-setting";
 import { useRef } from "react";
 import { AppSetting, LanguageSetting } from "@/models/setting/app-setting";
-import { getStorage, StorageNameSpace } from "@/hooks/storage/use-storage";
 import { SingleSelect } from "../ui/select";
 import { ChevronRight } from "lucide-react";
 import { check, Update } from "@tauri-apps/plugin-updater";
 import { UpdateDialog } from "@/components/updater/update-dialog";
-import { DialogRefWithProps } from "@/components/base/base-dialog";
+import { DialogRef, DialogRefWithProps } from "@/components/base/base-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { version } from "@root/package.json";
 import { Typography } from "../ui/base/typography";
+import { ClearAppDataDialog } from "./mod/setting-clear-app-data";
 
 export default function AppSettingList() {
   const { t, i18n } = useTranslation("setting");
   const { storedValue: appSetting, setValue: setAppSetting } = useAppSetting();
   const language = useRef(appSetting?.language || defaultLanguage);
   const updateDialogRef = useRef<DialogRefWithProps<Update>>(null);
+  const clearAppSettingDialogRef = useRef<DialogRef>(null);
   const { toast } = useToast();
 
   const handleChange = (value: string) => {
@@ -46,7 +47,9 @@ export default function AppSettingList() {
   };
 
   return (
-    <>
+    <div>
+      <UpdateDialog ref={updateDialogRef} />
+      <ClearAppDataDialog ref={clearAppSettingDialogRef} />
       <SettingList title={t("common.App-Settings")}>
         <SettingItem
           label={t("common.Language")}
@@ -67,27 +70,9 @@ export default function AppSettingList() {
           extra={
             <Button
               variant="destructive"
-              onClick={async () => {
+              onClick={() => {
+                clearAppSettingDialogRef.current?.open();
                 //TODO show a confirming modal to double check
-                {
-                  const store = await getStorage(StorageNameSpace.APP_SETTING);
-                  await store.clear();
-                  await store.save();
-                }
-                {
-                  const store = await getStorage(
-                    StorageNameSpace.GACHA_ARCHIVE,
-                  );
-                  await store.clear();
-                  await store.save();
-                }
-                {
-                  const store = await getStorage(
-                    StorageNameSpace.GACHA_SETTING,
-                  );
-                  await store.clear();
-                  await store.save();
-                }
               }}
             >
               {t("common.Label-Clear-App-Data")}
@@ -104,7 +89,6 @@ export default function AppSettingList() {
           extra={<Typography.Text>{version}</Typography.Text>}
         />
       </SettingList>
-      <UpdateDialog ref={updateDialogRef} />
-    </>
+    </div>
   );
 }

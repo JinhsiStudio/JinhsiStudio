@@ -4,5 +4,11 @@
   "Label-Clear-App-Data": "Clear App Data",
   "Label-Check-For-Updates": "Check for Updates",
   "Label-Current-Version": "Current Version",
-  "Label-Current-Is-Latest": "You are using the latest version"
+  "Label-Current-Is-Latest": "You are using the latest version",
+  "Label-App-Data-App-Setting": "App Setting Cache",
+  "Label-App-Data-Gacha-Setting": "Gacha Setting Cache",
+  "Label-App-Data-Gacha-Archive": "Gacha Data Cache",
+  "Label-App-Data-Desc-App-Setting": "App settings, including language preference etc.",
+  "Label-App-Data-Desc-Gacha-Setting": "Gacha settings, including gacha log path etc.",
+  "Label-App-Data-Desc-Gacha-Archive": "Gacha data, including all stored gacha records etc."
 }
