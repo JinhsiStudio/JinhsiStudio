@@ -18,7 +18,7 @@ import theLastDance from "@/assets/weapons/the-last-dance.webp";
 import { useTranslation } from "react-i18next";
 
 //TODO fill this enum
-enum Character {
+export enum Character {
   //  Permanent Character
   LingYang = 1104,
   Verina = 1503,
@@ -31,7 +31,7 @@ enum Character {
   Camellya = 1603,
 }
 
-enum Weapon {
+export enum Weapon {
   //  Permanent Weapon
   EmeraldOfGenesis = 21020015,
   //  Featured Weapon

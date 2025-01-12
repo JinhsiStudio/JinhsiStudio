@@ -21,15 +21,22 @@ export default function GachaAvatarCard(props: gachaAvatarCardProps) {
   console.info(imagePath, name, resourceId);
 
   return (
-    <div className="w-16 h-24 flex flex-col items-center justify-center rounded-md overflow-hidden border border-gray-200 mt-1 mb-1 mx-1">
+    <div
+      className="w-16 h-24 flex flex-col items-center justify-center rounded-md overflow-hidden border border-gray-200 mt-1 mb-1 mx-1"
+      role="gacha-avatar-container"
+    >
       {imageError || !imagePath ? (
-        <HelpCircle className="text-gray-400 w-6 h-6" />
+        <HelpCircle
+          className="text-gray-400 w-6 h-6"
+          role="gacha-avatar-fallback-icon"
+        />
       ) : (
         <img
           src={imagePath}
           alt="small"
           className="w-16 h-20 object-cover"
           onError={handleError}
+          role="gacha-avatar-icon"
         />
       )}
       <div className="text-base text-gray-800">{number}</div>
