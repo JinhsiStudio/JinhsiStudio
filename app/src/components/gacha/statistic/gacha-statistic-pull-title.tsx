@@ -7,7 +7,10 @@ export function GachaStatisticPullTitle(prop: GachaStatisticPullTitleProp) {
   const { t } = useTranslation("gacha");
   return (
     <div>
-      <span className="text-6xl font-serif slashed-zero mx-4">
+      <span
+        className="text-6xl font-serif slashed-zero mx-4"
+        role="gacha-pull-count"
+      >
         {prop.pullCount}
       </span>
       <span className="text-xl">{t("common.Label-Pull")}</span>

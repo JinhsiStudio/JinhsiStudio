@@ -107,7 +107,10 @@ export default function GachaCard(props: GachaCardProps) {
                     <p className="text-sm font-medium text-muted-foreground">
                       {t("common.Label-LastPull")} 5★
                     </p>
-                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                    <p
+                      className="mt-1 text-3xl font-bold tracking-tight"
+                      role="gacha-last-five-star-count"
+                    >
                       {lastFiveStar}
                     </p>
                   </div>
@@ -115,7 +118,10 @@ export default function GachaCard(props: GachaCardProps) {
                     <p className="text-sm font-medium text-muted-foreground">
                       {t("common.Label-AvgPulls")}
                     </p>
-                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                    <p
+                      className="mt-1 text-3xl font-bold tracking-tight"
+                      role="gacha-average-five-star-count"
+                    >
                       {averageFiveStar}
                     </p>
                   </div>
@@ -134,7 +140,10 @@ export default function GachaCard(props: GachaCardProps) {
                     <p className="text-sm font-medium text-muted-foreground">
                       {t("common.Label-LastPull")} 4★
                     </p>
-                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                    <p
+                      className="mt-1 text-3xl font-bold tracking-tight"
+                      role="gacha-last-four-star-count"
+                    >
                       {lastFourStar}
                     </p>
                   </div>
@@ -142,7 +151,10 @@ export default function GachaCard(props: GachaCardProps) {
                     <p className="text-sm font-medium text-muted-foreground">
                       {t("common.Label-AvgPulls")}
                     </p>
-                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                    <p
+                      className="mt-1 text-3xl font-bold tracking-tight"
+                      role="gacha-average-four-star-count"
+                    >
                       {averageFourStar}
                     </p>
                   </div>

@@ -14,7 +14,7 @@ describe("GachaAvatarCard Component", () => {
     render(<GachaAvatarCard {...defaultProps} />);
 
     expect(screen.getByText("50")).toBeInTheDocument();
-    const img = screen.getByRole("img");
+    const img = screen.getByRole("gacha-avatar-icon");
     expect(img).toHaveAttribute("alt", "small");
     expect(img).toHaveClass("w-16 h-20 object-cover");
   });
@@ -23,7 +23,7 @@ describe("GachaAvatarCard Component", () => {
   it("shows fallback icon when image fails to load", () => {
     render(<GachaAvatarCard {...defaultProps} />);
 
-    const img = screen.getByRole("img");
+    const img = screen.getByRole("gacha-avatar-icon");
     fireEvent.error(img);
 
     expect(img).not.toBeInTheDocument();
