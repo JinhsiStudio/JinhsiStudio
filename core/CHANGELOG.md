@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/JinhsiStudio/JinhsiStudio/compare/jinhsi-core-v0.0.2...jinhsi-core-v0.0.3) (2025-01-12)
+
+
+### Bug Fixes
+
+* **gacha:** fix gacha fetch error and translate gacha page ([#137](https://github.com/JinhsiStudio/JinhsiStudio/issues/137)) ([e11c162](https://github.com/JinhsiStudio/JinhsiStudio/commit/e11c1621f8e8889fd7da40ae89a31f6aeec6ba9f))
+
 ## [0.0.2](https://github.com/JinhsiStudio/JinhsiStudio/compare/jinhsi-core-v0.0.1...jinhsi-core-v0.0.2) (2024-10-04)
 
 
