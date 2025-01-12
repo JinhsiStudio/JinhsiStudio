@@ -23,7 +23,10 @@ export default function GachaAvatarCard(props: gachaAvatarCardProps) {
   return (
     <div className="w-16 h-24 flex flex-col items-center justify-center rounded-md overflow-hidden border border-gray-200 mt-1 mb-1 mx-1">
       {imageError || !imagePath ? (
-        <HelpCircle className="text-gray-400 w-6 h-6" />
+        <HelpCircle
+          className="text-gray-400 w-6 h-6"
+          role="gacha-avatar-fallback-icon"
+        />
       ) : (
         <img
           src={imagePath}
