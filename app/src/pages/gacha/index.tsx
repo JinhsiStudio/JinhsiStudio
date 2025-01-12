@@ -12,7 +12,7 @@ import {
   updateGachaLogFromUrl,
 } from "@/services/invokes/gacha";
 import GachaCard from "@/components/gacha/gacha-card";
-import { GachaLog } from "@/models/gacha/gacha-log";
+import { GachaLog, getDummyGachaData } from "@/models/gacha/gacha-log";
 import { MoreHorizontal, RefreshCw, Settings } from "lucide-react";
 import { GachaSettingDialog } from "@/components/gacha/setting/gacha-setting";
 import { DialogRef } from "@/components/base/base-dialog";
@@ -91,7 +91,10 @@ export default function GachaPage() {
       <GachaSettingDialog ref={settingRef}></GachaSettingDialog>
       <Spinner spinning={loading} fullscreen size="large" />
       <GachaCard
-        data={gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) || []}
+        data={
+          gachaArchive?.logs.map((log) => GachaLog.fromDao(log)) ||
+          getDummyGachaData()
+        }
       />
       <FloatButtonGroup icon={<MoreHorizontal />}>
         <FloatButton
