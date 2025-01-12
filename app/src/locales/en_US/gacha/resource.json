@@ -2,7 +2,18 @@
   "Character": {
     "Changli": "Changli",
     "Jinhsi": "Jinhsi",
-    "Shorekeeper": "Shorekeeper"
+    "Shorekeeper": "Shorekeeper",
+    "LingYang": "Lingyang",
+    "Verina": "Verina",
+    "Encore": "Encore",
+    "Carlotta": "Carlotta",
+    "Camellya": "Camellya"
   },
-  "Weapon": {}
+  "Weapon": {
+    "EmeraldOfGenesis": "Emerald of Genesis",
+    "AgesOfHarvest": "Ages of Harvest",
+    "RedSpring": "Red Spring",
+    "StellarSymphony": "Stellar Symphony",
+    "TheLastDance": "The Last Dance"
+  }
 }
