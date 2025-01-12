@@ -4,7 +4,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col items-center">
       <div>
-        <img src="./public/jinhsi.webp" alt="LOGO" className="m-8" />
+        <img src="/jinhsi.webp" alt="LOGO" className="m-8" />
       </div>
       <div>
         <h1
