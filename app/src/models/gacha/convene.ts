@@ -24,22 +24,22 @@ export function getMaxGachaCount(convene: Convene) {
   }
 }
 
-export function getConveneName(convene: Convene) {
+export function getConveneLabel(convene: Convene) {
   switch (convene) {
     case Convene.EventCharacter:
-      return "角色活动";
+      return "Convene.EventCharacter";
     case Convene.EventWeapon:
-      return "武器活动";
+      return "Convene.EventWeapon";
     case Convene.PermanentCharacter:
-      return "角色常驻";
+      return "Convene.PermanentCharacter";
     case Convene.PermanentWeapon:
-      return "武器常驻";
+      return "Convene.PermanentWeapon";
     case Convene.Beginner:
-      return "新手角色";
+      return "Convene.Beginner";
     case Convene.BeginnerSelected:
-      return "新手自选";
+      return "Convene.BeginnerSelected";
     case Convene.BeginnerGiveBackSelected:
-      return "感恩回馈";
+      return "Convene.BeginnerGiveBackSelected";
     default:
       return convene;
   }
